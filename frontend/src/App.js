@@ -14,7 +14,7 @@ class App extends React.Component<AppProps> {
 	render() {
 		return (
 			<div className={baseClassName}>
-				<header className={`${baseClassName}__header`}>Post v.0.1 (dev)</header>
+				<header className={`${baseClassName}__header`}>post-board v.0.1 (dev)</header>
 				<div className={`${baseClassName}__body`}>
 					<PostCreator />
 					<div className={`${baseClassName}__body-container`}>

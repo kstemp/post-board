@@ -19,6 +19,8 @@ class Post extends React.Component<PostProps> {
 				</div>
 				<div className={`${baseClassName}__body`}>{this.props.text}</div>
 				<div className={`${baseClassName}__buttons-wrapper`}>
+					<button>UV</button>
+					<button>DV</button>
 					<button>React</button>
 					<button>Comments</button>
 					<button>...</button>
