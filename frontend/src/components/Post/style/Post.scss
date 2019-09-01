@@ -1,6 +1,7 @@
 .post {
 	width: 50%;
-
+	border: 1px solid lightgray;
+	margin: 10px;
 	padding: 10px;
 
 	&__header > p {
@@ -9,6 +10,8 @@
 
 	&__body {
 		min-height: 50px;
+
+		border-bottom: 1px solid lightgray;
 
 		overflow-wrap: break-word;
 		text-align: justify;

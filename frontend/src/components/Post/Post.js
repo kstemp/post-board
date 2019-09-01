@@ -20,11 +20,11 @@ class Post extends React.Component<PostProps> {
 					<p className={`${baseClassName}__header-date`}>posted 7 hours ago</p>
 				</div>
 				<div className={`${baseClassName}__body`}>{this.props.post.text}</div>
-				<div className={`${baseClassName}__buttons-wrapper`}>
+				<div className={`${baseClassName}__buttons-container`}>
 					<button>UV</button>
 					<button>DV</button>
 				</div>
-				<CommentList comments={this.props.post.comments} />
+				{this.props.post.comments ? <CommentList comments={this.props.post.comments} /> : <p>No comments (yet)</p>}
 			</div>
 		);
 	}

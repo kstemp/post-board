@@ -8,16 +8,23 @@ type CommentListProps = {
 };
 
 class CommentList extends React.Component<CommentListProps> {
-	render() {
+	// TODO don't wrap every level in another div...
+	renderCommentsForParentID = parentID => {
 		return (
-			<div className={baseClassName}>
-				{this.props.comments ? (
-					this.props.comments.filter(comment => !comment.parentID).map(comment => <p>{comment.text}</p>)
-				) : (
-					<p>Be the first to write a comment.</p>
-				)}
+			<div>
+				{this.props.comments
+					.filter(comment => comment.parentID === parentID)
+					.map(comment => (
+						<div style={{ 'padding-left': 20 }}>
+							<p>{comment.text}</p>
+							{this.renderCommentsForParentID(comment.ID)}
+						</div>
+					))}
 			</div>
 		);
+	};
+	render() {
+		return <div className={baseClassName}>{this.renderCommentsForParentID(null)}</div>;
 	}
 }
 
