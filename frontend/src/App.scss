@@ -1,7 +1,11 @@
 .App {
-  text-align: center;
+	text-align: center;
 
-  &__header {
-    text-align: left;
-  }
+	&__header {
+		text-align: left;
+	}
+
+	&__body {
+		width: 100%;
+	}
 }

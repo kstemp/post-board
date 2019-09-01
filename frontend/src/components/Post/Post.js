@@ -1,7 +1,11 @@
 //@flow
 import React from 'react';
 
-type PostProps = {};
+import './style/Post.scss';
+
+type PostProps = {
+	text: string
+};
 
 const baseClassName = 'post';
 

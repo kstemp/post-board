@@ -2,6 +2,7 @@
 import React from 'react';
 
 import Post from './components/Post/Post';
+import PostCreator from './components/PostCreator/PostCreator';
 
 import './App.scss';
 
@@ -15,8 +16,9 @@ class App extends React.Component<AppProps> {
 			<div className={baseClassName}>
 				<header className={`${baseClassName}__header`}>Post v.0.1 (dev)</header>
 				<div className={`${baseClassName}__body`}>
+					<PostCreator />
 					<Post text={'Sample post text!'} title={'Sample post title'} />
-          <Post text={'Sample post text 2!'} title={'Sample post title 2'} />
+					<Post text={'Sample post text 2!'} title={'Sample post title 2'} />
 				</div>
 			</div>
 		);
