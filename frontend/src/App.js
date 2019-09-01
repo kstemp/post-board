@@ -1,26 +1,26 @@
 //@flow
 import React from 'react';
 
+import Post from './components/Post/Post';
+
 import './App.scss';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const baseClassName = 'App';
+
+type AppProps = {};
+
+class App extends React.Component<AppProps> {
+	render() {
+		return (
+			<div className={baseClassName}>
+				<header className={`${baseClassName}__header`}>Post v.0.1 (dev)</header>
+				<div className={`${baseClassName}__body`}>
+					<Post text={'Sample post text!'} title={'Sample post title'} />
+          <Post text={'Sample post text 2!'} title={'Sample post title 2'} />
+				</div>
+			</div>
+		);
+	}
 }
 
 export default App;
