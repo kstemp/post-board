@@ -1,11 +1,11 @@
 //@flow
 import React from 'react';
 
+import { connect } from 'react-redux';
+
 import './style/Post.scss';
 
-type PostProps = {
-	text: string
-};
+type PostProps = {};
 
 const baseClassName = 'post';
 
@@ -17,17 +17,18 @@ class Post extends React.Component<PostProps> {
 					<p className={`${baseClassName}__header-title`}>Post</p>
 					<p className={`${baseClassName}__header-date`}>posted 7 hours ago</p>
 				</div>
-				<div className={`${baseClassName}__body`}>{this.props.text}</div>
+				<div className={`${baseClassName}__body`}>{this.props.post.text}</div>
 				<div className={`${baseClassName}__buttons-wrapper`}>
 					<button>UV</button>
 					<button>DV</button>
-					<button>React</button>
-					<button>Comments</button>
-					<button>...</button>
 				</div>
 			</div>
 		);
 	}
 }
 
-export default Post;
+const mapStateToProps = (state, ownProps) => {
+	return {};
+};
+
+export default connect(mapStateToProps)(Post);
