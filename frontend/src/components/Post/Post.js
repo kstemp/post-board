@@ -3,6 +3,8 @@ import React from 'react';
 
 import { connect } from 'react-redux';
 
+import CommentList from '../CommentList/CommentList';
+
 import './style/Post.scss';
 
 type PostProps = {};
@@ -22,6 +24,7 @@ class Post extends React.Component<PostProps> {
 					<button>UV</button>
 					<button>DV</button>
 				</div>
+				<CommentList comments={this.props.post.comments} />
 			</div>
 		);
 	}
