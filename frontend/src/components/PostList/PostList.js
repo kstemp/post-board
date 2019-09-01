@@ -1,19 +1,21 @@
 //@flow
 import React from 'react';
+import { connect } from 'react-redux';
 
-import './style/PostList.scss';
 import Post from '../Post/Post';
 
-import { connect } from 'react-redux';
+import './style/PostList.scss';
 
 const baseClassName = 'post-list';
 
-class PostList extends React.Component {
+type PostListProps = {};
+
+class PostList extends React.Component<PostListProps> {
 	render() {
 		return (
 			<div className={baseClassName}>
 				{this.props.posts.map(post => (
-					<Post post={post} />
+					<Post key={post.ID} post={post} />
 				))}
 			</div>
 		);

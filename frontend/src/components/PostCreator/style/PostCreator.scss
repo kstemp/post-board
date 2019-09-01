@@ -12,6 +12,8 @@
 	}
 
 	&__input-field {
+		resize: none;
+
 		&--expanded {
 			height: 100px;
 		}
