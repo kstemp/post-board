@@ -17,8 +17,20 @@ class App extends React.Component<AppProps> {
 				<header className={`${baseClassName}__header`}>Post v.0.1 (dev)</header>
 				<div className={`${baseClassName}__body`}>
 					<PostCreator />
-					<Post text={'Sample post text!'} title={'Sample post title'} />
-					<Post text={'Sample post text 2!'} title={'Sample post title 2'} />
+					<div className={`${baseClassName}__body-container`}>
+						<Post text={'Sample post text!'} title={'Sample post title'} />
+						<Post text={'Sample post text 1!'} title={'Sample post title 2'} />
+						<Post text={'Sample post text 2!'} title={'Sample post title'} />
+						<Post text={'Sample post text 3!'} title={'Sample post title 2'} />
+						<Post text={'Sample post text 4!'} title={'Sample post title'} />
+						<Post text={'Sample post text 5!'} title={'Sample post title 2'} />
+						<Post text={'Sample post text 6!'} title={'Sample post title'} />
+						<Post text={'Sample post text 7!'} title={'Sample post title 2'} />
+						<Post text={'Sample post text 8!'} title={'Sample post title'} />
+						<Post text={'Sample post text 9!'} title={'Sample post title 2'} />
+						<Post text={'Sample post text 10!'} title={'Sample post title'} />
+						<Post text={'Sample post text 11!'} title={'Sample post title 2'} />
+					</div>
 				</div>
 			</div>
 		);
