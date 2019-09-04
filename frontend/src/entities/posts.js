@@ -14,19 +14,16 @@ const displayErrorNotification = (title: string, message: string) => {
 	});
 };
 
-const handleResponse = response => {
-	if (response.ok) {
-		return response.json();
-	}
-
-	throw new Error(response.status + ': ' + response.statusText);
-};
-
 export const fetchPosts = () => {
 	const fetchParams = { method: 'GET' };
 
 	fetch(`${BACKEND_URL}/posts`, fetchParams)
-		.then(response => handleResponse(response))
+		.then(response => {
+			if (response.ok) {
+				return response.json();
+			}
+			throw new Error(response.status + ': ' + response.statusText);
+		})
 		.then(posts => {
 			return store.dispatch({ type: ACTION_SET_POSTS, posts: posts });
 		})
@@ -45,7 +42,15 @@ export const createPost = (postText: string) => {
 	};
 
 	fetch(`${BACKEND_URL}/posts`, fetchParams)
-		.then(response => handleResponse(response))
+		.then(response => {
+			if (response.ok) {
+				return response;
+			}
+			throw new Error(response.status + ': ' + response.statusText);
+		})
+		.then(response => {
+			return fetchPosts();
+		})
 		.catch(error => {
 			displayErrorNotification('Failed to create post', error.message);
 		});

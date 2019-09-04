@@ -27,6 +27,8 @@ const post = (req, res) => {
 		ID: 69,
 		comments: []
 	});
+
+	return res.sendStatus(200);
 };
 
 module.exports = { get, post };
