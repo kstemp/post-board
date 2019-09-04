@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 
 import Post from '../Post/Post';
 
+import { fetchPosts } from '../../entities/posts';
+
 import './style/PostList.scss';
 
 const baseClassName = 'post-list';
@@ -11,12 +13,18 @@ const baseClassName = 'post-list';
 type PostListProps = {};
 
 class PostList extends React.Component<PostListProps> {
+	componentDidMount() {
+		fetchPosts();
+	}
+
 	render() {
 		return (
 			<div className={baseClassName}>
-				{this.props.posts.map(post => (
-					<Post key={post.ID} post={post} />
-				))}
+				{this.props.posts.length
+					? this.props.posts.map(post => (
+							<Post key={post.ID} post={post} />
+					  ))
+					: 'No posts here.'}
 			</div>
 		);
 	}

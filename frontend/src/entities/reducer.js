@@ -1,25 +1,17 @@
 //@flow
+import { ACTION_SET_POSTS } from './actions';
+
 const initialState = {
-	posts: [
-		{
-			text: 'test1',
-			comments: [
-				{
-					ID: 12,
-					text: 'hejka!'
-				},
-				{
-					ID: 13,
-					text: 'im a child'
-				}
-			]
-		},
-		{ text: 'test2', comments: [] }
-	]
+	posts: []
 };
 
 export const reducer = (state = initialState, action) => {
 	switch (action.type) {
+		case ACTION_SET_POSTS:
+			return {
+				...state,
+				posts: action.posts
+			};
 		default:
 			return state;
 	}

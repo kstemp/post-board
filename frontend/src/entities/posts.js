@@ -1,7 +1,12 @@
 import { BACKEND_URL } from '../Config';
 
+import { ACTION_SET_POSTS } from './actions';
+
+import store from './store';
+
 export const fetchPosts = () => {
-	fetch(`${BACKEND_URL}`, { method: 'GET' })
+	console.log('fetch!');
+	fetch(`${BACKEND_URL}/posts`, { method: 'GET' })
 		.then(response => {
 			if (response.ok) {
 				return response.json();
@@ -10,7 +15,7 @@ export const fetchPosts = () => {
 			throw 'TODO';
 		})
 		.then(posts => {
-			// TODO
+			return store.dispatch({ type: ACTION_SET_POSTS, posts: posts });
 		})
 		.catch(error => {});
 };
