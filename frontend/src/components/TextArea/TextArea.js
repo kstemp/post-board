@@ -7,6 +7,7 @@ const baseClassName = 'text-area';
 
 const isEmpty = (str: string) => !str || str.length === 0;
 
+// TODO updating validity in parent only works on second keystroke etc.
 // TODO TextArea is really not a great name here...
 class TextArea extends React.Component {
 	constructor(props) {
@@ -28,13 +29,17 @@ class TextArea extends React.Component {
 	}
 
 	onChangeInternal = e => {
+		const isValid =
+			e.target.validity.valid &&
+			(this.props.required && !isEmpty(e.target.value));
+
 		this.setState({
 			value: e.target.value,
-			isValid: e.target.validity.valid
+			isValid: isValid
 		});
 
 		if (this.props.onChange) {
-			this.props.onChange();
+			this.props.onChange(isValid);
 		}
 	};
 
@@ -44,24 +49,26 @@ class TextArea extends React.Component {
 		});
 
 	render() {
-		const displayEmptyText =
-			!this.state.isInEditMode && isEmpty(this.state.value);
+		const props = this.state.isInEditMode
+			? {
+					value: this.state.value,
+					onChange: this.onChangeInternal,
+					onBlur: this.switchMode
+			  }
+			: {
+					onFocus: this.switchMode,
+					value: isEmpty(this.state.value)
+						? this.props.emptyText
+						: this.state.value,
+					style: {
+						color: isEmpty(this.state.value) ? 'gray' : 'black'
+					}
+			  };
 
-		return this.state.isInEditMode ? (
-			<textarea
-				value={this.state.value}
-				required={this.props.required}
-				onChange={this.onChangeInternal}
-				onBlur={this.switchMode}
-			/>
+		return this.props.isMultiLine ? (
+			<textarea {...props} />
 		) : (
-			<textarea
-				onFocus={this.switchMode}
-				value={
-					displayEmptyText ? this.props.emptyText : this.state.value
-				}
-				style={{ color: displayEmptyText ? 'gray' : 'black' }}
-			/>
+			<input {...props} />
 		);
 	}
 }

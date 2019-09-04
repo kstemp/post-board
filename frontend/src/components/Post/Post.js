@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import Comment from '../Comment/Comment';
+import TextArea from '../TextArea/TextArea';
 
 import { createCommentForPostByID } from '../../entities/posts';
 
@@ -17,7 +18,7 @@ class Post extends React.Component<PostProps> {
 	createComment = () => {
 		createCommentForPostByID(
 			this.props.post.ID,
-			this.commentTextInput.value
+			this.commentTextInput.getValue()
 		);
 		//	console.log(this.commentTextInput.value);
 	};
@@ -43,10 +44,10 @@ class Post extends React.Component<PostProps> {
 					<div>No comments yet.</div>
 				)}
 				<div className={`${baseClassName}__new-comment`}>
-					<input
-						defaultValue={'Comment text goes here'}
+					<TextArea
+						emptyText={'Comment text goes here'}
 						ref={input => (this.commentTextInput = input)}
-					></input>
+					/>
 					<button onClick={this.createComment}>Send</button>
 				</div>
 			</div>

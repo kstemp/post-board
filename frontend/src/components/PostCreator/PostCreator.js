@@ -47,7 +47,7 @@ class PostCreator extends React.Component<
 			<div className={baseClassName}>
 				<p>Create a post: </p>
 				<TextArea
-					type={'textarea'}
+					isMultiLine={true}
 					className={`${baseClassName}__input-field`}
 					ref={postTextField => (this.postTextField = postTextField)}
 					emptyText={'Post text goes here...'}
