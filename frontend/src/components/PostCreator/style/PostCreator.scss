@@ -1,5 +1,6 @@
 .post-creator {
 	padding: 10px;
+	border: 1px solid lightgray;
 
 	> p {
 		margin: 0;
@@ -12,12 +13,6 @@
 	&__input-field {
 		resize: none;
 
-		&--expanded {
-			height: 100px;
-		}
-
-		&--small {
-			height: 20px;
-		}
+		height: 100px;
 	}
 }

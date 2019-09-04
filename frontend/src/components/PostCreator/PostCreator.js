@@ -1,6 +1,8 @@
 //@flow
 import React from 'react';
 
+import TextArea from '../TextArea/TextArea';
+
 import { createPost } from '../../entities/posts';
 
 import './style/PostCreator.scss';
@@ -26,34 +28,30 @@ class PostCreator extends React.Component<
 		};
 	}
 
+	componentDidMount() {
+		this.fieldChanged(); // to update validity
+	}
+
 	createPost = () => {
-		createPost(this.postTextField.value);
+		createPost(this.postTextField.getValue());
 	};
 
 	fieldChanged = () => {
 		this.setState({
-			isValid: this.postTextField.validity.valid
+			isValid: this.postTextField.isValid()
 		});
 	};
-
-	switchMode = () =>
-		this.setState({
-			isInCreationMode: !this.state.isInCreationMode
-		});
 
 	render() {
 		return (
 			<div className={baseClassName}>
 				<p>Create a post: </p>
-				<textarea
-					className={`${baseClassName}__input-field ${baseClassName}__input-field--${
-						this.state.isInCreationMode ? 'expanded' : 'small'
-					}`}
+				<TextArea
+					type={'textarea'}
+					className={`${baseClassName}__input-field`}
 					ref={postTextField => (this.postTextField = postTextField)}
-					defaultValue={'Post text goes here'}
+					emptyText={'Post text goes here...'}
 					onChange={this.fieldChanged}
-					onFocus={this.switchMode}
-					onBlur={this.switchMode}
 					required
 				/>
 				<p>Hint: tag a previous post by using e.g. '#111222'</p>
