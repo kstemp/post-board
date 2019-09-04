@@ -13,8 +13,6 @@ app.get('/', (req, res) => {
 	res.status(200).send('backend is running');
 });
 
-app.route('/posts')
-	.get(posts.get)
-	.post(posts.post);
+app.use('/posts', posts);
 
 app.listen(8000, () => console.log(`\nbackend is running\n`));

@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 
 import Comment from '../Comment/Comment';
 
+import { createCommentForPostByID } from '../../entities/posts';
+
 import './style/Post.scss';
 
 type PostProps = {};
@@ -12,6 +14,13 @@ type PostProps = {};
 const baseClassName = 'post';
 
 class Post extends React.Component<PostProps> {
+	createComment = () => {
+		createCommentForPostByID(
+			this.props.post.ID,
+			this.commentTextInput.value
+		);
+		//	console.log(this.commentTextInput.value);
+	};
 	render() {
 		return (
 			<div className={`${baseClassName}`}>
@@ -33,6 +42,13 @@ class Post extends React.Component<PostProps> {
 				) : (
 					<div>No comments yet.</div>
 				)}
+				<div className={`${baseClassName}__new-comment`}>
+					<input
+						defaultValue={'Comment text goes here'}
+						ref={input => (this.commentTextInput = input)}
+					></input>
+					<button onClick={this.createComment}>Send</button>
+				</div>
 			</div>
 		);
 	}

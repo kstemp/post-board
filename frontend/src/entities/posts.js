@@ -48,10 +48,33 @@ export const createPost = (postText: string) => {
 			}
 			throw new Error(response.status + ': ' + response.statusText);
 		})
-		.then(response => {
-			return fetchPosts();
-		})
+		.then(response => fetchPosts())
 		.catch(error => {
 			displayErrorNotification('Failed to create post', error.message);
+		});
+};
+
+export const createCommentForPostByID = (
+	postID: string,
+	commentText: string
+) => {
+	const fetchParams = {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({ text: commentText })
+	};
+
+	fetch(`${BACKEND_URL}/posts/${postID}/comments`, fetchParams)
+		.then(response => {
+			if (response.ok) {
+				return response;
+			}
+			throw new Error(response.status + ': ' + response.statusText);
+		})
+		.then(response => fetchPosts())
+		.catch(error => {
+			displayErrorNotification('Failed to create comment', error.message);
 		});
 };
