@@ -1,7 +1,7 @@
 //@flow
 export type Comment = {
 	ID: string,
-	parentID: string | null,
+	parentPostID: string,
 	text: string
 };
 

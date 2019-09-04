@@ -1,37 +1,39 @@
 //@flow
-import React from 'react';
+import React from "react";
 
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 
-import CommentList from '../CommentList/CommentList';
+import Comment from "../Comment/Comment";
 
-import './style/Post.scss';
+import "./style/Post.scss";
 
 type PostProps = {};
 
-const baseClassName = 'post';
+const baseClassName = "post";
 
 class Post extends React.Component<PostProps> {
-	render() {
-		return (
-			<div className={`${baseClassName}`}>
-				<div className={`${baseClassName}__header`}>
-					<p className={`${baseClassName}__header-title`}>Post</p>
-					<p className={`${baseClassName}__header-date`}>posted 7 hours ago</p>
-				</div>
-				<div className={`${baseClassName}__body`}>{this.props.post.text}</div>
-				<div className={`${baseClassName}__buttons-container`}>
-					<button>UV</button>
-					<button>DV</button>
-				</div>
-				{this.props.post.comments ? <CommentList comments={this.props.post.comments} /> : <p>No comments (yet)</p>}
-			</div>
-		);
-	}
+  render() {
+    return (
+      <div className={`${baseClassName}`}>
+        <div className={`${baseClassName}__header`}>
+          <span className={`${baseClassName}__header-user`}>Anonymous</span>
+          <span className={`${baseClassName}__header-time`}>
+            posted 7 hours ago
+          </span>
+        </div>
+        <div className={`${baseClassName}__body`}>{this.props.post.text}</div>
+        {this.props.post.comments.length ? (
+          this.props.post.comments.map(comment => <Comment comment={comment} />)
+        ) : (
+          <div>No comments yet.</div>
+        )}
+      </div>
+    );
+  }
 }
 
 const mapStateToProps = (state, ownProps) => {
-	return {};
+  return {};
 };
 
 export default connect(mapStateToProps)(Post);
