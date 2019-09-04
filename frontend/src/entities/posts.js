@@ -6,48 +6,47 @@ import { ACTION_SET_POSTS } from './actions';
 
 import store from './store';
 
-export const fetchPosts = () => {
-	fetch(`${BACKEND_URL}/posts`, { method: 'GET' })
-		.then(response => {
-			if (response.ok) {
-				return response.json();
-			}
+const displayErrorNotification = (title: string, message: string) => {
+	toast.error(`${title} - ${message}`, {
+		autoClose: 3000,
+		hideProgressBar: true,
+		closeButton: false
+	});
+};
 
-			throw new Error(response.status + ': ' + response.statusText);
-		})
+const handleResponse = response => {
+	if (response.ok) {
+		return response.json();
+	}
+
+	throw new Error(response.status + ': ' + response.statusText);
+};
+
+export const fetchPosts = () => {
+	const fetchParams = { method: 'GET' };
+
+	fetch(`${BACKEND_URL}/posts`, fetchParams)
+		.then(response => handleResponse(response))
 		.then(posts => {
 			return store.dispatch({ type: ACTION_SET_POSTS, posts: posts });
 		})
-		.catch(error => {
-			toast.error('Failed to load posts - ' + error.message, {
-				autoClose: 3000,
-				hideProgressBar: true,
-				closeButton: false
-			});
-		});
+		.catch(error =>
+			displayErrorNotification('Failed to load posts', error.message)
+		);
 };
 
 export const createPost = (postText: string) => {
-	console.log(postText);
-	fetch(`${BACKEND_URL}/posts`, {
+	const fetchParams = {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
 		},
 		body: JSON.stringify({ text: postText })
-	})
-		.then(response => {
-			if (response.ok) {
-				return response.json();
-			}
+	};
 
-			throw new Error(response.status + ': ' + response.statusText);
-		})
+	fetch(`${BACKEND_URL}/posts`, fetchParams)
+		.then(response => handleResponse(response))
 		.catch(error => {
-			toast.error('Failed to post - ' + error.message, {
-				autoClose: 3000,
-				hideProgressBar: true,
-				closeButton: false
-			});
+			displayErrorNotification('Failed to create post', error.message);
 		});
 };
