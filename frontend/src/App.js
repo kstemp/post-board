@@ -1,7 +1,6 @@
 //@flow
 import React from 'react';
 
-import Post from './components/Post/Post';
 import PostCreator from './components/PostCreator/PostCreator';
 import PostList from './components/PostList/PostList';
 

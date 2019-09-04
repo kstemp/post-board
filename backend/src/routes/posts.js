@@ -1,4 +1,4 @@
-const TEMP_POSTS = [
+let TEMP_POSTS = [
 	{
 		text: 'test1',
 		comments: [
@@ -19,4 +19,14 @@ const get = (req, res) => {
 	return res.status(200).send(TEMP_POSTS);
 };
 
-module.exports = { get };
+const post = (req, res) => {
+	//TODO check if post text is not empty,
+	//TODO and not composes only from spaces
+	TEMP_POSTS.push({
+		text: req.body.text,
+		ID: 69,
+		comments: []
+	});
+};
+
+module.exports = { get, post };

@@ -7,7 +7,7 @@ import { ACTION_SET_POSTS } from './actions';
 import store from './store';
 
 export const fetchPosts = () => {
-	fetch(`http://localhost:8000/posts`, { method: 'GET' })
+	fetch(`${BACKEND_URL}/posts`, { method: 'GET' })
 		.then(response => {
 			if (response.ok) {
 				return response.json();
@@ -20,6 +20,31 @@ export const fetchPosts = () => {
 		})
 		.catch(error => {
 			toast.error('Failed to load posts - ' + error.message, {
+				autoClose: 3000,
+				hideProgressBar: true,
+				closeButton: false
+			});
+		});
+};
+
+export const createPost = (postText: string) => {
+	console.log(postText);
+	fetch(`${BACKEND_URL}/posts`, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({ text: postText })
+	})
+		.then(response => {
+			if (response.ok) {
+				return response.json();
+			}
+
+			throw new Error(response.status + ': ' + response.statusText);
+		})
+		.catch(error => {
+			toast.error('Failed to post - ' + error.message, {
 				autoClose: 3000,
 				hideProgressBar: true,
 				closeButton: false
