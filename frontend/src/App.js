@@ -9,6 +9,9 @@ import { Provider } from 'react-redux';
 
 import store from './entities/store';
 
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import './App.scss';
 
 const baseClassName = 'App';
@@ -20,6 +23,7 @@ class App extends React.Component<AppProps> {
 		return (
 			<Provider store={store}>
 				<div className={baseClassName}>
+					<ToastContainer />
 					<header className={`${baseClassName}__header`}>
 						post-board v.0.1 (dev)
 					</header>
