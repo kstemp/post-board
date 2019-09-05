@@ -1,13 +1,11 @@
 //@flow
 import React from 'react';
-
 import './style/TextArea.scss';
+
+const string = require('../../util/string');
 
 const baseClassName = 'text-area';
 
-const isEmpty = (str: string) => !str || str.length === 0;
-
-// TODO updating validity in parent only works on second keystroke etc.
 // TODO TextArea is really not a great name here...
 class TextArea extends React.Component {
 	constructor(props) {
@@ -31,7 +29,8 @@ class TextArea extends React.Component {
 	onChangeInternal = e => {
 		const isValid =
 			e.target.validity.valid &&
-			(this.props.required && !isEmpty(e.target.value));
+			(this.props.required &&
+				!string.isEmptyOrOnlySpaces(e.target.value));
 
 		this.setState({
 			value: e.target.value,

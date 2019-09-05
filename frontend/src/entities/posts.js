@@ -24,7 +24,11 @@ export const fetchPosts = callbackNotifyLoaded => {
 			throw new Error(response.status + ': ' + response.statusText);
 		})
 		.then(posts => {
-			callbackNotifyLoaded();
+			// TODO we should call this from createPost etc as well
+			// this is temporary
+			if (callbackNotifyLoaded) {
+				callbackNotifyLoaded();
+			}
 			return store.dispatch({ type: ACTION_SET_POSTS, posts: posts });
 		})
 		.catch(error =>

@@ -36,9 +36,9 @@ class PostCreator extends React.Component<
 		createPost(this.postTextField.getValue());
 	};
 
-	fieldChanged = () => {
+	fieldChanged = (isValid: boolean) => {
 		this.setState({
-			isValid: this.postTextField.isValid()
+			isValid: isValid
 		});
 	};
 
