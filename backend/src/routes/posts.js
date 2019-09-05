@@ -19,10 +19,22 @@ router.post('/', (req, res) => {
 		.catch(error => res.sendStatus(500));
 });
 
+router.get('/:id/comments', (req, res) => {
+	// TODO check whether post ID is valid, etc.
+	const reqPostID = parseInt(req.params.id);
+
+	db.any('SELECT * FROM comments WHERE post_id=$1', [reqPostID])
+		.then(data => res.status(200).send(data))
+		.catch(error => res.sendStatus(500));
+});
+
 router.post('/:id/comments', (req, res) => {
 	//TODO check whether post ID exists
 	// TODO check whether req body is valid, ID is nonempty etc.
-	TEMP_POSTS.find(post => post.id === req.params.id).comments.push({
+
+	const reqPostID = parseInt(req.params.id);
+
+	TEMP_POSTS.find(post => post.id === reqPostID).comments.push({
 		text: req.body.text
 	});
 	return res.sendStatus(200);

@@ -2,7 +2,10 @@
 import { toast } from 'react-toastify';
 import { BACKEND_URL } from '../Config';
 
-import { ACTION_SET_POSTS } from './actions';
+import {
+	ACTION_SET_POSTS,
+	ACTION_SET_COMMENTS_FOR_POST_BY_ID
+} from './actions';
 
 import store from './store';
 
@@ -81,4 +84,23 @@ export const createCommentForPostByID = (
 		.catch(error => {
 			displayErrorNotification('Failed to create comment', error.message);
 		});
+};
+
+export const fetchCommentsForPostByID = (postID: number, callback) => {
+	const fetchParams = {
+		method: 'GET'
+	};
+	fetch(`${BACKEND_URL}/posts/${postID.toString()}/comments`)
+		.then(response => {
+			if (response.ok) {
+				return response.json();
+			}
+			throw new Error(response.status + ': ' + response.statusText);
+		})
+		.then(comments => {
+			return callback(comments);
+		})
+		.catch(error =>
+			displayErrorNotification('Failed to fetch comments', error.message)
+		);
 };
