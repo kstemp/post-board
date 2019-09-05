@@ -56,11 +56,13 @@ class TextArea extends React.Component {
 			  }
 			: {
 					onFocus: this.switchMode,
-					value: isEmpty(this.state.value)
+					value: string.isEmpty(this.state.value)
 						? this.props.emptyText
 						: this.state.value,
 					style: {
-						color: isEmpty(this.state.value) ? 'gray' : 'black'
+						color: string.isEmpty(this.state.value)
+							? 'gray'
+							: 'black'
 					}
 			  };
 

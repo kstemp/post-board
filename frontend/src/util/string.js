@@ -6,4 +6,4 @@ const containsOnlySpaces = str => !str.trim().length;
 
 const isEmptyOrOnlySpaces = str => isEmpty(str) || containsOnlySpaces(str);
 
-module.exports = { isEmptyOrOnlySpaces };
+module.exports = { isEmptyOrOnlySpaces, isEmpty };

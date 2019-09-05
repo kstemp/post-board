@@ -28,7 +28,7 @@ class Post extends React.Component<PostProps> {
 			<div className={`${baseClassName}`}>
 				<div className={`${baseClassName}__header`}>
 					<span className={`${baseClassName}__header-user`}>
-						#{this.props.post.id}
+						<a href='#'>#{this.props.post.id}</a>
 					</span>
 					<span className={`${baseClassName}__header-time`}>
 						posted 7 hours ago

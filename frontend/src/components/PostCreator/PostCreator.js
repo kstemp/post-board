@@ -55,8 +55,6 @@ class PostCreator extends React.Component<
 					required
 				/>
 				<p>Hint: tag a previous post by using e.g. '#111222'</p>
-				<p>TODO Markdown, obviously</p>
-				<p>TODO Don't allow posts with spaces only</p>
 				<button
 					disabled={!this.state.isValid}
 					onClick={this.createPost}
