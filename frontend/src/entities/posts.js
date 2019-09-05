@@ -14,9 +14,8 @@ const displayErrorNotification = (title: string, message: string) => {
 	});
 };
 
-export const fetchPosts = () => {
+export const fetchPosts = callbackNotifyLoaded => {
 	const fetchParams = { method: 'GET' };
-
 	fetch(`${BACKEND_URL}/posts`, fetchParams)
 		.then(response => {
 			if (response.ok) {
@@ -25,6 +24,7 @@ export const fetchPosts = () => {
 			throw new Error(response.status + ': ' + response.statusText);
 		})
 		.then(posts => {
+			callbackNotifyLoaded();
 			return store.dispatch({ type: ACTION_SET_POSTS, posts: posts });
 		})
 		.catch(error =>

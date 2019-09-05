@@ -4,7 +4,7 @@ const string = require('../util/string');
 const db = require('../db');
 
 router.get('/', (req, res) => {
-	db.any('SELECT * from posts')
+	db.any('SELECT * FROM posts ORDER BY date DESC')
 		.then(data => res.status(200).send(data))
 		.catch(error => res.sendStatus(500));
 });
