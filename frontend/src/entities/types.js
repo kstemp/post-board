@@ -1,12 +1,12 @@
 //@flow
 export type Comment = {
-	ID: string,
-	parentPostID: string,
+	id: number,
+	parentPostID: number,
 	text: string
 };
 
 export type Post = {
-	ID: string,
+	id: number,
 	text: string,
 	comments: Comment[]
 };

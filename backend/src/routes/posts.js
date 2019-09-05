@@ -1,48 +1,30 @@
-var express = require('express');
-var router = express.Router();
-
-let TEMP_POSTS = [
-	{
-		ID: 'a',
-		text: 'test1',
-		comments: [
-			{
-				ID: '12',
-				text: 'hejka!'
-			},
-			{
-				ID: '13',
-				text: 'im a child'
-			}
-		]
-	},
-	{ ID: 'b', text: 'test2', comments: [] }
-];
+const express = require('express');
+const router = express.Router();
+const string = require('../util/string');
+const db = require('../db');
 
 router.get('/', (req, res) => {
-	return res.status(200).send(TEMP_POSTS);
+	db.any('SELECT * from posts')
+		.then(data => res.status(200).send(data))
+		.catch(error => res.sendStatus(500));
 });
 
 router.post('/', (req, res) => {
-	//TODO check if post text is not empty,
-	//TODO and not composes only from spaces
-	TEMP_POSTS.push({
-		text: req.body.text,
-		ID: 69,
-		comments: []
-	});
+	if (string.isEmptyOrOnlySpaces(req.body.text)) {
+		return res.sendStatus(400);
+	}
 
-	return res.sendStatus(200);
+	db.none('INSERT INTO posts (text) VALUES ($1)', [req.body.text])
+		.then(() => res.sendStatus(200))
+		.catch(error => res.sendStatus(500));
 });
 
-router.post('/:ID/comments', (req, res) => {
-	//	console.log('hello there!');
+router.post('/:id/comments', (req, res) => {
 	//TODO check whether post ID exists
 	// TODO check whether req body is valid, ID is nonempty etc.
-	TEMP_POSTS.find(post => post.ID === req.params.ID).comments.push({
+	TEMP_POSTS.find(post => post.id === req.params.id).comments.push({
 		text: req.body.text
 	});
-	//	console.log(TEMP_POSTS[0].comments);
 	return res.sendStatus(200);
 });
 

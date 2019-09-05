@@ -18,11 +18,12 @@ class PostList extends React.Component<PostListProps> {
 	}
 
 	render() {
+		console.log('in props', this.props.posts);
 		return (
 			<div className={baseClassName}>
 				{this.props.posts.length
 					? this.props.posts.map(post => (
-							<Post key={post.ID} post={post} />
+							<Post key={post.id} post={post} />
 					  ))
 					: 'No posts here.'}
 			</div>

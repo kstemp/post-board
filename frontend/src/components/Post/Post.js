@@ -17,17 +17,18 @@ const baseClassName = 'post';
 class Post extends React.Component<PostProps> {
 	createComment = () => {
 		createCommentForPostByID(
-			this.props.post.ID,
+			this.props.post.id,
 			this.commentTextInput.getValue()
 		);
 		//	console.log(this.commentTextInput.value);
 	};
 	render() {
+		console.log(this.props.post);
 		return (
 			<div className={`${baseClassName}`}>
 				<div className={`${baseClassName}__header`}>
 					<span className={`${baseClassName}__header-user`}>
-						Anonymous
+						#{this.props.post.id}
 					</span>
 					<span className={`${baseClassName}__header-time`}>
 						posted 7 hours ago
@@ -35,20 +36,6 @@ class Post extends React.Component<PostProps> {
 				</div>
 				<div className={`${baseClassName}__body`}>
 					{this.props.post.text}
-				</div>
-				{this.props.post.comments.length ? (
-					this.props.post.comments.map(comment => (
-						<Comment key={comment.ID} comment={comment} />
-					))
-				) : (
-					<div>No comments yet.</div>
-				)}
-				<div className={`${baseClassName}__new-comment`}>
-					<TextArea
-						emptyText={'Comment text goes here'}
-						ref={input => (this.commentTextInput = input)}
-					/>
-					<button onClick={this.createComment}>Send</button>
 				</div>
 			</div>
 		);
@@ -60,3 +47,20 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 export default connect(mapStateToProps)(Post);
+
+/*
+	{this.props.post.comments.length ? (
+					this.props.post.comments.map(comment => (
+						<Comment key={comment.ID} comment={comment} />
+					))
+				) : (
+					<div>No comments yet.</div>
+				)}
+				<div className={`${baseClassName}__new-comment`}>
+					<TextArea
+						emptyText={'Comment text goes here'}
+				ref={input => (this.commentTextInput = input)}
+					/>
+					<button onClick={this.createComment}>Send</button>
+				</div>
+ */
