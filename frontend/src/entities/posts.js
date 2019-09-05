@@ -62,7 +62,7 @@ export const createPost = (postText: string) => {
 };
 
 export const createCommentForPostByID = (
-	postID: string,
+	postID: number,
 	commentText: string
 ) => {
 	const fetchParams = {
@@ -73,7 +73,7 @@ export const createCommentForPostByID = (
 		body: JSON.stringify({ text: commentText })
 	};
 
-	fetch(`${BACKEND_URL}/posts/${postID}/comments`, fetchParams)
+	fetch(`${BACKEND_URL}/posts/${postID.toString()}/comments`, fetchParams)
 		.then(response => {
 			if (response.ok) {
 				return response;
