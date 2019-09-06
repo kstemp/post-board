@@ -1,19 +1,18 @@
-//@flow
 import React from 'react';
 
 import CommentList from '../CommentList/CommentList';
 
-import type { PostType, CommentType } from '../../entities/types';
+import { PostType, CommentType } from '../../entities/types';
 
 import './style/Post.scss';
 
 type PostProps = {
-	post: PostType
+	post: PostType;
 };
 
 type PostStateProps = {
-	comments: CommentType[],
-	showComments: boolean
+	comments: CommentType[];
+	showComments: boolean;
 };
 
 const baseClassName = 'post';

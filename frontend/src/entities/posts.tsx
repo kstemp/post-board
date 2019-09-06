@@ -1,4 +1,3 @@
-//@flow
 import { toast } from 'react-toastify';
 import { BACKEND_URL } from '../Config';
 
@@ -14,7 +13,7 @@ const displayErrorNotification = (title: string, message: string) => {
 	});
 };
 
-export const fetchPosts = (callbackNotifyLoading: boolean => void) => {
+export const fetchPosts = (callbackNotifyLoading: (arg0: boolean) => void) => {
 	const fetchParams = { method: 'GET' };
 	fetch(`${BACKEND_URL}/posts`, fetchParams)
 		.then(response => {
@@ -58,7 +57,7 @@ export const createPost = (postText: string) => {
 			}
 			throw new Error(response.status + ': ' + response.statusText);
 		})
-		.then(response => fetchPosts())
+		.then(response => fetchPosts(() => {}))
 		.catch(error => {
 			displayErrorNotification('Failed to create post', error.message);
 		});
@@ -83,7 +82,7 @@ export const createCommentForPostByID = (
 			}
 			throw new Error(response.status + ': ' + response.statusText);
 		})
-		.then(response => fetchCommentsForPostByID(postID))
+		.then(response => fetchCommentsForPostByID(postID, () => {}))
 		.catch(error => {
 			displayErrorNotification('Failed to create comment', error.message);
 		});
@@ -91,7 +90,7 @@ export const createCommentForPostByID = (
 
 export const fetchCommentsForPostByID = (
 	postID: number,
-	callbackNotifyLoading
+	callbackNotifyLoading: (arg0: boolean) => void
 ) => {
 	const fetchParams = {
 		method: 'GET'

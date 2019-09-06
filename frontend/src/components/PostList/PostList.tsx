@@ -1,9 +1,8 @@
-//@flow
 import React from 'react';
 import { connect } from 'react-redux';
 
 import Post from '../Post/Post';
-import type { PostType } from '../../entities/types';
+import { PostType, ReducerStateType } from '../../entities/types';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 
 import { fetchPosts } from '../../entities/posts';
@@ -12,16 +11,18 @@ import './style/PostList.scss';
 
 const baseClassName = 'post-list';
 
-type PostListProps = {
-	posts: PostType[]
-};
+interface StateProps {
+	posts: PostType[];
+}
 
-type PostListStateProps = {
-	isLoadingPosts: boolean
-};
+interface State {
+	isLoadingPosts: boolean;
+}
 
-class PostList extends React.Component<PostListProps, PostListStateProps> {
-	constructor(props) {
+type Props = StateProps;
+
+class PostList extends React.Component<StateProps, State> {
+	constructor(props: Props) {
 		super(props);
 
 		this.state = {
@@ -62,7 +63,7 @@ class PostList extends React.Component<PostListProps, PostListStateProps> {
 	}
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state: ReducerStateType) => {
 	return {
 		posts: state.posts
 	};
