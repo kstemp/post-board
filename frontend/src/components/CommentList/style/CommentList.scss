@@ -1,0 +1,8 @@
+.comment-list {
+	&__new-comment {
+		display: flex;
+		> input {
+			width: 100%;
+		}
+	}
+}

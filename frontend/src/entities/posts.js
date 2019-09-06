@@ -83,7 +83,7 @@ export const createCommentForPostByID = (
 			}
 			throw new Error(response.status + ': ' + response.statusText);
 		})
-		.then(response => fetchPosts())
+		.then(response => fetchCommentsForPostByID(postID))
 		.catch(error => {
 			displayErrorNotification('Failed to create comment', error.message);
 		});

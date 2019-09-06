@@ -5,11 +5,6 @@ import CommentList from '../CommentList/CommentList';
 
 import type { PostType, CommentType } from '../../entities/types';
 
-import {
-	createCommentForPostByID,
-	fetchCommentsForPostByID
-} from '../../entities/posts';
-
 import './style/Post.scss';
 
 type PostProps = {
@@ -32,13 +27,6 @@ class Post extends React.Component<PostProps, PostStateProps> {
 			showComments: false
 		};
 	}
-
-	createComment = () => {
-		createCommentForPostByID(
-			this.props.post.id,
-			this.commentTextInput.getValue()
-		);
-	};
 
 	toggleShowComments = () => {
 		this.setState({

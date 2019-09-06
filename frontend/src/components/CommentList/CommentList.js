@@ -5,14 +5,24 @@ import Comment from '../Comment/Comment';
 import TextArea from '../TextArea/TextArea';
 
 import { ACTION_SET_COMMENTS_FOR_POST_ID } from '../../entities/actions';
-import { fetchCommentsForPostByID } from '../../entities/posts';
+import {
+	createCommentForPostByID,
+	fetchCommentsForPostByID
+} from '../../entities/posts';
+
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
+
+import './style/CommentList.scss';
 
 const baseClassName = 'comment-list';
 
 type CommentListProps = {};
 
-class CommentList extends React.Component {
+type CommentListStateProps = {
+	isLoadingComments: boolean
+};
+
+class CommentList extends React.Component<{}, CommentListStateProps> {
 	constructor(props) {
 		super(props);
 
@@ -30,6 +40,13 @@ class CommentList extends React.Component {
 		this.setState({
 			isLoadingComments: isLoadingComments
 		});
+	};
+
+	createComment = () => {
+		createCommentForPostByID(
+			this.props.postID,
+			this.commentTextInput.getValue()
+		);
 	};
 
 	render() {
