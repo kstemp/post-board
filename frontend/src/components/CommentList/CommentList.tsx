@@ -16,25 +16,24 @@ import './style/CommentList.scss';
 
 const baseClassName = 'comment-list';
 
-type CommentListProps = {
+export interface OwnProps {
 	postID: IDType;
-};
+}
 
-type CommentListInternalProps = {
+interface StateProps {
 	comments: CommentType[];
-};
+}
 
-type CommentListStateProps = {
+type Props = OwnProps & StateProps;
+
+interface State {
 	isLoadingComments: boolean;
-};
+}
 
-class CommentList extends React.Component<
-	CommentListProps & CommentListInternalProps,
-	CommentListStateProps
-> {
+class CommentList extends React.Component<Props, State> {
 	private commentTextInput: React.RefObject<TextArea>;
 
-	constructor(props: CommentListProps) {
+	constructor(props: Props) {
 		super(props);
 
 		this.commentTextInput = React.createRef();
@@ -86,10 +85,7 @@ class CommentList extends React.Component<
 	}
 }
 
-const mapStateToProps = (
-	state: ReducerStateType,
-	ownProps: CommentListProps
-) => {
+const mapStateToProps = (state: ReducerStateType, ownProps: OwnProps) => {
 	return {
 		comments: state.comments[ownProps.postID] || [] // TODO is this '||' really a decent solution here?
 	};

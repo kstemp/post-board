@@ -7,7 +7,11 @@ const initialState = {
 	comments: {}
 };
 
-export const reducer = (state: ReducerStateType = initialState, action) => {
+// TODO fix action type
+export const reducer = (
+	state: ReducerStateType = initialState,
+	action: any
+) => {
 	switch (action.type) {
 		case ACTION_SET_COMMENTS_FOR_POST_ID:
 			return {

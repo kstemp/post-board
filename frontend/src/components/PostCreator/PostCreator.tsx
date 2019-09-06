@@ -36,7 +36,7 @@ class PostCreator extends React.Component<
 	}
 
 	createPost = () => {
-		createPost(this.postTextField.current.getValue());
+		createPost((this.postTextField.current as any).getValue()); // TODO get rid of as any...
 	};
 
 	fieldChanged = (isValid: boolean) => {

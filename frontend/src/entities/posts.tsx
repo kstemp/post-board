@@ -57,7 +57,7 @@ export const createPost = (postText: string) => {
 			}
 			throw new Error(response.status + ': ' + response.statusText);
 		})
-		.then(response => fetchPosts())
+		.then(response => fetchPosts(() => {}))
 		.catch(error => {
 			displayErrorNotification('Failed to create post', error.message);
 		});
@@ -82,7 +82,7 @@ export const createCommentForPostByID = (
 			}
 			throw new Error(response.status + ': ' + response.statusText);
 		})
-		.then(response => fetchCommentsForPostByID(postID))
+		.then(response => fetchCommentsForPostByID(postID, () => {}))
 		.catch(error => {
 			displayErrorNotification('Failed to create comment', error.message);
 		});
@@ -90,7 +90,7 @@ export const createCommentForPostByID = (
 
 export const fetchCommentsForPostByID = (
 	postID: number,
-	callbackNotifyLoading
+	callbackNotifyLoading: (arg0: boolean) => void
 ) => {
 	const fetchParams = {
 		method: 'GET'

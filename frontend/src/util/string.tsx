@@ -1,9 +1,8 @@
-const isEmpty = str => {
+export const isEmpty = (str: string) => {
 	return !str || 0 === str.length;
 };
 
-const containsOnlySpaces = str => !str.trim().length;
+export const containsOnlySpaces = (str: string) => !str.trim().length;
 
-const isEmptyOrOnlySpaces = str => isEmpty(str) || containsOnlySpaces(str);
-
-module.exports = { isEmptyOrOnlySpaces, isEmpty };
+export const isEmptyOrOnlySpaces = (str: string) =>
+	isEmpty(str) || containsOnlySpaces(str);

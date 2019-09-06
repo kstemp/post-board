@@ -5,22 +5,23 @@ const string = require('../../util/string');
 
 const baseClassName = 'text-area';
 
-type TextAreaProps = {
+export interface OwnProps {
+	className?: string;
 	emptyText?: string;
 	required?: boolean;
 	isMultiLine?: boolean;
 	onChange?: (arg0: boolean) => void;
-};
+}
 
-type TextAreaStateProps = {
+interface State {
 	value: string;
 	isValid: boolean;
 	isInEditMode: boolean;
-};
+}
 
 // TODO TextArea is really not a great name here...
-class TextArea extends React.Component<TextAreaProps, TextAreaStateProps> {
-	constructor(props: TextAreaProps) {
+class TextArea extends React.Component<OwnProps, State> {
+	constructor(props: OwnProps) {
 		super(props);
 
 		this.state = {
@@ -38,11 +39,14 @@ class TextArea extends React.Component<TextAreaProps, TextAreaStateProps> {
 		return this.state.isValid;
 	}
 
-	onChangeInternal = e => {
+	onChangeInternal = (
+		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+	) => {
 		const isValid =
 			e.target.validity.valid &&
-			(this.props.required &&
-				!string.isEmptyOrOnlySpaces(e.target.value));
+			(this.props.required
+				? !string.isEmptyOrOnlySpaces(e.target.value)
+				: true);
 
 		this.setState({
 			value: e.target.value,
