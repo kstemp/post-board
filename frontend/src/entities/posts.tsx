@@ -1,4 +1,3 @@
-//@flow
 import { toast } from 'react-toastify';
 import { BACKEND_URL } from '../Config';
 
@@ -14,7 +13,7 @@ const displayErrorNotification = (title: string, message: string) => {
 	});
 };
 
-export const fetchPosts = (callbackNotifyLoading: boolean => void) => {
+export const fetchPosts = (callbackNotifyLoading: (arg0: boolean) => void) => {
 	const fetchParams = { method: 'GET' };
 	fetch(`${BACKEND_URL}/posts`, fetchParams)
 		.then(response => {

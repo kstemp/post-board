@@ -1,4 +1,3 @@
-//@flow
 import React from 'react';
 
 import './style/LoadingSpinner.scss';
@@ -9,11 +8,13 @@ const rotationRadius = 20;
 const circleRadius = 10;
 
 type LoadingSpinnerProps = {
-	color: string
+	color: string;
+	text: string;
+	style?: any; // TODO
 };
 
 type LoadingSpinnerStateProps = {
-	rotationAngle: number
+	rotationAngle: number;
 };
 
 class LoadingSpinner extends React.Component<
@@ -25,8 +26,15 @@ class LoadingSpinner extends React.Component<
 		text: null
 	};
 
+	private frame: number;
+	private canvas: React.RefObject<HTMLCanvasElement>;
+
 	constructor(props: LoadingSpinnerProps) {
 		super(props);
+
+		this.frame = 0; // TODO temporary, only to make TypeScript happy
+		this.canvas = React.createRef();
+
 		this.state = {
 			rotationAngle: 0
 		};
@@ -43,7 +51,8 @@ class LoadingSpinner extends React.Component<
 	animate = () => {
 		this.setState({ rotationAngle: this.state.rotationAngle + 0.1 });
 
-		const canvas = this.canvas;
+		const canvas = (this.canvas as any).current; // TODO get rid of any...
+
 		const ctx = canvas.getContext('2d');
 
 		ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -52,7 +61,7 @@ class LoadingSpinner extends React.Component<
 		ctx.strokeStyle = this.props.color;
 		ctx.lineWidth = 3;
 
-		const drawCircle = initialAngleOffset => {
+		const drawCircle = (initialAngleOffset: number) => {
 			const circleX =
 				Math.cos(this.state.rotationAngle + initialAngleOffset) *
 				rotationRadius;
@@ -75,11 +84,7 @@ class LoadingSpinner extends React.Component<
 	render() {
 		return (
 			<div className={baseClassName} style={this.props.style}>
-				<canvas
-					width={100}
-					height={100}
-					ref={canvas => (this.canvas = canvas)}
-				/>
+				<canvas width={100} height={100} ref={this.canvas} />
 				{this.props.text && <span>{this.props.text}</span>}
 			</div>
 		);

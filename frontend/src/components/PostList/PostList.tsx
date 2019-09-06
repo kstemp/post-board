@@ -1,9 +1,8 @@
-//@flow
 import React from 'react';
 import { connect } from 'react-redux';
 
 import Post from '../Post/Post';
-import type { PostType } from '../../entities/types';
+import { PostType } from '../../entities/types';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 
 import { fetchPosts } from '../../entities/posts';
@@ -13,11 +12,11 @@ import './style/PostList.scss';
 const baseClassName = 'post-list';
 
 type PostListProps = {
-	posts: PostType[]
+	posts: PostType[];
 };
 
 type PostListStateProps = {
-	isLoadingPosts: boolean
+	isLoadingPosts: boolean;
 };
 
 class PostList extends React.Component<PostListProps, PostListStateProps> {

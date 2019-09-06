@@ -1,10 +1,10 @@
-//@flow
 import React from 'react';
-import { dispatch, connect } from 'react-redux';
+import { connect } from 'react-redux';
 import Comment from '../Comment/Comment';
 import TextArea from '../TextArea/TextArea';
 
-import { ACTION_SET_COMMENTS_FOR_POST_ID } from '../../entities/actions';
+import { IDType, CommentType, ReducerStateType } from '../../entities/types';
+
 import {
 	createCommentForPostByID,
 	fetchCommentsForPostByID
@@ -16,15 +16,28 @@ import './style/CommentList.scss';
 
 const baseClassName = 'comment-list';
 
-type CommentListProps = {};
-
-type CommentListStateProps = {
-	isLoadingComments: boolean
+type CommentListProps = {
+	postID: IDType;
 };
 
-class CommentList extends React.Component<{}, CommentListStateProps> {
-	constructor(props) {
+type CommentListInternalProps = {
+	comments: CommentType[];
+};
+
+type CommentListStateProps = {
+	isLoadingComments: boolean;
+};
+
+class CommentList extends React.Component<
+	CommentListProps & CommentListInternalProps,
+	CommentListStateProps
+> {
+	private commentTextInput: React.RefObject<TextArea>;
+
+	constructor(props: CommentListProps) {
 		super(props);
+
+		this.commentTextInput = React.createRef();
 
 		this.state = {
 			isLoadingComments: false
@@ -45,7 +58,7 @@ class CommentList extends React.Component<{}, CommentListStateProps> {
 	createComment = () => {
 		createCommentForPostByID(
 			this.props.postID,
-			this.commentTextInput.getValue()
+			(this.commentTextInput as any).current.getValue() // TODO this is an ugly hack...
 		);
 	};
 
@@ -56,7 +69,7 @@ class CommentList extends React.Component<{}, CommentListStateProps> {
 					<LoadingSpinner text={'Loading comments...'} />
 				) : this.props.comments.length ? (
 					this.props.comments.map(comment => (
-						<Comment key={comment.ID} comment={comment} />
+						<Comment key={comment.id} comment={comment} />
 					))
 				) : (
 					<div>No comments yet.</div>
@@ -64,7 +77,7 @@ class CommentList extends React.Component<{}, CommentListStateProps> {
 				<div className={`${baseClassName}__new-comment`}>
 					<TextArea
 						emptyText={'Comment text goes here'}
-						ref={input => (this.commentTextInput = input)}
+						ref={this.commentTextInput}
 					/>
 					<button onClick={this.createComment}>Send</button>
 				</div>
@@ -73,7 +86,10 @@ class CommentList extends React.Component<{}, CommentListStateProps> {
 	}
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (
+	state: ReducerStateType,
+	ownProps: CommentListProps
+) => {
 	return {
 		comments: state.comments[ownProps.postID] || [] // TODO is this '||' really a decent solution here?
 	};

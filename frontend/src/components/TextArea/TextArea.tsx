@@ -1,4 +1,3 @@
-//@flow
 import React from 'react';
 import './style/TextArea.scss';
 
@@ -7,15 +6,16 @@ const string = require('../../util/string');
 const baseClassName = 'text-area';
 
 type TextAreaProps = {
-	emptyText?: string,
-	required?: boolean,
-	onChange?: boolean => void
+	emptyText?: string;
+	required?: boolean;
+	isMultiLine?: boolean;
+	onChange?: (arg0: boolean) => void;
 };
 
 type TextAreaStateProps = {
-	value: string,
-	isValid: boolean,
-	isInEditMode: boolean
+	value: string;
+	isValid: boolean;
+	isInEditMode: boolean;
 };
 
 // TODO TextArea is really not a great name here...
