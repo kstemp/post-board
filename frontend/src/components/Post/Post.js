@@ -1,8 +1,9 @@
 //@flow
 import React from 'react';
 
-import Comment from '../Comment/Comment';
-import TextArea from '../TextArea/TextArea';
+import CommentList from '../CommentList/CommentList';
+
+import type { PostType, CommentType } from '../../entities/types';
 
 import {
 	createCommentForPostByID,
@@ -11,16 +12,24 @@ import {
 
 import './style/Post.scss';
 
-type PostProps = {};
+type PostProps = {
+	post: PostType
+};
+
+type PostStateProps = {
+	comments: CommentType[],
+	showComments: boolean
+};
 
 const baseClassName = 'post';
 
-class Post extends React.Component<PostProps> {
-	constructor(props) {
+class Post extends React.Component<PostProps, PostStateProps> {
+	constructor(props: PostProps) {
 		super(props);
 
 		this.state = {
-			comments: []
+			comments: [],
+			showComments: false
 		};
 	}
 
@@ -31,11 +40,11 @@ class Post extends React.Component<PostProps> {
 		);
 	};
 
-	componentDidMount() {
-		fetchCommentsForPostByID(this.props.post.id, comments =>
-			this.setState({ comments: comments })
-		);
-	}
+	toggleShowComments = () => {
+		this.setState({
+			showComments: !this.state.showComments
+		});
+	};
 
 	render() {
 		console.log(this.props.post);
@@ -52,40 +61,17 @@ class Post extends React.Component<PostProps> {
 				<div className={`${baseClassName}__body`}>
 					{this.props.post.text}
 				</div>
-				{this.state.comments.length ? (
-					this.state.comments.map(comment => (
-						<Comment key={comment.ID} comment={comment} />
-					))
-				) : (
-					<div>No comments yet.</div>
-				)}
-				<div className={`${baseClassName}__new-comment`}>
-					<TextArea
-						emptyText={'Comment text goes here'}
-						ref={input => (this.commentTextInput = input)}
-					/>
-					<button onClick={this.createComment}>Send</button>
+				<div className={`${baseClassName}__buttons`}>
+					<button>React</button>
+					<button onClick={this.toggleShowComments}>Comment</button>
+					<button>Tag</button>
 				</div>
+				{this.state.showComments && (
+					<CommentList postID={this.props.post.id} />
+				)}
 			</div>
 		);
 	}
 }
 
 export default Post;
-
-/*
-	{this.props.post.comments.length ? (
-					this.props.post.comments.map(comment => (
-						<Comment key={comment.ID} comment={comment} />
-					))
-				) : (
-					<div>No comments yet.</div>
-				)}
-				<div className={`${baseClassName}__new-comment`}>
-					<TextArea
-						emptyText={'Comment text goes here'}
-				ref={input => (this.commentTextInput = input)}
-					/>
-					<button onClick={this.createComment}>Send</button>
-				</div>
- */

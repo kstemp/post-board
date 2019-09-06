@@ -6,9 +6,21 @@ const string = require('../../util/string');
 
 const baseClassName = 'text-area';
 
+type TextAreaProps = {
+	emptyText?: string,
+	required?: boolean,
+	onChange?: boolean => void
+};
+
+type TextAreaStateProps = {
+	value: string,
+	isValid: boolean,
+	isInEditMode: boolean
+};
+
 // TODO TextArea is really not a great name here...
-class TextArea extends React.Component {
-	constructor(props) {
+class TextArea extends React.Component<TextAreaProps, TextAreaStateProps> {
+	constructor(props: TextAreaProps) {
 		super(props);
 
 		this.state = {

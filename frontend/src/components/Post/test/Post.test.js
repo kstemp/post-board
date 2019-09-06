@@ -34,4 +34,15 @@ describe('The Post component', () => {
 			'TODO'
 		);
 	});
+
+	describe('The Show Comments button', () => {
+		it('Is rendered', () => {
+			chai.expect(
+				test.component.find('.post__buttons-comments')
+			).to.have.length(1);
+		});
+		it('Displays list of comments when clicked', () => {
+			chai.expect(true).to.be.false;
+		});
+	});
 });

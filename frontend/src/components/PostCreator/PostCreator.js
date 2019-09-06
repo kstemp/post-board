@@ -19,7 +19,7 @@ class PostCreator extends React.Component<
 	PostCreatorProps,
 	PostCreatorStateProps
 > {
-	constructor(props) {
+	constructor(props: PostCreatorProps) {
 		super(props);
 
 		this.state = {

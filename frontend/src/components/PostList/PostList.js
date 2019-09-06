@@ -3,6 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import Post from '../Post/Post';
+import type { PostType } from '../../entities/types';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 
 import { fetchPosts } from '../../entities/posts';
@@ -11,9 +12,15 @@ import './style/PostList.scss';
 
 const baseClassName = 'post-list';
 
-type PostListProps = {};
+type PostListProps = {
+	posts: PostType[]
+};
 
-class PostList extends React.Component<PostListProps> {
+type PostListStateProps = {
+	isLoadingPosts: boolean
+};
+
+class PostList extends React.Component<PostListProps, PostListStateProps> {
 	constructor(props) {
 		super(props);
 
@@ -22,9 +29,9 @@ class PostList extends React.Component<PostListProps> {
 		};
 	}
 
-	setIsLoadingPosts = () =>
+	setIsLoadingPosts = (isLoadingPosts: boolean = true) =>
 		this.setState({
-			isLoadingPosts: !this.state.isLoadingPosts
+			isLoadingPosts: isLoadingPosts
 		});
 
 	componentDidMount() {
@@ -33,7 +40,6 @@ class PostList extends React.Component<PostListProps> {
 	}
 
 	render() {
-		console.log('in props', this.props.posts);
 		return (
 			<div className={baseClassName}>
 				{this.state.isLoadingPosts ? (

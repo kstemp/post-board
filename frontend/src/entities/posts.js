@@ -2,10 +2,7 @@
 import { toast } from 'react-toastify';
 import { BACKEND_URL } from '../Config';
 
-import {
-	ACTION_SET_POSTS,
-	ACTION_SET_COMMENTS_FOR_POST_BY_ID
-} from './actions';
+import { ACTION_SET_POSTS, ACTION_SET_COMMENTS_FOR_POST_ID } from './actions';
 
 import store from './store';
 
@@ -17,7 +14,7 @@ const displayErrorNotification = (title: string, message: string) => {
 	});
 };
 
-export const fetchPosts = callbackNotifyLoaded => {
+export const fetchPosts = (callbackNotifyLoading: boolean => void) => {
 	const fetchParams = { method: 'GET' };
 	fetch(`${BACKEND_URL}/posts`, fetchParams)
 		.then(response => {
@@ -29,14 +26,20 @@ export const fetchPosts = callbackNotifyLoaded => {
 		.then(posts => {
 			// TODO we should call this from createPost etc as well
 			// this is temporary
-			if (callbackNotifyLoaded) {
-				callbackNotifyLoaded();
+			if (callbackNotifyLoading) {
+				callbackNotifyLoading(false);
 			}
 			return store.dispatch({ type: ACTION_SET_POSTS, posts: posts });
 		})
-		.catch(error =>
-			displayErrorNotification('Failed to load posts', error.message)
-		);
+		.catch(error => {
+			if (callbackNotifyLoading) {
+				callbackNotifyLoading(false);
+			}
+			return displayErrorNotification(
+				'Failed to load posts',
+				error.message
+			);
+		});
 };
 
 export const createPost = (postText: string) => {
@@ -86,7 +89,10 @@ export const createCommentForPostByID = (
 		});
 };
 
-export const fetchCommentsForPostByID = (postID: number, callback) => {
+export const fetchCommentsForPostByID = (
+	postID: number,
+	callbackNotifyLoading
+) => {
 	const fetchParams = {
 		method: 'GET'
 	};
@@ -98,9 +104,22 @@ export const fetchCommentsForPostByID = (postID: number, callback) => {
 			throw new Error(response.status + ': ' + response.statusText);
 		})
 		.then(comments => {
-			return callback(comments);
+			if (callbackNotifyLoading) {
+				callbackNotifyLoading(false);
+			}
+			return store.dispatch({
+				type: ACTION_SET_COMMENTS_FOR_POST_ID,
+				postID: postID,
+				comments: comments
+			});
 		})
-		.catch(error =>
-			displayErrorNotification('Failed to fetch comments', error.message)
-		);
+		.catch(error => {
+			if (callbackNotifyLoading) {
+				callbackNotifyLoading(false);
+			}
+			return displayErrorNotification(
+				'Failed to fetch comments',
+				error.message
+			);
+		});
 };
