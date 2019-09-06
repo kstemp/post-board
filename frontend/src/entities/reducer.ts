@@ -1,6 +1,6 @@
 import { ACTION_SET_POSTS, ACTION_SET_COMMENTS_FOR_POST_ID } from './actions';
 
-import { ReducerStateType } from '../entities/types';
+import { ReducerStateType } from './types';
 
 const initialState = {
 	posts: [],
