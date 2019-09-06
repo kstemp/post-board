@@ -14,9 +14,16 @@ type Props = StateProps;
 
 class CommunityList extends React.Component<Props> {
 	render() {
-		const dropdownOptions = this.props.communities.map(
-			community => community.name
-		);
+		const dropdownOptions = [
+			{
+				id: 0,
+				label: 'hejka'
+			},
+			{
+				id: 1,
+				label: 'other'
+			}
+		];
 
 		return (
 			<div className={baseClassName}>
