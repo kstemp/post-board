@@ -2,6 +2,7 @@ import React from 'react';
 
 import PostCreator from './components/PostCreator/PostCreator';
 import PostList from './components/PostList/PostList';
+import CommunityList from './components/CommunityList/CommunityList';
 
 import { Provider } from 'react-redux';
 
@@ -24,6 +25,7 @@ class App extends React.Component<AppProps> {
 					<ToastContainer />
 					<header className={`${baseClassName}__header`}>
 						post-board v.0.1 (dev)
+						<CommunityList />
 					</header>
 					<div className={`${baseClassName}__body`}>
 						<PostCreator />
