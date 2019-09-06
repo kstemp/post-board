@@ -6,20 +6,38 @@ import TextArea from '../TextArea/TextArea';
 
 import { ACTION_SET_COMMENTS_FOR_POST_ID } from '../../entities/actions';
 import { fetchCommentsForPostByID } from '../../entities/posts';
+import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 
 const baseClassName = 'comment-list';
 
 type CommentListProps = {};
 
 class CommentList extends React.Component {
-	componentDidMount() {
-		fetchCommentsForPostByID(this.props.postID);
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			isLoadingComments: false
+		};
 	}
+
+	componentDidMount() {
+		this.setIsLoadingComments();
+		fetchCommentsForPostByID(this.props.postID, this.setIsLoadingComments);
+	}
+
+	setIsLoadingComments = (isLoadingComments: boolean = true) => {
+		this.setState({
+			isLoadingComments: isLoadingComments
+		});
+	};
 
 	render() {
 		return (
 			<div className={baseClassName}>
-				{this.props.comments.length ? (
+				{this.state.isLoadingComments ? (
+					<LoadingSpinner text={'Loading comments...'} />
+				) : this.props.comments.length ? (
 					this.props.comments.map(comment => (
 						<Comment key={comment.ID} comment={comment} />
 					))
