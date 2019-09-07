@@ -26,6 +26,6 @@ export type SetEntitiesActionDataType = {
 
 export type ReducerStateType = {
 	post: PostType[];
-	comment: { [id: number]: CommentType[] };
+	comment: { [postID: number]: CommentType[] };
 	community: CommunityType[];
 };

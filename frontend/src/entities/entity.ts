@@ -13,6 +13,10 @@ export const fetchEntityAndPlaceInStore = (
 	callbackNotifyLoading?: (arg0: boolean) => void,
 	parentID?: IDType
 ) => {
+	if (callbackNotifyLoading) {
+		callbackNotifyLoading(true);
+	}
+
 	fetch(`${BACKEND_URL}/${route}`, { method: 'GET' })
 		.then(response => {
 			if (response.ok) {

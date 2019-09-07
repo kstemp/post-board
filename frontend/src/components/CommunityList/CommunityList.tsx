@@ -3,8 +3,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import Dropdown from '../Dropdown/Dropdown';
-import { statement } from '@babel/template';
 import { ReducerStateType, CommunityType } from '../../entities/types';
+
+import './style/CommunityList.scss';
 
 const baseClassName = 'community-list';
 
