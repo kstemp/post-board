@@ -12,7 +12,7 @@ import {
 
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 
-import './style/CommentList.scss';
+import './CommentList.scss';
 
 const baseClassName = 'comment-list';
 

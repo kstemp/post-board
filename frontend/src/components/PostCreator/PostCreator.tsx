@@ -4,7 +4,7 @@ import TextArea from '../TextArea/TextArea';
 
 import { createPost } from '../../entities/posts';
 
-import './style/PostCreator.scss';
+import './PostCreator.scss';
 
 type PostCreatorProps = {};
 type PostCreatorStateProps = {

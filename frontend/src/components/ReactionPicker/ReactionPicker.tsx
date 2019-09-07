@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './style/ReactionPicker.scss';
+import './ReactionPicker.scss';
 
 const baseClassName = 'reaction-picker';
 

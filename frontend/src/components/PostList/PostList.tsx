@@ -7,7 +7,7 @@ import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 
 import { fetchPosts } from '../../entities/posts';
 
-import './style/PostList.scss';
+import './PostList.scss';
 
 const baseClassName = 'post-list';
 

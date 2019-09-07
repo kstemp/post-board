@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './style/LoadingSpinner.scss';
+import './LoadingSpinner.scss';
 
 const baseClassName = 'loading-spinner';
 

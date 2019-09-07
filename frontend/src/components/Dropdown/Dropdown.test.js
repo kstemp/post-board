@@ -5,7 +5,7 @@ import Adapter from 'enzyme-adapter-react-16';
 
 const chai = require('chai');
 
-import Dropdown from '../Dropdown';
+import Dropdown from './Dropdown';
 
 Enzyme.configure({ adapter: new Adapter() });
 

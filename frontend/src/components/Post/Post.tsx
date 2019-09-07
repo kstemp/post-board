@@ -5,7 +5,7 @@ import ReactionPicker from '../ReactionPicker/ReactionPicker';
 
 import { PostType, CommentType } from '../../entities/types';
 
-import './style/Post.scss';
+import './Post.scss';
 
 type PostProps = {
 	post: PostType;

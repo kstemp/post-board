@@ -2,7 +2,7 @@ import React from 'react';
 
 import { CommentType } from '../../entities/types';
 
-import './style/Comment.scss';
+import './Comment.scss';
 
 const baseClassName = 'comment';
 

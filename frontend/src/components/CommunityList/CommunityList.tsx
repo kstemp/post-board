@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import Dropdown from '../Dropdown/Dropdown';
 import { ReducerStateType, CommunityType } from '../../entities/types';
 
-import './style/CommunityList.scss';
+import './CommunityList.scss';
 
 const baseClassName = 'community-list';
 

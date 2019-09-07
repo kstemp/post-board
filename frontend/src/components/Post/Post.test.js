@@ -5,7 +5,7 @@ import Adapter from 'enzyme-adapter-react-16';
 
 const chai = require('chai');
 
-import Post from '../Post';
+import Post from './Post';
 
 Enzyme.configure({ adapter: new Adapter() });
 

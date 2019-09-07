@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './style/Dropdown.scss';
+import './Dropdown.scss';
 
 const baseClassName = 'dropdown';
 

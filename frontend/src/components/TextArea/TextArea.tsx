@@ -1,5 +1,5 @@
 import React from 'react';
-import './style/TextArea.scss';
+import './TextArea.scss';
 
 const string = require('../../util/string');
 
