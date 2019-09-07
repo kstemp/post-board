@@ -12,16 +12,29 @@ $background-white: white;
 	border: none;
 	border-radius: 5px;
 
-	transition: 0.3s;
+	//	transition: 0.2s;
 	background: $background-white;
+
+	svg {
+		vertical-align: middle;
+
+		fill: $base-color;
+	}
 
 	&:disabled {
 		color: $disabled-color;
+		svg {
+			fill: $disabled-color;
+		}
 	}
 
 	&:hover:enabled {
 		background: $base-color;
 		color: $background-white;
+
+		svg {
+			fill: $background-white;
+		}
 	}
 
 	&:focus {

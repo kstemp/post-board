@@ -32,7 +32,6 @@ class App extends React.Component<AppProps> {
 					<header className={`${baseClassName}__header`}>
 						post-board v.0.1 (dev)
 						<CommunityList />
-						<button>Create community...</button>
 						<Button label={'Create community...'} />
 					</header>
 					<div className={`${baseClassName}__body`}>
