@@ -2,6 +2,7 @@ import React from 'react';
 
 import CommentList from '../CommentList/CommentList';
 import ReactionPicker from '../ReactionPicker/ReactionPicker';
+import Button from '../Button/Button';
 
 import { PostType, CommentType } from '../../entities/types';
 
@@ -49,7 +50,7 @@ class Post extends React.Component<PostProps, PostStateProps> {
 			<div className={`${baseClassName}`}>
 				<div className={`${baseClassName}__header`}>
 					<span className={`${baseClassName}__header-user`}>
-						<b>Community </b>
+						<b>Community</b>
 						<a href='#'>#{this.props.post.id}</a>
 					</span>
 					<span className={`${baseClassName}__header-time`}>
@@ -67,11 +68,15 @@ class Post extends React.Component<PostProps, PostStateProps> {
 					</div>
 				)}
 				<div className={`${baseClassName}__buttons`}>
-					<button onClick={this.toggleShowReactionPicker}>
-						React
-					</button>
-					<button onClick={this.toggleShowComments}>Comment</button>
-					<button>Tag</button>
+					<Button
+						label={'React'}
+						onClick={this.toggleShowReactionPicker}
+					/>
+					<Button
+						label={'Comment'}
+						onClick={this.toggleShowComments}
+					/>
+					<Button label={'Tag'} />
 				</div>
 				{this.state.showComments && (
 					<CommentList postID={this.props.post.id} />

@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Button from '../Button/Button';
 import TextArea from '../TextArea/TextArea';
 
 import { createPost } from '../../entities/posts';
@@ -58,12 +59,11 @@ class PostCreator extends React.Component<
 					required
 				/>
 				<p>Hint: tag a previous post by using e.g. '#111222'</p>
-				<button
+				<Button
+					label={'Post'}
 					disabled={!this.state.isValid}
 					onClick={this.createPost}
-				>
-					Post
-				</button>
+				/>
 			</div>
 		);
 	}

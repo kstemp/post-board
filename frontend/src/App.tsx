@@ -3,6 +3,7 @@ import React from 'react';
 import PostCreator from './components/PostCreator/PostCreator';
 import PostList from './components/PostList/PostList';
 import CommunityList from './components/CommunityList/CommunityList';
+import Button from './components/Button/Button';
 
 import { Provider } from 'react-redux';
 import { fetchCommunities } from './entities/communities';
@@ -32,6 +33,7 @@ class App extends React.Component<AppProps> {
 						post-board v.0.1 (dev)
 						<CommunityList />
 						<button>Create community...</button>
+						<Button label={'Create community...'} />
 					</header>
 					<div className={`${baseClassName}__body`}>
 						<PostCreator />

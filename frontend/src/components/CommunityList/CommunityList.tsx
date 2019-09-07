@@ -17,6 +17,11 @@ type Props = StateProps;
 
 class CommunityList extends React.Component<Props> {
 	render() {
+		const opt = this.props.communities.map(community => ({
+			id: community.id,
+			label: community.name
+		}));
+		console.log('mapped ', opt);
 		return (
 			<div className={baseClassName}>
 				<span>Community:</span>

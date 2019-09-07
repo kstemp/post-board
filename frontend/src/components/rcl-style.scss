@@ -1,0 +1,30 @@
+$base-color: #001f3f;
+$disabled-color: #aaaaaa;
+$background-white: white;
+
+.rcl-component {
+	padding: 0.5em 1em;
+
+	font-weight: 600;
+
+	color: $base-color;
+
+	border: none;
+	border-radius: 5px;
+
+	transition: 0.3s;
+	background: $background-white;
+
+	&:disabled {
+		color: $disabled-color;
+	}
+
+	&:hover:enabled {
+		background: $base-color;
+		color: $background-white;
+	}
+
+	&:focus {
+		outline: none;
+	}
+}

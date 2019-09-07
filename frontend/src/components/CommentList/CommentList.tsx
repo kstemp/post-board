@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import Button from '../Button/Button';
 import Comment from '../Comment/Comment';
 import TextArea from '../TextArea/TextArea';
 
@@ -69,7 +70,7 @@ class CommentList extends React.Component<Props, State> {
 						emptyText={'Comment text goes here'}
 						ref={this.commentTextInput}
 					/>
-					<button onClick={this.createComment}>Send</button>
+					<Button label={'Send'} onClick={this.createComment} />
 				</div>
 				{this.state.isLoadingComments ? (
 					<LoadingSpinner text={'Loading comments...'} />

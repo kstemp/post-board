@@ -1,5 +1,8 @@
 .comment-list {
 	&__new-comment {
+		margin-top: 5px;
+		margin-bottom: 5px;
+
 		display: flex;
 		> input {
 			width: 100%;

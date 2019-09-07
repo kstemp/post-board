@@ -12,7 +12,12 @@ type CommentProps = {
 
 class Comment extends React.Component<CommentProps> {
 	render() {
-		return <div className={baseClassName}>{this.props.comment.text}</div>;
+		return (
+			<div className={baseClassName}>
+				<span className={`${baseClassName}-user-name`}>UserName</span>{' '}
+				{this.props.comment.text}
+			</div>
+		);
 	}
 }
 

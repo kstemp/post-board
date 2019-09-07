@@ -58,6 +58,7 @@ class PostList extends React.Component<StateProps, State> {
 				) : (
 					'No posts here.'
 				)}
+				<button>Load more posts</button>
 			</div>
 		);
 	}

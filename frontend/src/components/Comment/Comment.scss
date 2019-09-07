@@ -1,6 +1,16 @@
 .comment {
 	display: block;
 	width: fit-content;
-	background-color: lightgray;
+	background-color: #7fdbff;
 	border-radius: 5px;
+
+	padding-left: 5px;
+	padding-right: 5px;
+
+	margin-top: 5px;
+	margin-bottom: 5px;
+
+	&-user-name {
+		font-weight: 500;
+	}
 }
