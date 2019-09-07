@@ -22,6 +22,10 @@ type Props = OwnProps;
 
 //TODO disable when no options are provided
 class Dropdown extends React.Component<Props, State> {
+	static defaultProps = {
+		options: []
+	};
+
 	constructor(props: Props) {
 		super(props);
 
@@ -64,6 +68,7 @@ class Dropdown extends React.Component<Props, State> {
 					<div className={`${baseClassName}__list`}>
 						{this.props.options.map(option => (
 							<span
+								key={option.id}
 								onClick={() => {
 									this.setSelectedOption(option);
 									this.setOpen(false);

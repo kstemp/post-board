@@ -59,7 +59,13 @@ class Post extends React.Component<PostProps, PostStateProps> {
 				<div className={`${baseClassName}__body`}>
 					{this.props.post.text}
 				</div>
-				{this.state.showReactionPicker && <ReactionPicker />}
+				{this.state.showReactionPicker && (
+					<div
+						className={`${baseClassName}__reaction-picker-container`}
+					>
+						<ReactionPicker />
+					</div>
+				)}
 				<div className={`${baseClassName}__buttons`}>
 					<button onClick={this.toggleShowReactionPicker}>
 						React

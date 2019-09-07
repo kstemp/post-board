@@ -64,6 +64,13 @@ class CommentList extends React.Component<Props, State> {
 	render() {
 		return (
 			<div className={baseClassName}>
+				<div className={`${baseClassName}__new-comment`}>
+					<TextArea
+						emptyText={'Comment text goes here'}
+						ref={this.commentTextInput}
+					/>
+					<button onClick={this.createComment}>Send</button>
+				</div>
 				{this.state.isLoadingComments ? (
 					<LoadingSpinner text={'Loading comments...'} />
 				) : this.props.comments.length ? (
@@ -73,13 +80,6 @@ class CommentList extends React.Component<Props, State> {
 				) : (
 					<div>No comments yet.</div>
 				)}
-				<div className={`${baseClassName}__new-comment`}>
-					<TextArea
-						emptyText={'Comment text goes here'}
-						ref={this.commentTextInput}
-					/>
-					<button onClick={this.createComment}>Send</button>
-				</div>
 			</div>
 		);
 	}
