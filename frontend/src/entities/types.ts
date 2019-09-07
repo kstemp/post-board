@@ -6,6 +6,11 @@ export type CommentType = {
 	text: string;
 };
 
+export type CommunityType = {
+	id: IDType;
+	name: string;
+};
+
 export type PostType = {
 	id: IDType;
 	text: string;
@@ -14,4 +19,5 @@ export type PostType = {
 export type ReducerStateType = {
 	posts: PostType[];
 	comments: { [id: number]: CommentType[] };
+	communities: CommunityType[];
 };

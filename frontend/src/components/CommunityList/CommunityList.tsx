@@ -3,45 +3,37 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import Dropdown from '../Dropdown/Dropdown';
+import { statement } from '@babel/template';
+import { ReducerStateType, CommunityType } from '../../entities/types';
+import { ACTION_SET_COMMUNITIES } from '../../entities/actions';
 
 const baseClassName = 'community-list';
 
 interface StateProps {
-	communities: any[];
+	communities: CommunityType[];
 }
 
 type Props = StateProps;
 
 class CommunityList extends React.Component<Props> {
 	render() {
-		const dropdownOptions = [
-			{
-				id: 0,
-				label: 'hejka'
-			},
-			{
-				id: 1,
-				label: 'other'
-			}
-		];
-
 		return (
 			<div className={baseClassName}>
 				<span>Community:</span>
-				<Dropdown options={dropdownOptions} />
+				<Dropdown
+					options={this.props.communities.map(community => ({
+						id: community.id,
+						label: community.name
+					}))}
+				/>
 			</div>
 		);
 	}
 }
 
-const mapStateToProps = () => {
+const mapStateToProps = (state: ReducerStateType) => {
 	return {
-		communities: [
-			{
-				name: 'Oxlove'
-			},
-			{ name: 'Oxfess' }
-		]
+		communities: state.communities
 	};
 };
 

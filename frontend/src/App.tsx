@@ -5,6 +5,7 @@ import PostList from './components/PostList/PostList';
 import CommunityList from './components/CommunityList/CommunityList';
 
 import { Provider } from 'react-redux';
+import { fetchCommunities } from './entities/communities';
 
 import store from './entities/store';
 
@@ -18,6 +19,10 @@ const baseClassName = 'App';
 type AppProps = {};
 
 class App extends React.Component<AppProps> {
+	componentDidMount() {
+		fetchCommunities();
+	}
+
 	render() {
 		return (
 			<Provider store={store}>
@@ -26,6 +31,7 @@ class App extends React.Component<AppProps> {
 					<header className={`${baseClassName}__header`}>
 						post-board v.0.1 (dev)
 						<CommunityList />
+						<button>Create community...</button>
 					</header>
 					<div className={`${baseClassName}__body`}>
 						<PostCreator />

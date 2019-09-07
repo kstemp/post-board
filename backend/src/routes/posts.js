@@ -42,11 +42,6 @@ router.post('/:id/comments', (req, res) => {
 	])
 		.then(() => res.sendStatus(200))
 		.catch(error => res.sendStatus(500));
-
-	//	TEMP_POSTS.find(post => post.id === reqPostID).comments.push({
-	//		text: req.body.text
-	//	});
-	//	return res.sendStatus(200);
 });
 
 module.exports = router;

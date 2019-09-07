@@ -20,6 +20,7 @@ interface State {
 
 type Props = OwnProps;
 
+//TODO disable when no options are provided
 class Dropdown extends React.Component<Props, State> {
 	constructor(props: Props) {
 		super(props);
@@ -47,7 +48,12 @@ class Dropdown extends React.Component<Props, State> {
 
 	render() {
 		return (
-			<div className={baseClassName} onClick={this.switchOpen}>
+			<div
+				className={baseClassName}
+				onClick={this.switchOpen}
+				onBlur={() => this.setOpen(false)}
+				tabIndex={0}
+			>
 				<span className={`${baseClassName}-label`}>
 					{this.state.selectedOption
 						? this.state.selectedOption.label
@@ -55,14 +61,10 @@ class Dropdown extends React.Component<Props, State> {
 				</span>
 				<div className={`${baseClassName}-triangle`} />
 				{this.state.isOpen && (
-					<div
-						className={`${baseClassName}__list`}
-						onBlur={() => this.setOpen(false)}
-					>
+					<div className={`${baseClassName}__list`}>
 						{this.props.options.map(option => (
 							<span
 								onClick={() => {
-									console.log('hej!');
 									this.setSelectedOption(option);
 									this.setOpen(false);
 								}}

@@ -1,10 +1,15 @@
-import { ACTION_SET_POSTS, ACTION_SET_COMMENTS_FOR_POST_ID } from './actions';
+import {
+	ACTION_SET_POSTS,
+	ACTION_SET_COMMENTS_FOR_POST_ID,
+	ACTION_SET_COMMUNITIES
+} from './actions';
 
 import { ReducerStateType } from './types';
 
 const initialState = {
 	posts: [],
-	comments: {}
+	comments: {},
+	communities: []
 };
 
 // TODO fix action type
@@ -25,6 +30,11 @@ export const reducer = (
 			return {
 				...state,
 				posts: action.posts
+			};
+		case ACTION_SET_COMMUNITIES:
+			return {
+				...state,
+				communities: action.communities
 			};
 		default:
 			return state;

@@ -5,10 +5,17 @@ CREATE DATABASE post_db
 	LC_COLLATE = 'en_US.UTF-8'
     LC_CTYPE = 'en_US.UTF-8'
     TEMPLATE template0;
+--
 \c post_db;
+--
+CREATE TABLE communities (
+	id SERIAL PRIMARY KEY,
+	name VARCHAR NOT NULL
+);
 -- 
 CREATE TABLE posts (
 	id SERIAL PRIMARY KEY,
+	community_id INTEGER NOT NULL REFERENCES communities (id),
 	text VARCHAR NOT NULL,
 	date TIMESTAMP NOT NULL DEFAULT NOW()
 );
