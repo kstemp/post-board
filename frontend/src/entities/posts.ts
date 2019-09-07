@@ -2,13 +2,8 @@ import { BACKEND_URL } from '../Config';
 import { fetchEntityAndPlaceInStore } from './entity';
 import { displayErrorNotification } from '../util/notification';
 
-import { ACTION_SET_ENTITIES } from './actions';
-
-import store from './store';
-
 export const fetchPosts = (callbackNotifyLoading: (arg0: boolean) => void) => {
 	fetchEntityAndPlaceInStore('posts', 'post', 'posts', callbackNotifyLoading);
-	//return store.dispatch({ type: ACTION_SET_POSTS, posts: posts });
 };
 
 export const createPost = (postText: string) => {
@@ -69,35 +64,4 @@ export const fetchCommentsForPostByID = (
 		callbackNotifyLoading,
 		postID
 	);
-
-	/*
-	const fetchParams = {
-		method: 'GET'
-	};
-	fetch(`${BACKEND_URL}/posts/${postID.toString()}/comments`)
-		.then(response => {
-			if (response.ok) {
-				return response.json();
-			}
-			throw new Error(response.status + ': ' + response.statusText);
-		})
-		.then(comments => {
-			if (callbackNotifyLoading) {
-				callbackNotifyLoading(false);
-			}
-			return store.dispatch({
-				type: ACTION_SET_COMMENTS_FOR_POST_ID,
-				postID: postID,
-				comments: comments
-			});
-		})
-		.catch(error => {
-			if (callbackNotifyLoading) {
-				callbackNotifyLoading(false);
-			}
-			return displayErrorNotification(
-				'Failed to fetch comments',
-				error.message
-			);
-		});*/
 };

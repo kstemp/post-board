@@ -1,7 +1,6 @@
 import { ACTION_SET_ENTITIES } from './actions';
 
 import { ReducerStateType, SetEntitiesActionDataType } from './types';
-import { statement } from '@babel/template';
 
 const initialState = {
 	post: [],
@@ -9,10 +8,14 @@ const initialState = {
 	community: []
 };
 
-// TODO fix action type
+type ReducerSetEntitesActionType = {
+	type: string;
+	data: SetEntitiesActionDataType;
+};
+
 export const reducer = (
 	state: ReducerStateType = initialState,
-	action: { type: string; data: SetEntitiesActionDataType }
+	action: ReducerSetEntitesActionType
 ) => {
 	switch (action.type) {
 		case ACTION_SET_ENTITIES:
