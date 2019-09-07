@@ -65,7 +65,7 @@ class PostList extends React.Component<StateProps, State> {
 
 const mapStateToProps = (state: ReducerStateType) => {
 	return {
-		posts: state.posts
+		posts: state.post
 	};
 };
 

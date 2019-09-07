@@ -16,8 +16,16 @@ export type PostType = {
 	text: string;
 };
 
+export type EntityTypeEnum = 'community' | 'post' | 'comment';
+
+export type SetEntitiesActionDataType = {
+	entityType: EntityTypeEnum;
+	parentID?: IDType;
+	entities: CommunityType | PostType | CommentType;
+};
+
 export type ReducerStateType = {
-	posts: PostType[];
-	comments: { [id: number]: CommentType[] };
-	communities: CommunityType[];
+	post: PostType[];
+	comment: { [id: number]: CommentType[] };
+	community: CommunityType[];
 };

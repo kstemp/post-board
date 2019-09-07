@@ -1,41 +1,33 @@
-import {
-	ACTION_SET_POSTS,
-	ACTION_SET_COMMENTS_FOR_POST_ID,
-	ACTION_SET_COMMUNITIES
-} from './actions';
+import { ACTION_SET_ENTITIES } from './actions';
 
-import { ReducerStateType } from './types';
+import { ReducerStateType, SetEntitiesActionDataType } from './types';
+import { statement } from '@babel/template';
 
 const initialState = {
-	posts: [],
-	comments: {},
-	communities: []
+	post: [],
+	comment: {},
+	community: []
 };
 
 // TODO fix action type
 export const reducer = (
 	state: ReducerStateType = initialState,
-	action: any
+	action: { type: string; data: SetEntitiesActionDataType }
 ) => {
 	switch (action.type) {
-		case ACTION_SET_COMMENTS_FOR_POST_ID:
-			return {
-				...state,
-				comments: {
-					...state.comments,
-					[action.postID]: action.comments
-				}
-			};
-		case ACTION_SET_POSTS:
-			return {
-				...state,
-				posts: action.posts
-			};
-		case ACTION_SET_COMMUNITIES:
-			return {
-				...state,
-				communities: action.communities
-			};
+		case ACTION_SET_ENTITIES:
+			return action.data.parentID
+				? {
+						...state,
+						[action.data.entityType]: {
+							...state[action.data.entityType],
+							[action.data.parentID]: action.data.entities
+						}
+				  }
+				: {
+						...state,
+						[action.data.entityType]: action.data.entities
+				  };
 		default:
 			return state;
 	}

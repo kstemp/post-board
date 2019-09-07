@@ -87,7 +87,7 @@ class CommentList extends React.Component<Props, State> {
 
 const mapStateToProps = (state: ReducerStateType, ownProps: OwnProps) => {
 	return {
-		comments: state.comments[ownProps.postID] || [] // TODO is this '||' really a decent solution here?
+		comments: state.comment[ownProps.postID] || [] // TODO is this '||' really a decent solution here?
 	};
 };
 

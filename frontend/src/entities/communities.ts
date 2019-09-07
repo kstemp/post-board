@@ -1,5 +1,4 @@
 import store from './store';
-import { ACTION_SET_COMMUNITIES } from './actions';
 import { BACKEND_URL } from '../Config';
 
 export const fetchCommunities = () => {
@@ -8,10 +7,10 @@ export const fetchCommunities = () => {
 			return response.json();
 		})
 		.then(communities => {
-			store.dispatch({
-				type: ACTION_SET_COMMUNITIES,
-				communities: communities
-			});
+			//	store.dispatch({
+			//	type: ACTION_SET_COMMUNITIES,
+			//	communities: communities
+			//});
 		})
 		.catch(error => {});
 };

@@ -1,44 +1,14 @@
-import { toast } from 'react-toastify';
 import { BACKEND_URL } from '../Config';
+import { fetchEntityAndPlaceInStore } from './entity';
+import { displayErrorNotification } from '../util/notification';
 
-import { ACTION_SET_POSTS, ACTION_SET_COMMENTS_FOR_POST_ID } from './actions';
+import { ACTION_SET_ENTITIES } from './actions';
 
 import store from './store';
 
-const displayErrorNotification = (title: string, message: string) => {
-	toast.error(`${title} - ${message}`, {
-		autoClose: 3000,
-		hideProgressBar: true,
-		closeButton: false
-	});
-};
-
 export const fetchPosts = (callbackNotifyLoading: (arg0: boolean) => void) => {
-	const fetchParams = { method: 'GET' };
-	fetch(`${BACKEND_URL}/posts`, fetchParams)
-		.then(response => {
-			if (response.ok) {
-				return response.json();
-			}
-			throw new Error(response.status + ': ' + response.statusText);
-		})
-		.then(posts => {
-			// TODO we should call this from createPost etc as well
-			// this is temporary
-			if (callbackNotifyLoading) {
-				callbackNotifyLoading(false);
-			}
-			return store.dispatch({ type: ACTION_SET_POSTS, posts: posts });
-		})
-		.catch(error => {
-			if (callbackNotifyLoading) {
-				callbackNotifyLoading(false);
-			}
-			return displayErrorNotification(
-				'Failed to load posts',
-				error.message
-			);
-		});
+	fetchEntityAndPlaceInStore('posts', 'post', 'posts', callbackNotifyLoading);
+	//return store.dispatch({ type: ACTION_SET_POSTS, posts: posts });
 };
 
 export const createPost = (postText: string) => {
@@ -92,6 +62,15 @@ export const fetchCommentsForPostByID = (
 	postID: number,
 	callbackNotifyLoading: (arg0: boolean) => void
 ) => {
+	fetchEntityAndPlaceInStore(
+		`posts/${postID.toString()}/comments`,
+		'comment',
+		'comments',
+		callbackNotifyLoading,
+		postID
+	);
+
+	/*
 	const fetchParams = {
 		method: 'GET'
 	};
@@ -120,5 +99,5 @@ export const fetchCommentsForPostByID = (
 				'Failed to fetch comments',
 				error.message
 			);
-		});
+		});*/
 };

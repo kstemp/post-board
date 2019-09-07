@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import Dropdown from '../Dropdown/Dropdown';
 import { statement } from '@babel/template';
 import { ReducerStateType, CommunityType } from '../../entities/types';
-import { ACTION_SET_COMMUNITIES } from '../../entities/actions';
 
 const baseClassName = 'community-list';
 
@@ -33,7 +32,7 @@ class CommunityList extends React.Component<Props> {
 
 const mapStateToProps = (state: ReducerStateType) => {
 	return {
-		communities: state.communities
+		communities: state.community
 	};
 };
 
