@@ -27,6 +27,10 @@ class App extends React.Component<AppProps> {
 	render() {
 		return (
 			<Provider store={store}>
+				<link
+					href='https://fonts.googleapis.com/icon?family=Material+Icons'
+					rel='stylesheet'
+				></link>
 				<div className={baseClassName}>
 					<ToastContainer />
 					<header className={`${baseClassName}__header`}>

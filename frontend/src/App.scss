@@ -1,3 +1,10 @@
+@import './components/rcl-variables.scss';
+
+.material-icons.md-18 {
+	font-size: 18px;
+	color: $base-color;
+}
+
 .App {
 	&__header {
 		display: flex;

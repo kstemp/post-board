@@ -33,12 +33,14 @@
 	&__buttons {
 		padding-top: 5px;
 		padding-bottom: 5px;
+
 		display: flex;
+		justify-content: center;
 
 		border-bottom: 1px solid lightgray;
 
-		> button {
-			width: 100%;
+		button {
+			width: 30%;
 		}
 	}
 }

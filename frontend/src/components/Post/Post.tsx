@@ -69,14 +69,16 @@ class Post extends React.Component<PostProps, PostStateProps> {
 				)}
 				<div className={`${baseClassName}__buttons`}>
 					<Button
+						icon={'favorite_border'}
 						label={'React'}
 						onClick={this.toggleShowReactionPicker}
 					/>
 					<Button
+						icon={'chat_bubble_outline'}
 						label={'Comment'}
 						onClick={this.toggleShowComments}
 					/>
-					<Button label={'Tag'} />
+					<Button icon={'language'} label={'Tag'} />
 				</div>
 				{this.state.showComments && (
 					<CommentList postID={this.props.post.id} />
