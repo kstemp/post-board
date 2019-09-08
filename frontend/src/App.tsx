@@ -1,5 +1,11 @@
 import React from 'react';
 
+import {
+	BrowserRouter as Router,
+	Route,
+	RouteComponentProps
+} from 'react-router-dom';
+
 import PostCreator from './components/PostCreator/PostCreator';
 import PostList from './components/PostList/PostList';
 import CommunityList from './components/CommunityList/CommunityList';
@@ -18,6 +24,18 @@ import './App.scss';
 const baseClassName = 'App';
 
 type AppProps = {};
+
+// TODO refactor
+type TParams = { id: string };
+
+const CommunityRouter = ({ match }: RouteComponentProps<TParams>) => {
+	return (
+		<div className={`${baseClassName}__body`}>
+			<PostCreator />
+			<PostList community={{ id: 0, name: match.params.id }} />
+		</div>
+	);
+};
 
 class App extends React.Component<AppProps> {
 	componentDidMount() {
@@ -38,10 +56,19 @@ class App extends React.Component<AppProps> {
 						<CommunityList />
 						<Button label={'Create community...'} />
 					</header>
-					<div className={`${baseClassName}__body`}>
-						<PostCreator />
-						<PostList />
-					</div>
+					<Router>
+						<Route
+							exact
+							path='/community'
+							render={() => {
+								return <div>Community ID was not provided</div>;
+							}}
+						/>
+						<Route
+							path='/community/:id'
+							component={CommunityRouter}
+						/>
+					</Router>
 				</div>
 			</Provider>
 		);

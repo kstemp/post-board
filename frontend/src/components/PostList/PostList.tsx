@@ -2,14 +2,20 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import Post from '../Post/Post';
-import { PostType, ReducerStateType } from '../../entities/types';
+import {
+	PostType,
+	ReducerStateType,
+	CommunityType
+} from '../../entities/types';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 
 import { fetchPosts } from '../../entities/posts';
 
-import './PostList.scss';
-
 const baseClassName = 'post-list';
+
+interface OwnProps {
+	community: CommunityType;
+}
 
 interface StateProps {
 	posts: PostType[];
@@ -19,9 +25,9 @@ interface State {
 	isLoadingPosts: boolean;
 }
 
-type Props = StateProps;
+type Props = OwnProps & StateProps;
 
-class PostList extends React.Component<StateProps, State> {
+class PostList extends React.Component<Props, State> {
 	constructor(props: Props) {
 		super(props);
 
@@ -37,23 +43,23 @@ class PostList extends React.Component<StateProps, State> {
 
 	componentDidMount() {
 		this.setIsLoadingPosts(true);
-		fetchPosts(this.setIsLoadingPosts);
+		fetchPosts(this.setIsLoadingPosts, this.props.community.id);
 	}
 
 	render() {
+		console.log('My community is: ', this.props.community.name);
+
 		return (
 			<div className={baseClassName}>
 				{this.state.isLoadingPosts ? (
-					<LoadingSpinner
-						style={{
-							'margin-left': 'auto',
-							'margin-right': 'auto'
-						}}
-						text={'Loading posts...'}
-					/>
+					<LoadingSpinner text={'Loading posts...'} />
 				) : this.props.posts.length ? (
 					this.props.posts.map(post => (
-						<Post key={post.id} post={post} />
+						<Post
+							key={post.id}
+							post={post}
+							community={this.props.community}
+						/>
 					))
 				) : (
 					'No posts here.'

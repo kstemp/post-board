@@ -50,7 +50,10 @@ class Dropdown extends React.Component<Props, State> {
 		console.log('this, options, ', this.props.options);
 		return (
 			<div
-				className={baseClassName}
+				//TODO get... class... names...
+				className={
+					baseClassName + (this.state.isOpen ? ' dropdown--open' : '')
+				}
 				onClick={this.switchOpen}
 				onBlur={() => this.setOpen(false)}
 				tabIndex={0}
@@ -64,15 +67,16 @@ class Dropdown extends React.Component<Props, State> {
 				{this.state.isOpen && (
 					<div className={`${baseClassName}__list`}>
 						{this.props.options.map(option => (
-							<span
-								key={option.id}
-								onClick={() => {
-									this.setSelectedOption(option);
-									this.setOpen(false);
-								}}
-							>
-								{option.label}
-							</span>
+							<a href='/community/177772'>{option.label}</a>
+							//	<span
+							//	key={option.id}
+							//onClick={() => {
+							///	this.setSelectedOption(option);
+							//	this.setOpen(false);
+							//}}
+							//	>
+							//		{option.label}
+							//	</span>
 						))}
 					</div>
 				)}

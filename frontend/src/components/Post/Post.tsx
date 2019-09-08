@@ -4,12 +4,13 @@ import CommentList from '../CommentList/CommentList';
 import ReactionPicker from '../ReactionPicker/ReactionPicker';
 import Button from '../Button/Button';
 
-import { PostType, CommentType } from '../../entities/types';
+import { PostType, CommentType, CommunityType } from '../../entities/types';
 
 import './Post.scss';
 
 type PostProps = {
 	post: PostType;
+	community: CommunityType;
 };
 
 type PostStateProps = {
@@ -45,13 +46,13 @@ class Post extends React.Component<PostProps, PostStateProps> {
 	};
 
 	render() {
-		console.log(this.props.post);
+		//	console.log(this.props.post);
 		return (
 			<div className={`${baseClassName}`}>
 				<div className={`${baseClassName}__header`}>
 					<span className={`${baseClassName}__header-user`}>
-						<b>Community</b>
-						<a href='#'>#{this.props.post.id}</a>
+						<b>{this.props.community.name}</b>
+						<a href='/community/177772'>#{this.props.post.id}</a>
 					</span>
 					<span className={`${baseClassName}__header-time`}>
 						posted 7 hours ago
