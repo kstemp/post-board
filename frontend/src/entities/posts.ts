@@ -1,32 +1,33 @@
 import { BACKEND_URL } from '../Config';
-import { fetchEntityAndPlaceInStore } from './entity';
+import { fetchEntityAndPlaceInStore, createEntity } from './entity';
 import { IDType } from './types';
 import { displayErrorNotification } from '../util/notification';
 
 export const fetchPostsForCommunityID = (
 	communityID: IDType,
 	callbackNotifyLoading?: (arg0: boolean) => void
-) => {
+) =>
 	fetchEntityAndPlaceInStore(
 		`/community/${communityID}`,
 		'post',
 		callbackNotifyLoading
 	);
-};
 
-export const fetchCommentsForPostByID = (
+export const fetchCommentsForPostID = (
 	postID: IDType,
 	callbackNotifyLoading: (arg0: boolean) => void
-) => {
+) =>
 	fetchEntityAndPlaceInStore(
-		`/post/${postID.toString()}/comments`,
+		`/post/${postID}/comments`,
 		'comment',
 		callbackNotifyLoading,
 		postID
 	);
-};
 
-export const createPost = (postText: string, communityID: IDType) => {
+export const createPost = (postText: string, communityID: IDType) =>
+	createEntity(`/community/${communityID}`, postText);
+
+/*
 	const fetchParams = {
 		method: 'POST',
 		headers: {
@@ -46,29 +47,7 @@ export const createPost = (postText: string, communityID: IDType) => {
 		.catch(error => {
 			displayErrorNotification('Failed to create post', error.message);
 		});
-};
+};*/
 
-export const createCommentForPostByID = (
-	postID: IDType,
-	commentText: string
-) => {
-	const fetchParams = {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify({ text: commentText })
-	};
-
-	fetch(`${BACKEND_URL}/post/${postID.toString()}/comments`, fetchParams)
-		.then(response => {
-			if (response.ok) {
-				return response;
-			}
-			throw new Error(response.status + ': ' + response.statusText);
-		})
-		.then(response => fetchCommentsForPostByID(postID, () => {})) // TODO POST ID
-		.catch(error => {
-			displayErrorNotification('Failed to create comment', error.message);
-		});
-};
+export const createCommentForPostID = (postID: IDType, commentText: string) =>
+	createEntity(`/post/${postID}/comments`, commentText);

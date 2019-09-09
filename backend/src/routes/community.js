@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db');
+const string = require('../util/string');
 
 router.get('/:communityID/', (req, res) => {
 	const reqCommunityID = parseInt(req.params.communityID);

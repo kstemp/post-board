@@ -7,14 +7,13 @@ import TextArea from '../TextArea/TextArea';
 import { IDType, CommentType, ReducerStateType } from '../../entities/types';
 
 import {
-	createCommentForPostByID,
-	fetchCommentsForPostByID
+	createCommentForPostID,
+	fetchCommentsForPostID // TODO use this one
 } from '../../entities/posts';
 
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 
 import './CommentList.scss';
-import { fetchEntityAndPlaceInStore } from '../../entities/entity';
 
 const baseClassName = 'comment-list';
 
@@ -46,12 +45,7 @@ class CommentList extends React.Component<Props, State> {
 	}
 
 	componentDidMount() {
-		fetchEntityAndPlaceInStore(
-			`/post/${this.props.postID}/comments`,
-			'comment',
-			this.setIsLoadingComments,
-			this.props.postID
-		);
+		fetchCommentsForPostID(this.props.postID, this.setIsLoadingComments);
 	}
 
 	setIsLoadingComments = (isLoadingComments: boolean = true) => {
@@ -61,7 +55,7 @@ class CommentList extends React.Component<Props, State> {
 	};
 
 	createComment = () => {
-		createCommentForPostByID(
+		createCommentForPostID(
 			this.props.postID,
 			(this.commentTextInput as any).current.getValue() // TODO this is an ugly hack...
 		);
@@ -97,5 +91,4 @@ const mapStateToProps = (state: ReducerStateType, ownProps: OwnProps) => {
 	};
 };
 
-//export default connect(mapStateToProps)(withRouter(CommentList));
 export default connect(mapStateToProps)(CommentList);

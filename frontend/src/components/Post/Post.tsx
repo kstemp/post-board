@@ -42,10 +42,10 @@ class Post extends React.Component<Props, State> {
 				<div className={`${baseClassName}__header`}>
 					<span className={`${baseClassName}__header-user`}>
 						<b>community name</b>
-						<a href='/community/177772'>#{this.props.post.id}</a>
+						<a href='/community/2'>#{this.props.post.id}</a>
 					</span>
 					<span className={`${baseClassName}__header-time`}>
-						posted 7 hours ago
+						posted 420 hours ago
 					</span>
 				</div>
 				<div className={`${baseClassName}__body`}>

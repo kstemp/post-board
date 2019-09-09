@@ -42,8 +42,36 @@ export const fetchEntityAndPlaceInStore = (
 				callbackNotifyLoading(false);
 			}
 			return displayErrorNotification(
-				`Failed to fetch resource of type ${entityType}`,
+				`Failed to fetch resource of type \'${entityType}\'`,
 				error.message
 			);
+		});
+};
+
+export const createEntity = (
+	route: string,
+	bodyText: string,
+	updateCallback?: (arg0: IDType) => void
+) => {
+	const fetchParams = {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({ text: bodyText })
+	};
+
+	fetch(`${BACKEND_URL}${route}`, fetchParams)
+		.then(response => {
+			if (response.ok) {
+				return response;
+			}
+			throw new Error(response.status + ': ' + response.statusText);
+		})
+		.then(response => {
+			return; // TODO auto-fetch after succesful call
+		}) //fetchPostsForCommunityID(communityID, () => {})}) // TODO COMMUNITY ID
+		.catch(error => {
+			displayErrorNotification('Failed to create post', error.message); // TODO entity and not post
 		});
 };
