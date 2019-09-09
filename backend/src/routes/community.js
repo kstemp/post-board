@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
 });
 
 router.use(
-	'/:communityID/posts',
+	'/:communityID/',
 	(req, res, next) => {
 		req.communityID = req.params.communityID;
 		next();

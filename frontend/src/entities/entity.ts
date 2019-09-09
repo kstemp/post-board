@@ -9,7 +9,6 @@ import { ACTION_SET_ENTITIES } from './actions';
 export const fetchEntityAndPlaceInStore = (
 	route: string,
 	entityType: EntityTypeEnum,
-	entityNamePlural: string = 'entities',
 	callbackNotifyLoading?: (arg0: boolean) => void,
 	parentID?: IDType
 ) => {
@@ -17,7 +16,7 @@ export const fetchEntityAndPlaceInStore = (
 		callbackNotifyLoading(true);
 	}
 
-	fetch(`${BACKEND_URL}/${route}`, { method: 'GET' })
+	fetch(`${BACKEND_URL}${route}`, { method: 'GET' })
 		.then(response => {
 			if (response.ok) {
 				return response.json();
@@ -43,7 +42,7 @@ export const fetchEntityAndPlaceInStore = (
 				callbackNotifyLoading(false);
 			}
 			return displayErrorNotification(
-				`Failed to fetch ${entityNamePlural}`,
+				`Failed to fetch resource of type ${entityType}`,
 				error.message
 			);
 		});

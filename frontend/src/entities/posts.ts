@@ -4,13 +4,12 @@ import { IDType } from './types';
 import { displayErrorNotification } from '../util/notification';
 
 export const fetchPostsForCommunityID = (
-	callbackNotifyLoading: (arg0: boolean) => void,
-	communityID: IDType
+	communityID: IDType,
+	callbackNotifyLoading?: (arg0: boolean) => void
 ) => {
 	fetchEntityAndPlaceInStore(
-		`community/${communityID}/posts`,
+		`/community/${communityID}`,
 		'post',
-		'posts',
 		callbackNotifyLoading
 	);
 };
@@ -23,13 +22,12 @@ export const fetchCommentsForPostByID = (
 	fetchEntityAndPlaceInStore(
 		`community/${communityID}/posts/${postID.toString()}/comments`,
 		'comment',
-		'comments',
 		callbackNotifyLoading,
 		postID
 	);
 };
 
-export const createPost = (postText: string, communityID?: IDType) => {
+export const createPost = (postText: string, communityID: IDType) => {
 	const fetchParams = {
 		method: 'POST',
 		headers: {
@@ -38,14 +36,14 @@ export const createPost = (postText: string, communityID?: IDType) => {
 		body: JSON.stringify({ text: postText })
 	};
 
-	fetch(`${BACKEND_URL}/posts`, fetchParams)
+	fetch(`${BACKEND_URL}/community/${communityID}`, fetchParams)
 		.then(response => {
 			if (response.ok) {
 				return response;
 			}
 			throw new Error(response.status + ': ' + response.statusText);
 		})
-		.then(response => fetchPostsForCommunityID(() => {}, -1)) // TODO COMMUNITY ID
+		.then(response => fetchPostsForCommunityID(communityID, () => {})) // TODO COMMUNITY ID
 		.catch(error => {
 			displayErrorNotification('Failed to create post', error.message);
 		});

@@ -14,6 +14,7 @@ import {
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 
 import './CommentList.scss';
+import { fetchEntityAndPlaceInStore } from '../../entities/entity';
 
 const baseClassName = 'comment-list';
 
@@ -45,12 +46,18 @@ class CommentList extends React.Component<Props, State> {
 	}
 
 	componentDidMount() {
-		this.setIsLoadingComments();
-		fetchCommentsForPostByID(
-			this.props.postID,
-			-69,
-			this.setIsLoadingComments
-		); // TODO communityID
+		/*fetchEntityAndPlaceInStore(
+			`${this.props.location.pathname}/${this.props.postID}/comments`,
+			'comment',
+			this.setIsLoadingComments,
+			this.props.postID
+		);*/
+		//	this.setIsLoadingComments();
+		//	fetchCommentsForPostByID(
+		//		this.props.postID,
+		//		-69,
+		//		this.setIsLoadingComments
+		//	); // TODO communityID
 	}
 
 	setIsLoadingComments = (isLoadingComments: boolean = true) => {
@@ -97,4 +104,5 @@ const mapStateToProps = (state: ReducerStateType, ownProps: OwnProps) => {
 	};
 };
 
+//export default connect(mapStateToProps)(withRouter(CommentList));
 export default connect(mapStateToProps)(CommentList);

@@ -5,20 +5,7 @@ import { ReducerStateType, SetEntitiesActionDataType } from './types';
 const initialState = {
 	post: [],
 	comment: {},
-	community: [
-		{
-			id: 0,
-			name: 'Oxfess'
-		},
-		{
-			id: 1,
-			name: 'Oxlove'
-		},
-		{
-			id: 2,
-			name: 'Oxfeud'
-		}
-	]
+	community_id: -1
 };
 
 type ReducerSetEntitesActionType = {

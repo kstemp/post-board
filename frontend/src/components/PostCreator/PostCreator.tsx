@@ -1,13 +1,15 @@
 import React from 'react';
 
+import { RouteComponentProps, withRouter } from 'react-router';
+
 import Button from '../Button/Button';
 import TextArea from '../TextArea/TextArea';
 
 import { createPost } from '../../entities/posts';
 
 import './PostCreator.scss';
+import { IDType } from '../../entities/types';
 
-type PostCreatorProps = {};
 type PostCreatorStateProps = {
 	isInCreationMode: boolean;
 	isValid: boolean;
@@ -15,13 +17,14 @@ type PostCreatorStateProps = {
 
 const baseClassName = 'post-creator';
 
-class PostCreator extends React.Component<
-	PostCreatorProps,
-	PostCreatorStateProps
-> {
+type RouteProps = RouteComponentProps<{ communityID: string }>;
+
+type Props = RouteProps;
+
+class PostCreator extends React.Component<Props, PostCreatorStateProps> {
 	private postTextField: React.RefObject<TextArea>;
 
-	constructor(props: PostCreatorProps) {
+	constructor(props: Props) {
 		super(props);
 
 		this.postTextField = React.createRef();
@@ -37,7 +40,10 @@ class PostCreator extends React.Component<
 	}
 
 	createPost = () => {
-		createPost((this.postTextField.current as any).getValue()); // TODO get rid of as any...
+		createPost(
+			(this.postTextField.current as any).getValue(),
+			parseInt(this.props.match.params.communityID)
+		); // TODO get rid of as any...
 	};
 
 	fieldChanged = (isValid: boolean) => {
@@ -69,4 +75,4 @@ class PostCreator extends React.Component<
 	}
 }
 
-export default PostCreator;
+export default withRouter(PostCreator);

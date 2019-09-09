@@ -28,7 +28,6 @@ class Post extends React.Component<PostProps, PostStateProps> {
 		};
 	}
 
-	// TODO merge these two into one, like toggleShow(component: string, show: boolean = true)
 	toggleShowComments = () => {
 		this.setState({
 			showComments: !this.state.showComments

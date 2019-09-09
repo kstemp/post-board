@@ -27,7 +27,7 @@ router.post('/', (req, res) => {
 	const reqCommunityID = parseInt(req.communityID);
 
 	db.none('INSERT INTO posts (community_id, text) VALUES ($1, $2)', [
-		reqcommunityID,
+		req.communityID,
 		req.body.text
 	])
 		.then(() => res.sendStatus(200))
