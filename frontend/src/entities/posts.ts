@@ -1,7 +1,5 @@
-import { BACKEND_URL } from '../Config';
 import { fetchEntityAndPlaceInStore, createEntity } from './entity';
 import { IDType } from './types';
-import { displayErrorNotification } from '../util/notification';
 
 export const fetchPostsForCommunityID = (
 	communityID: IDType,
