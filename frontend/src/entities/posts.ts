@@ -16,11 +16,10 @@ export const fetchPostsForCommunityID = (
 
 export const fetchCommentsForPostByID = (
 	postID: IDType,
-	communityID: IDType,
 	callbackNotifyLoading: (arg0: boolean) => void
 ) => {
 	fetchEntityAndPlaceInStore(
-		`community/${communityID}/posts/${postID.toString()}/comments`,
+		`/post/${postID.toString()}/comments`,
 		'comment',
 		callbackNotifyLoading,
 		postID
@@ -51,7 +50,6 @@ export const createPost = (postText: string, communityID: IDType) => {
 
 export const createCommentForPostByID = (
 	postID: IDType,
-	communityID: IDType,
 	commentText: string
 ) => {
 	const fetchParams = {
@@ -62,14 +60,14 @@ export const createCommentForPostByID = (
 		body: JSON.stringify({ text: commentText })
 	};
 
-	fetch(`${BACKEND_URL}/posts/${postID.toString()}/comments`, fetchParams)
+	fetch(`${BACKEND_URL}/post/${postID.toString()}/comments`, fetchParams)
 		.then(response => {
 			if (response.ok) {
 				return response;
 			}
 			throw new Error(response.status + ': ' + response.statusText);
 		})
-		.then(response => fetchCommentsForPostByID(postID, -2, () => {})) // TODO POST ID
+		.then(response => fetchCommentsForPostByID(postID, () => {})) // TODO POST ID
 		.catch(error => {
 			displayErrorNotification('Failed to create comment', error.message);
 		});

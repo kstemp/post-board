@@ -15,13 +15,13 @@ interface StateProps {
 	communityID: IDType;
 }
 
-interface State {
-	isLoadingPosts: boolean;
-}
-
 type RouteProps = RouteComponentProps<{ communityID: string }>;
 
 type Props = RouteProps & StateProps;
+
+interface State {
+	isLoadingPosts: boolean;
+}
 
 class PostList extends React.Component<Props, State> {
 	constructor(props: Props) {

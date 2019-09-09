@@ -7,19 +7,21 @@ import { PostType, CommentType, CommunityType } from '../../entities/types';
 
 import './Post.scss';
 
-type PostProps = {
-	post: PostType;
-};
-
-type PostStateProps = {
-	comments: CommentType[];
-	showComments: boolean;
-};
-
 const baseClassName = 'post';
 
-class Post extends React.Component<PostProps, PostStateProps> {
-	constructor(props: PostProps) {
+interface StateProps {
+	post: PostType;
+}
+
+interface State {
+	comments: CommentType[];
+	showComments: boolean;
+}
+
+type Props = StateProps;
+
+class Post extends React.Component<Props, State> {
+	constructor(props: Props) {
 		super(props);
 
 		this.state = {
@@ -35,12 +37,11 @@ class Post extends React.Component<PostProps, PostStateProps> {
 	};
 
 	render() {
-		console.log('COMM ID = ', this.props.post.community_id);
 		return (
 			<div className={`${baseClassName}`}>
 				<div className={`${baseClassName}__header`}>
 					<span className={`${baseClassName}__header-user`}>
-						<b>TEST COMM</b>
+						<b>community name</b>
 						<a href='/community/177772'>#{this.props.post.id}</a>
 					</span>
 					<span className={`${baseClassName}__header-time`}>

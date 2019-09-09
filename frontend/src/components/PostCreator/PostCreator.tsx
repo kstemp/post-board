@@ -8,20 +8,19 @@ import TextArea from '../TextArea/TextArea';
 import { createPost } from '../../entities/posts';
 
 import './PostCreator.scss';
-import { IDType } from '../../entities/types';
-
-type PostCreatorStateProps = {
-	isInCreationMode: boolean;
-	isValid: boolean;
-};
 
 const baseClassName = 'post-creator';
+
+interface State {
+	isInCreationMode: boolean;
+	isValid: boolean;
+}
 
 type RouteProps = RouteComponentProps<{ communityID: string }>;
 
 type Props = RouteProps;
 
-class PostCreator extends React.Component<Props, PostCreatorStateProps> {
+class PostCreator extends React.Component<Props, State> {
 	private postTextField: React.RefObject<TextArea>;
 
 	constructor(props: Props) {
@@ -57,7 +56,7 @@ class PostCreator extends React.Component<Props, PostCreatorStateProps> {
 			<div className={baseClassName}>
 				<p>Create a post: </p>
 				<TextArea
-					isMultiLine={true}
+					isMultiLine={true} // TODO change to support just multiline
 					className={`${baseClassName}__input-field`}
 					ref={this.postTextField}
 					emptyText={'Post text goes here...'}

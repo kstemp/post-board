@@ -1,21 +1,34 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db');
-const posts = require('./posts');
 
-router.get('/', (req, res) => {
-	db.any('SELECT * FROM communities ORDER BY name ASC')
+router.get('/:communityID/', (req, res) => {
+	const reqCommunityID = parseInt(req.params.communityID);
+
+	db.any('SELECT * FROM posts WHERE community_id = $1', [
+		// ORDER BY date DESC
+		reqCommunityID
+	])
 		.then(data => res.status(200).send(data))
-		.catch(error => res.sendStatus(500));
+		.catch(error => {
+			console.log(error);
+			return res.sendStatus(500);
+		});
 });
 
-router.use(
-	'/:communityID/',
-	(req, res, next) => {
-		req.communityID = req.params.communityID;
-		next();
-	},
-	posts
-);
+router.post('/:communityID/', (req, res) => {
+	if (string.isEmptyOrOnlySpaces(req.body.text)) {
+		return res.sendStatus(400);
+	}
+
+	const reqCommunityID = parseInt(req.params.communityID);
+
+	db.none('INSERT INTO posts (community_id, text) VALUES ($1, $2)', [
+		req.communityID,
+		req.body.text
+	])
+		.then(() => res.sendStatus(200))
+		.catch(error => res.sendStatus(500));
+});
 
 module.exports = router;

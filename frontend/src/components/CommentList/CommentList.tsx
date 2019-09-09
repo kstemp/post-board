@@ -46,18 +46,12 @@ class CommentList extends React.Component<Props, State> {
 	}
 
 	componentDidMount() {
-		/*fetchEntityAndPlaceInStore(
-			`${this.props.location.pathname}/${this.props.postID}/comments`,
+		fetchEntityAndPlaceInStore(
+			`/post/${this.props.postID}/comments`,
 			'comment',
 			this.setIsLoadingComments,
 			this.props.postID
-		);*/
-		//	this.setIsLoadingComments();
-		//	fetchCommentsForPostByID(
-		//		this.props.postID,
-		//		-69,
-		//		this.setIsLoadingComments
-		//	); // TODO communityID
+		);
 	}
 
 	setIsLoadingComments = (isLoadingComments: boolean = true) => {
@@ -69,7 +63,6 @@ class CommentList extends React.Component<Props, State> {
 	createComment = () => {
 		createCommentForPostByID(
 			this.props.postID,
-			-68,
 			(this.commentTextInput as any).current.getValue() // TODO this is an ugly hack...
 		);
 	};

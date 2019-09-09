@@ -7,11 +7,10 @@ import {
 	BrowserRouter as Router,
 	Route,
 	RouteComponentProps,
-	Link,
 	Switch
 } from 'react-router-dom';
 
-type TParams = { id: string };
+type TParams = { communityID: string };
 
 const CommunityRouter = ({ match }: RouteComponentProps<TParams>) => (
 	<div>
@@ -29,7 +28,7 @@ const MainRouter = () => (
 				path='/community'
 				render={() => (
 					<div>
-						You need to specifiy community ID, as in
+						You need to specify community ID, as in
 						'/community/12345'
 					</div>
 				)}
