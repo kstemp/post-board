@@ -32,7 +32,10 @@ const CommunityRouter = ({ match }: RouteComponentProps<TParams>) => {
 	return (
 		<div className={`${baseClassName}__body`}>
 			<PostCreator />
-			<PostList community={{ id: 0, name: match.params.id }} />
+			<PostList
+				location={'temp'}
+				communityID={parseInt(match.params.id)}
+			/>
 		</div>
 	);
 };
@@ -61,7 +64,11 @@ class App extends React.Component<AppProps> {
 							exact
 							path='/community'
 							render={() => {
-								return <div>Community ID was not provided</div>;
+								return (
+									<div>
+										You are not subscribed to any community.
+									</div>
+								);
 							}}
 						/>
 						<Route

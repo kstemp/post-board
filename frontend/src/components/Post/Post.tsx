@@ -1,7 +1,6 @@
 import React from 'react';
 
 import CommentList from '../CommentList/CommentList';
-import ReactionPicker from '../ReactionPicker/ReactionPicker';
 import Button from '../Button/Button';
 
 import { PostType, CommentType, CommunityType } from '../../entities/types';
@@ -10,13 +9,11 @@ import './Post.scss';
 
 type PostProps = {
 	post: PostType;
-	community: CommunityType;
 };
 
 type PostStateProps = {
 	comments: CommentType[];
 	showComments: boolean;
-	showReactionPicker: boolean;
 };
 
 const baseClassName = 'post';
@@ -27,8 +24,7 @@ class Post extends React.Component<PostProps, PostStateProps> {
 
 		this.state = {
 			comments: [],
-			showComments: false,
-			showReactionPicker: false
+			showComments: false
 		};
 	}
 
@@ -39,19 +35,13 @@ class Post extends React.Component<PostProps, PostStateProps> {
 		});
 	};
 
-	toggleShowReactionPicker = () => {
-		this.setState({
-			showReactionPicker: !this.state.showReactionPicker
-		});
-	};
-
 	render() {
 		//	console.log(this.props.post);
 		return (
 			<div className={`${baseClassName}`}>
 				<div className={`${baseClassName}__header`}>
 					<span className={`${baseClassName}__header-user`}>
-						<b>{this.props.community.name}</b>
+						<b>TEST COMM</b>
 						<a href='/community/177772'>#{this.props.post.id}</a>
 					</span>
 					<span className={`${baseClassName}__header-time`}>
@@ -61,19 +51,8 @@ class Post extends React.Component<PostProps, PostStateProps> {
 				<div className={`${baseClassName}__body`}>
 					{this.props.post.text}
 				</div>
-				{this.state.showReactionPicker && (
-					<div
-						className={`${baseClassName}__reaction-picker-container`}
-					>
-						<ReactionPicker />
-					</div>
-				)}
 				<div className={`${baseClassName}__buttons`}>
-					<Button
-						icon={'favorite_border'}
-						label={'React'}
-						onClick={this.toggleShowReactionPicker}
-					/>
+					<Button icon={'favorite_border'} label={'React'} />
 					<Button
 						icon={'chat_bubble_outline'}
 						label={'Comment'}

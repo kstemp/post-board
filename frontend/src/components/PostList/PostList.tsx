@@ -5,16 +5,18 @@ import Post from '../Post/Post';
 import {
 	PostType,
 	ReducerStateType,
-	CommunityType
+	CommunityType,
+	IDType
 } from '../../entities/types';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 
-import { fetchPosts } from '../../entities/posts';
+import { fetchPostsForCommunityID } from '../../entities/posts';
 
 const baseClassName = 'post-list';
 
 interface OwnProps {
-	community: CommunityType;
+	location: string;
+	communityID: IDType;
 }
 
 interface StateProps {
@@ -43,23 +45,22 @@ class PostList extends React.Component<Props, State> {
 
 	componentDidMount() {
 		this.setIsLoadingPosts(true);
-		fetchPosts(this.setIsLoadingPosts, this.props.community.id);
+		fetchPostsForCommunityID(
+			this.setIsLoadingPosts,
+			this.props.communityID
+		);
 	}
 
 	render() {
-		console.log('My community is: ', this.props.community.name);
-
+		//console.log('My community is: ', this.props.community.name);
+		console.log(this.props.location);
 		return (
 			<div className={baseClassName}>
 				{this.state.isLoadingPosts ? (
 					<LoadingSpinner text={'Loading posts...'} />
 				) : this.props.posts.length ? (
 					this.props.posts.map(post => (
-						<Post
-							key={post.id}
-							post={post}
-							community={this.props.community}
-						/>
+						<Post key={post.id} post={post} />
 					))
 				) : (
 					'No posts here.'

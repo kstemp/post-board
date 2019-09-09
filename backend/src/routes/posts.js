@@ -4,9 +4,19 @@ const string = require('../util/string');
 const db = require('../db');
 
 router.get('/', (req, res) => {
-	db.any('SELECT * FROM posts ORDER BY date DESC')
+	console.log(req.communityID);
+
+	const reqCommunityID = parseInt(req.communityID);
+
+	db.any('SELECT * FROM posts WHERE community_id = $1', [
+		// ORDER BY date DESC
+		reqCommunityID
+	])
 		.then(data => res.status(200).send(data))
-		.catch(error => res.sendStatus(500));
+		.catch(error => {
+			console.log(error);
+			return res.sendStatus(500);
+		});
 });
 
 router.post('/', (req, res) => {
@@ -14,7 +24,12 @@ router.post('/', (req, res) => {
 		return res.sendStatus(400);
 	}
 
-	db.none('INSERT INTO posts (text) VALUES ($1)', [req.body.text])
+	const reqCommunityID = parseInt(req.communityID);
+
+	db.none('INSERT INTO posts (community_id, text) VALUES ($1, $2)', [
+		reqcommunityID,
+		req.body.text
+	])
 		.then(() => res.sendStatus(200))
 		.catch(error => res.sendStatus(500));
 });
@@ -22,6 +37,7 @@ router.post('/', (req, res) => {
 router.get('/:id/comments', (req, res) => {
 	// TODO check whether post ID is valid, etc.
 	const reqPostID = parseInt(req.params.id);
+	const reqCommunityID = parseInt(req.communityID);
 
 	db.any('SELECT * FROM comments WHERE post_id=$1 ORDER BY date DESC', [
 		reqPostID

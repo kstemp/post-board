@@ -3,20 +3,19 @@ import { fetchEntityAndPlaceInStore } from './entity';
 import { IDType } from './types';
 import { displayErrorNotification } from '../util/notification';
 
-export const fetchPosts = (
+export const fetchPostsForCommunityID = (
 	callbackNotifyLoading: (arg0: boolean) => void,
 	communityID: IDType
 ) => {
 	fetchEntityAndPlaceInStore(
-		'posts',
+		`community/${communityID}/posts`,
 		'post',
 		'posts',
-		callbackNotifyLoading,
-		communityID
+		callbackNotifyLoading
 	);
 };
 
-export const createPost = (postText: string, communityID: IDType) => {
+export const createPost = (postText: string, communityID?: IDType) => {
 	const fetchParams = {
 		method: 'POST',
 		headers: {
@@ -32,7 +31,7 @@ export const createPost = (postText: string, communityID: IDType) => {
 			}
 			throw new Error(response.status + ': ' + response.statusText);
 		})
-		.then(response => fetchPosts(() => {}, communityID))
+		.then(response => fetchPostsForCommunityID(() => {}, -1)) // TODO COMMUNITY ID
 		.catch(error => {
 			displayErrorNotification('Failed to create post', error.message);
 		});
