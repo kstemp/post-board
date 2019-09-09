@@ -2,7 +2,7 @@ export type IDType = number;
 
 export type CommentType = {
 	id: IDType;
-	postID: number;
+	post_id: number;
 	text: string;
 };
 
@@ -14,6 +14,7 @@ export type CommunityType = {
 export type PostType = {
 	id: IDType;
 	text: string;
+	community_id: IDType;
 };
 
 export type EntityTypeEnum = 'community' | 'post' | 'comment';

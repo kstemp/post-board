@@ -36,7 +36,7 @@ class Post extends React.Component<PostProps, PostStateProps> {
 	};
 
 	render() {
-		//	console.log(this.props.post);
+		console.log('COMM ID = ', this.props.post.community_id);
 		return (
 			<div className={`${baseClassName}`}>
 				<div className={`${baseClassName}__header`}>

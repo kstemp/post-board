@@ -8,7 +8,6 @@ import {
 
 import PostCreator from './components/PostCreator/PostCreator';
 import PostList from './components/PostList/PostList';
-import CommunityList from './components/CommunityList/CommunityList';
 import Button from './components/Button/Button';
 
 import { Provider } from 'react-redux';
@@ -30,7 +29,7 @@ type TParams = { id: string };
 
 const CommunityRouter = ({ match }: RouteComponentProps<TParams>) => {
 	return (
-		<div className={`${baseClassName}__body`}>
+		<div>
 			<PostCreator />
 			<PostList
 				location={'temp'}
@@ -55,27 +54,36 @@ class App extends React.Component<AppProps> {
 				<div className={baseClassName}>
 					<ToastContainer />
 					<header className={`${baseClassName}__header`}>
-						post-board v.0.1 (dev)
-						<CommunityList />
+						post-board
 						<Button label={'Create community...'} />
 					</header>
-					<Router>
-						<Route
-							exact
-							path='/community'
-							render={() => {
-								return (
-									<div>
-										You are not subscribed to any community.
-									</div>
-								);
-							}}
-						/>
-						<Route
-							path='/community/:id'
-							component={CommunityRouter}
-						/>
-					</Router>
+					<div className={`${baseClassName}__body`}>
+						<Router>
+							<Route
+								exact
+								path='/'
+								render={() => {
+									return <div>Home page.</div>;
+								}}
+							/>
+							<Route
+								exact
+								path='/community'
+								render={() => {
+									return (
+										<div>
+											You need to specifiy community ID,
+											as in '/community/12345'
+										</div>
+									);
+								}}
+							/>
+							<Route
+								path='/community/:id'
+								component={CommunityRouter}
+							/>
+						</Router>
+					</div>
 				</div>
 			</Provider>
 		);
