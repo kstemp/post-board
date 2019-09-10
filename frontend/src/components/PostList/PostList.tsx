@@ -45,7 +45,7 @@ class PostList extends React.Component<Props, State> {
 	}
 
 	render() {
-		console.log('COMM ID is here ', this.props.communityID);
+		//	console.log('COMM ID is here ', this.props.communityID);
 		return (
 			<div className={baseClassName}>
 				{this.state.isLoadingPosts ? (

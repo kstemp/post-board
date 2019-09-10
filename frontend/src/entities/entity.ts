@@ -42,7 +42,7 @@ export const fetchEntityAndPlaceInStore = (
 				callbackNotifyLoading(false);
 			}
 			return displayErrorNotification(
-				`Failed to fetch resource of type \'${entityType}\'`,
+				`Failed to fetch resource of type '${entityType}'`,
 				error.message
 			);
 		});

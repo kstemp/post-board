@@ -3,7 +3,7 @@ import React from 'react';
 import CommentList from '../CommentList/CommentList';
 import Button from '../Button/Button';
 
-import { PostType, CommentType, CommunityType } from '../../entities/types';
+import { PostType, CommentType } from '../../entities/types';
 
 import './Post.scss';
 
@@ -37,11 +37,12 @@ class Post extends React.Component<Props, State> {
 	};
 
 	render() {
+		//	console.log(this.props.post);
 		return (
 			<div className={`${baseClassName}`}>
 				<div className={`${baseClassName}__header`}>
 					<span className={`${baseClassName}__header-user`}>
-						<b>community name</b>
+						<b>CID: {this.props.post.community_id}</b>
 						<a href='/community/2'>#{this.props.post.id}</a>
 					</span>
 					<span className={`${baseClassName}__header-time`}>

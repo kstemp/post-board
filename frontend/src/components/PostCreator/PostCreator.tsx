@@ -42,7 +42,7 @@ class PostCreator extends React.Component<Props, State> {
 		createPost(
 			(this.postTextField.current as any).getValue(),
 			parseInt(this.props.match.params.communityID)
-		); // TODO get rid of as any...
+		); // TODO get rid of 'as any'
 	};
 
 	fieldChanged = (isValid: boolean) => {

@@ -3,8 +3,6 @@ import './TextArea.scss';
 
 const string = require('../../util/string');
 
-const baseClassName = 'text-area';
-
 export interface OwnProps {
 	className?: string;
 	emptyText?: string;
@@ -71,6 +69,7 @@ class TextArea extends React.Component<OwnProps, State> {
 					onBlur: this.switchMode
 			  }
 			: {
+					readOnly: true,
 					onFocus: this.switchMode,
 					value: string.isEmpty(this.state.value)
 						? this.props.emptyText
