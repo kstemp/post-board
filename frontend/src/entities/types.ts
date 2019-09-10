@@ -22,24 +22,8 @@ export type PostType = {
 
 export type EntityTypeEnum = 'post' | 'comment';
 
-export type ReducerActionType = {
-	type: string;
-	data: any;
-};
-
-export type SetEntitiesActionDataType = {
-	entityType: EntityTypeEnum;
-	parentID?: IDType;
-	entities: CommunityType | PostType | CommentType;
-};
-
-export type SetKeycloaksActionDataType = {
-	keycloak: KeycloakInstance | null;
-};
-
-export type ReducerStateType = {
+export interface ReducerStateType {
 	post: PostType[];
 	comment: { [postID: number]: CommentType[] };
-	community_id: IDType;
 	keycloak: KeycloakInstance | null;
-};
+}

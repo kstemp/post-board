@@ -1,45 +1,39 @@
 import { ACTION_SET_ENTITIES, ACTION_SET_KEYCLOAK } from './actions';
 
-import { ReducerStateType, SetEntitiesActionDataType } from './types';
-import { KeycloakInstance } from 'keycloak-js';
-import { ReducerActionType } from './types';
+import { TAction } from './actions';
+
+import { ReducerStateType } from './types';
 
 const initialState = {
 	post: [],
 	comment: {},
-	community_id: -1,
 	keycloak: null
 };
 
-// TODO this is a horrible typing mess
-// FIX *** THIS *** SHIT
-export const reducer = (
-	state: ReducerStateType = initialState,
-	action: ReducerActionType
-) => {
+const reducer = (state: ReducerStateType = initialState, action: TAction) => {
 	switch (action.type) {
 		case ACTION_SET_ENTITIES: {
-			const data = action.data as SetEntitiesActionDataType;
-			return data.parentID
+			return action.data.parentID
 				? {
 						...state,
-						[data.entityType]: {
-							...state[data.entityType],
-							[data.parentID]: data.entities
+						[action.data.entityType]: {
+							...state[action.data.entityType],
+							[action.data.parentID]: action.data.entities
 						}
 				  }
 				: {
 						...state,
-						[data.entityType]: data.entities
+						[action.data.entityType]: action.data.entities
 				  };
 		}
-
 		case ACTION_SET_KEYCLOAK:
 			return {
 				...state,
-				keycloak: action.data as KeycloakInstance
+				keycloak: action.keycloak
 			};
 		default:
 			return state;
 	}
 };
+
+export default reducer;
