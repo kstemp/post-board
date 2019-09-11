@@ -25,5 +25,5 @@ export type EntityTypeEnum = 'post' | 'comment';
 export interface ReducerStateType {
 	post: PostType[];
 	comment: { [postID: number]: CommentType[] };
-	keycloak: KeycloakInstance | null;
+	accessToken: string;
 }

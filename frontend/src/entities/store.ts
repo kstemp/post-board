@@ -4,4 +4,8 @@ import reducer from './reducer';
 
 const store = createStore(reducer, composeWithDevTools());
 
+store.subscribe(() =>
+	localStorage.setItem('accessToken', store.getState().accessToken)
+);
+
 export default store;

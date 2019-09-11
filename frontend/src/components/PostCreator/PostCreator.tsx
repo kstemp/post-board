@@ -54,6 +54,7 @@ class PostCreator extends React.Component<Props, State> {
 					ref={this.postTextField}
 					placeholder={'Post text goes here'}
 					onChange={this.fieldChanged}
+					required
 				/>
 				<Button
 					fill

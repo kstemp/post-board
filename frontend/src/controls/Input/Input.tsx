@@ -5,6 +5,7 @@ import './Input.scss';
 const baseClassName = 'pb-input';
 
 interface OwnProps {
+	required?: boolean;
 	placeholder?: string;
 	type?: 'text' | 'password';
 	onChange?: (arg0: React.ChangeEvent<HTMLInputElement>) => void;
@@ -33,6 +34,7 @@ class Input extends React.Component<OwnProps> {
 				className={baseClassName}
 				placeholder={this.props.placeholder}
 				type={this.props.type}
+				required={this.props.required}
 				onChange={this.onChange}
 			/>
 		);

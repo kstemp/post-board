@@ -4,7 +4,6 @@ import { CommentType } from '../../entities/types';
 
 import './Comment.scss';
 import { Link } from 'react-router-dom';
-import Button from '../../controls/Button/Button';
 
 const baseClassName = 'comment';
 

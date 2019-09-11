@@ -5,11 +5,9 @@ import {
 	BrowserRouter as Router,
 	Route,
 	RouteComponentProps,
-	Switch,
-	Link
+	Switch
 } from 'react-router-dom';
 import LoginPage from './components/LoginPage/LoginPage';
-import Button from './controls/Button/Button';
 import Page from './components/Page/Page';
 import HomePage from './components/HomePage/HomePage';
 

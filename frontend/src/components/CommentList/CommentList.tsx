@@ -29,6 +29,7 @@ type Props = OwnProps & StateProps;
 
 interface State {
 	isLoadingComments: boolean;
+	isValid: boolean;
 }
 
 class CommentList extends React.Component<Props, State> {
@@ -40,7 +41,8 @@ class CommentList extends React.Component<Props, State> {
 		this.commentTextInput = React.createRef();
 
 		this.state = {
-			isLoadingComments: false
+			isLoadingComments: false,
+			isValid: false
 		};
 	}
 
@@ -51,6 +53,12 @@ class CommentList extends React.Component<Props, State> {
 	setIsLoadingComments = (isLoadingComments: boolean = true) => {
 		this.setState({
 			isLoadingComments: isLoadingComments
+		});
+	};
+
+	fieldChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
+		this.setState({
+			isValid: event.target.validity.valid
 		});
 	};
 
@@ -67,10 +75,17 @@ class CommentList extends React.Component<Props, State> {
 				{
 					<div className={`${baseClassName}__new-comment`}>
 						<Input
+							required
 							placeholder={'Comment text goes here...'}
 							ref={this.commentTextInput}
+							onChange={this.fieldChanged}
 						/>
-						<Button label={'Send'} onClick={this.createComment} />
+						<Button
+							fill
+							label={'Send'}
+							onClick={this.createComment}
+							disabled={!this.state.isValid}
+						/>
 					</div>
 				}
 				{this.state.isLoadingComments ? (

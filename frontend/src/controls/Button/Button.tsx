@@ -15,8 +15,11 @@ interface OwnProps {
 // TODO getClassNames...
 class Button extends React.Component<OwnProps> {
 	render() {
-		let className = `${baseClassName} ${this.props.fill &&
-			`${baseClassName}--fill`}`;
+		let className = baseClassName;
+
+		if (this.props.fill) {
+			className += ` ${baseClassName}--fill`;
+		}
 
 		return (
 			<button
