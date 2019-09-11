@@ -3,11 +3,11 @@ import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 
 import Button from '../../controls/Button/Button';
-import TextArea from '../../controls/TextArea/TextArea';
 
 import { createPost } from '../../entities/posts';
 
 import './PostCreator.scss';
+import Input from '../../controls/Input/Input';
 
 const baseClassName = 'post-creator';
 
@@ -21,7 +21,7 @@ type RouteProps = RouteComponentProps<{ communityID: string }>;
 type Props = RouteProps;
 
 class PostCreator extends React.Component<Props, State> {
-	private postTextField: React.RefObject<TextArea>;
+	private postTextField: React.RefObject<Input>;
 
 	constructor(props: Props) {
 		super(props);
@@ -30,24 +30,19 @@ class PostCreator extends React.Component<Props, State> {
 
 		this.state = {
 			isInCreationMode: false,
-			isValid: true
+			isValid: false
 		};
 	}
-
-	componentDidMount() {
-		this.fieldChanged(false); // TODO this is to update validity initially, figure out a better method
-	}
-
 	createPost = () => {
 		createPost(
-			(this.postTextField.current as any).getValue(),
+			(this.postTextField.current as any).value,
 			parseInt(this.props.match.params.communityID)
 		); // TODO get rid of 'as any'
 	};
 
-	fieldChanged = (isValid: boolean) => {
+	fieldChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
 		this.setState({
-			isValid: isValid
+			isValid: event.target.validity.valid
 		});
 	};
 
@@ -55,15 +50,11 @@ class PostCreator extends React.Component<Props, State> {
 		return (
 			<div className={baseClassName}>
 				<p>Create a post: </p>
-				<TextArea
-					isMultiLine={true} // TODO change to support just multiline
-					className={`${baseClassName}__input-field`}
+				<Input
 					ref={this.postTextField}
-					emptyText={'Post text goes here...'}
+					placeholder={'Post text goes here'}
 					onChange={this.fieldChanged}
-					required
 				/>
-				<p>Hint: tag a previous post by using e.g. '#111222'</p>
 				<Button
 					fill
 					label={'Post'}

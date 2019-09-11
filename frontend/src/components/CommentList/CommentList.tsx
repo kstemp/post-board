@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Button from '../../controls/Button/Button';
 import Comment from '../Comment/Comment';
-import TextArea from '../../controls/TextArea/TextArea';
 
 import { IDType, CommentType, ReducerStateType } from '../../entities/types';
 
@@ -14,6 +13,7 @@ import {
 import LoadingSpinner from '../../controls/LoadingSpinner/LoadingSpinner';
 
 import './CommentList.scss';
+import Input from '../../controls/Input/Input';
 
 const baseClassName = 'comment-list';
 
@@ -32,7 +32,7 @@ interface State {
 }
 
 class CommentList extends React.Component<Props, State> {
-	private commentTextInput: React.RefObject<TextArea>;
+	private commentTextInput: React.RefObject<Input>;
 
 	constructor(props: Props) {
 		super(props);
@@ -57,7 +57,7 @@ class CommentList extends React.Component<Props, State> {
 	createComment = () => {
 		createCommentForPostID(
 			this.props.postID,
-			(this.commentTextInput as any).current.getValue() // TODO this is an ugly hack...
+			(this.commentTextInput as any).current.value // TODO this is an ugly hack...
 		);
 	};
 
@@ -66,8 +66,8 @@ class CommentList extends React.Component<Props, State> {
 			<div className={baseClassName}>
 				{
 					<div className={`${baseClassName}__new-comment`}>
-						<TextArea
-							emptyText={'Comment text goes here'}
+						<Input
+							placeholder={'Comment text goes here...'}
 							ref={this.commentTextInput}
 						/>
 						<Button label={'Send'} onClick={this.createComment} />
