@@ -42,8 +42,7 @@ export const fetchEntityAndPlaceInStore = (
 				callbackNotifyLoading(false);
 			}
 			return displayErrorNotification(
-				`Failed to fetch resource of type '${entityType}'`,
-				error.message
+				`Failed to fetch resource of type '${entityType}': ${error.message}`
 			);
 		});
 };
@@ -72,6 +71,6 @@ export const createEntity = (
 			return; // TODO auto-fetch after succesful call
 		}) //fetchPostsForCommunityID(communityID, () => {})}) // TODO COMMUNITY ID
 		.catch(error => {
-			displayErrorNotification('Failed to create post', error.message); // TODO entity and not post
+			displayErrorNotification(`Failed to create post: ${error.message}`); // TODO entity and not post
 		});
 };

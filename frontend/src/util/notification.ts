@@ -1,7 +1,7 @@
 import { toast } from 'react-toastify';
 
-export const displayErrorNotification = (title: string, message: string) => {
-	toast.error(`${title} - ${message}`, {
+export const displayErrorNotification = (message: string) => {
+	toast.error(message, {
 		autoClose: 3000,
 		hideProgressBar: true,
 		closeButton: false

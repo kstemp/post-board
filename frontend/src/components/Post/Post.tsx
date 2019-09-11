@@ -1,7 +1,7 @@
 import React from 'react';
 
 import CommentList from '../CommentList/CommentList';
-import Button from '../Button/Button';
+import Button from '../../controls/Button/Button';
 
 import { PostType, CommentType } from '../../entities/types';
 
@@ -37,7 +37,6 @@ class Post extends React.Component<Props, State> {
 	};
 
 	render() {
-		//	console.log(this.props.post);
 		return (
 			<div className={`${baseClassName}`}>
 				<div className={`${baseClassName}__header`}>
@@ -59,7 +58,7 @@ class Post extends React.Component<Props, State> {
 						label={'Comment'}
 						onClick={this.toggleShowComments}
 					/>
-					<Button icon={'language'} label={'Tag'} />
+					<Button icon={'link'} label={'Link'} />
 				</div>
 				{this.state.showComments && (
 					<CommentList postID={this.props.post.id} />

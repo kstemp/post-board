@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Button from '../Button/Button';
+import Button from '../../controls/Button/Button';
 import Comment from '../Comment/Comment';
-import TextArea from '../TextArea/TextArea';
+import TextArea from '../../controls/TextArea/TextArea';
 
 import { IDType, CommentType, ReducerStateType } from '../../entities/types';
 
@@ -11,13 +11,13 @@ import {
 	fetchCommentsForPostID // TODO use this one
 } from '../../entities/posts';
 
-import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
+import LoadingSpinner from '../../controls/LoadingSpinner/LoadingSpinner';
 
 import './CommentList.scss';
 
 const baseClassName = 'comment-list';
 
-export interface OwnProps {
+interface OwnProps {
 	postID: IDType;
 }
 
@@ -64,13 +64,15 @@ class CommentList extends React.Component<Props, State> {
 	render() {
 		return (
 			<div className={baseClassName}>
-				<div className={`${baseClassName}__new-comment`}>
-					<TextArea
-						emptyText={'Comment text goes here'}
-						ref={this.commentTextInput}
-					/>
-					<Button label={'Send'} onClick={this.createComment} />
-				</div>
+				{
+					<div className={`${baseClassName}__new-comment`}>
+						<TextArea
+							emptyText={'Comment text goes here'}
+							ref={this.commentTextInput}
+						/>
+						<Button label={'Send'} onClick={this.createComment} />
+					</div>
+				}
 				{this.state.isLoadingComments ? (
 					<LoadingSpinner text={'Loading comments...'} />
 				) : this.props.comments.length ? (
@@ -87,7 +89,7 @@ class CommentList extends React.Component<Props, State> {
 
 const mapStateToProps = (state: ReducerStateType, ownProps: OwnProps) => {
 	return {
-		comments: state.comment[ownProps.postID] || [] // TODO is this '||' really a decent solution here?
+		comments: state.comment[ownProps.postID] || [] // TODO is this '||' really a decent solution here?,
 	};
 };
 

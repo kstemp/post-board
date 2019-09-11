@@ -1,0 +1,75 @@
+@import '../variables.scss';
+
+.pb-button {
+	min-width: 8.4375rem;
+	height: $form-field-height;
+
+	border: 0;
+
+	color: black;
+	background: white;
+
+	transition: all 0.2s ease 0s;
+
+	&--fill {
+		color: white;
+		background-color: $color-base;
+	}
+
+	i {
+		font-size: 18px;
+		vertical-align: middle;
+	}
+
+	&:disabled {
+		background: $color-disabled;
+		border-color: $color-disabled;
+		transition: all 0.2s ease 0s;
+	}
+
+	&:hover:enabled {
+		color: $color-label;
+		background: $color-hover;
+		border-color: $color-hover;
+		transition: all 0.2s ease 0s;
+	}
+
+	&:focus {
+		outline: none;
+	}
+}
+
+/*
+
+.pb-button {
+	min-width: 8.4375rem;
+	height: $form-field-height;
+
+	color: $color-label;
+	text-decoration: none;
+	background: $color-base;
+
+	border: 0;
+
+	transition: all 0.2s ease 0s;
+
+	i {
+		font-size: 18px;
+		vertical-align: middle;
+	}
+	&:disabled {
+		background: $color-disabled;
+		border-color: $color-disabled;
+		transition: all 0.2s ease 0s;
+	}
+
+	&:hover:enabled {
+		color: $color-label;
+		background: $color-hover;
+		border-color: $color-hover;
+		transition: all 0.2s ease 0s;
+	}
+}
+
+
+*/

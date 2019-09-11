@@ -1,6 +1,6 @@
 import { isEmpty, containsOnlySpaces, isEmptyOrOnlySpaces } from '../string';
 
-const chai = require('chai');
+const chai = require('../../controls/Button/node_modules/chai');
 
 describe("The 'isEmpty' function", () => {
 	test('Should work for a variety of inputs', () => {

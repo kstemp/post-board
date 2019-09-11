@@ -1,9 +1,9 @@
 import React from 'react';
-import Enzyme from 'enzyme';
-import { mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import Enzyme from '../../controls/Button/node_modules/enzyme';
+import { mount } from '../../controls/Button/node_modules/enzyme';
+import Adapter from '../../controls/Button/node_modules/enzyme-adapter-react-16';
 
-const chai = require('chai');
+const chai = require('../../controls/Button/node_modules/chai');
 
 import Dropdown from './Dropdown';
 

@@ -1,0 +1,16 @@
+.login-page {
+	display: block;
+
+	> * {
+		display: block;
+		width: 100%;
+	}
+
+	.pb-input {
+		margin-bottom: 0.1rem;
+	}
+
+	.pb-button {
+		margin-top: 1rem;
+	}
+}

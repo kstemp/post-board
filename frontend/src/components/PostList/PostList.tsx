@@ -4,7 +4,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 
 import Post from '../Post/Post';
 import { PostType, ReducerStateType, IDType } from '../../entities/types';
-import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
+import LoadingSpinner from '../../controls/LoadingSpinner/LoadingSpinner';
 
 import { fetchPostsForCommunityID } from '../../entities/posts';
 

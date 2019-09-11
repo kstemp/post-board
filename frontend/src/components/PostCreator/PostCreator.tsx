@@ -2,8 +2,8 @@ import React from 'react';
 
 import { RouteComponentProps, withRouter } from 'react-router';
 
-import Button from '../Button/Button';
-import TextArea from '../TextArea/TextArea';
+import Button from '../../controls/Button/Button';
+import TextArea from '../../controls/TextArea/TextArea';
 
 import { createPost } from '../../entities/posts';
 
@@ -65,6 +65,7 @@ class PostCreator extends React.Component<Props, State> {
 				/>
 				<p>Hint: tag a previous post by using e.g. '#111222'</p>
 				<Button
+					fill
 					label={'Post'}
 					disabled={!this.state.isValid}
 					onClick={this.createPost}

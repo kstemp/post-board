@@ -1,19 +1,9 @@
-@import './components/rcl-variables.scss';
+@import './controls/variables.scss';
 
 .material-icons.md-18 {
 	font-size: 18px;
-	color: $base-color;
+	color: $color-base;
 }
 
 .App {
-	&__body {
-		width: 100%;
-
-		> * {
-			width: 450px;
-			display: block;
-			margin-left: auto;
-			margin-right: auto;
-		}
-	}
 }

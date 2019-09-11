@@ -5,8 +5,13 @@ import {
 	BrowserRouter as Router,
 	Route,
 	RouteComponentProps,
-	Switch
+	Switch,
+	Link
 } from 'react-router-dom';
+import LoginPage from './components/LoginPage/LoginPage';
+import Button from './controls/Button/Button';
+import Page from './components/Page/Page';
+import HomePage from './components/HomePage/HomePage';
 
 interface MatchParams {
 	communityID: string;
@@ -14,10 +19,10 @@ interface MatchParams {
 
 // TODO just pass the CommunityID as prop ffs, we don't need this withRouter extravaganza
 const CommunityRouter = ({ match }: RouteComponentProps<MatchParams>) => (
-	<div>
+	<Page>
 		<PostCreator />
 		<PostList />
-	</div>
+	</Page>
 );
 
 class MainRouter extends React.Component {
@@ -27,22 +32,39 @@ class MainRouter extends React.Component {
 				<Switch>
 					<Route
 						exact
-						path='/'
-						render={() => <div>Home page.</div>}
+						path={'/'}
+						render={() => (
+							<Page>
+								<HomePage />
+							</Page>
+						)}
+					/>
+					<Route
+						exact
+						path={'/login'}
+						render={() => (
+							<Page>
+								<LoginPage />
+							</Page>
+						)}
 					/>
 					<Route
 						exact
 						path='/community'
 						render={() => (
-							<div>
+							<Page>
 								You need to specify community ID, as in
 								'/community/12345'
-							</div>
+							</Page>
 						)}
 					/>
 					<Route
 						path='/community/:communityID'
 						component={CommunityRouter}
+					/>
+					<Route
+						path='/user/:communityID'
+						render={() => <Page>User page goes here.</Page>}
 					/>
 				</Switch>
 			</Router>

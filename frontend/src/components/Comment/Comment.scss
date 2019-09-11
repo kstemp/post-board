@@ -1,8 +1,6 @@
 .comment {
 	display: block;
 	width: fit-content;
-	background-color: #f5f5f5;
-	border-radius: 5px;
 
 	padding-left: 5px;
 	padding-right: 5px;
@@ -10,9 +8,21 @@
 	margin-top: 5px;
 	margin-bottom: 5px;
 
+	a {
+		text-decoration: none;
+
+		&:hover {
+			color: blue;
+		}
+	}
+
 	&-user-name {
 		font-weight: 500;
-
 		margin-right: 5px;
+	}
+
+	&-text {
+		position: relative;
+		background: #f0f0f0;
 	}
 }
