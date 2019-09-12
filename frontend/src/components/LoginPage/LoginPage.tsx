@@ -3,8 +3,13 @@ import Button from '../../controls/Button/Button';
 
 import Input from '../../controls/Input/Input';
 
+import { Dispatch } from 'redux';
+
 import './LoginPage.scss';
 import { keycloakLogin } from '../../keycloak';
+import { displayErrorNotification } from '../../util/notification';
+import { connect } from 'react-redux';
+import { TKeycloakData } from '../../entities/types';
 
 const baseClassName = 'login-page';
 
@@ -12,15 +17,21 @@ interface OwnProps {
 	redirectTo?: string;
 }
 
+interface StateProps {
+	setKeycloakData: (arg0: TKeycloakData) => void;
+}
+
 interface State {
 	isValid: boolean;
 }
 
-class LoginPage extends React.Component<OwnProps, State> {
+type Props = OwnProps & StateProps;
+
+class LoginPage extends React.Component<Props, State> {
 	private refInputLogin: React.RefObject<Input>;
 	private refInputPassword: React.RefObject<Input>;
 
-	constructor(props: OwnProps) {
+	constructor(props: Props) {
 		super(props);
 
 		this.refInputLogin = React.createRef();
@@ -31,7 +42,16 @@ class LoginPage extends React.Component<OwnProps, State> {
 		keycloakLogin(
 			(this.refInputLogin as any).current.value,
 			(this.refInputPassword as any).current.value
-		);
+		)
+			.then((data: any) =>
+				this.props.setKeycloakData({
+					accessToken: data.access_token,
+					refreshToken: data.refresh_token
+				})
+			)
+			.catch(errorMessage =>
+				displayErrorNotification(`Login failed - ${errorMessage}`)
+			);
 	};
 
 	render() {
@@ -50,4 +70,17 @@ class LoginPage extends React.Component<OwnProps, State> {
 	}
 }
 
-export default LoginPage;
+const mapDispatchToProps = (dispatch: Dispatch) => {
+	return {
+		setKeycloakData: (keycloakData: TKeycloakData) =>
+			dispatch({
+				type: 'ACTION_SET_KEYCLOAK_DATA',
+				keycloakData: keycloakData
+			})
+	};
+};
+
+export default connect(
+	null,
+	mapDispatchToProps
+)(LoginPage);

@@ -20,10 +20,15 @@ export type PostType = {
 	community_id: IDType;
 };
 
+export interface TKeycloakData {
+	accessToken: string;
+	refreshToken: string;
+}
+
 export type EntityTypeEnum = 'post' | 'comment';
 
 export interface ReducerStateType {
 	post: PostType[];
 	comment: { [postID: number]: CommentType[] };
-	accessToken: string;
+	keycloakData: TKeycloakData;
 }

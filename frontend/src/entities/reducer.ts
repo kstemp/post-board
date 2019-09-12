@@ -1,4 +1,4 @@
-import { ACTION_SET_ENTITIES, ACTION_SET_ACCESS_TOKEN } from './actions';
+import { ACTION_SET_ENTITIES, ACTION_SET_KEYCLOAK_DATA } from './actions';
 
 import { TAction } from './actions';
 
@@ -7,7 +7,10 @@ import { ReducerStateType } from './types';
 const initialState = {
 	post: [],
 	comment: {},
-	accessToken: sessionStorage.getItem('accessToken') || ''
+	keycloakData: {
+		accessToken: sessionStorage.getItem('accessToken') || '',
+		refreshToken: sessionStorage.getItem('refreshToken') || ''
+	}
 };
 
 const reducer = (state: ReducerStateType = initialState, action: TAction) => {
@@ -26,10 +29,10 @@ const reducer = (state: ReducerStateType = initialState, action: TAction) => {
 						[action.data.entityType]: action.data.entities
 				  };
 		}
-		case ACTION_SET_ACCESS_TOKEN:
+		case ACTION_SET_KEYCLOAK_DATA:
 			return {
 				...state,
-				accessToken: action.accessToken
+				keycloakData: action.keycloakData
 			};
 		default:
 			return state;
