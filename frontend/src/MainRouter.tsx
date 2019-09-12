@@ -10,6 +10,7 @@ import {
 import LoginPage from './components/LoginPage/LoginPage';
 import Page from './components/Page/Page';
 import HomePage from './components/HomePage/HomePage';
+import RegisterPage from './components/RegisterPage/RegisterPage';
 
 interface MatchParams {
 	communityID: string;
@@ -43,6 +44,15 @@ class MainRouter extends React.Component {
 						render={() => (
 							<Page hideLoginButton>
 								<LoginPage redirectTo={'/'} />
+							</Page>
+						)}
+					/>
+					<Route
+						exact
+						path={'/register'}
+						render={() => (
+							<Page hideLoginButton>
+								<RegisterPage redirectTo={'/'} />
 							</Page>
 						)}
 					/>

@@ -1,31 +1,23 @@
 import React from 'react';
 
-import { Dispatch } from 'redux';
-
 import { keycloakLogin } from '../../keycloak';
 import { displayErrorNotification } from '../../util/notification';
-import { connect } from 'react-redux';
 import { TKeycloakData } from '../../entities/types';
-import { Link } from 'react-router-dom';
 import FormPage from '../FormPage/FormPage';
 
-const baseClassName = 'login-page';
+const baseClassName = 'register-page';
 
 interface OwnProps {
 	redirectTo: string;
-}
-
-interface StateProps {
-	setKeycloakData: (arg0: TKeycloakData) => void;
 }
 
 interface State {
 	isValid: boolean;
 }
 
-type Props = OwnProps & StateProps;
+type Props = OwnProps;
 
-class LoginPage extends React.Component<Props, State> {
+class RegisterPage extends React.Component<Props, State> {
 	private refFormPage: React.RefObject<FormPage>;
 
 	constructor(props: Props) {
@@ -34,7 +26,7 @@ class LoginPage extends React.Component<Props, State> {
 		this.refFormPage = React.createRef();
 	}
 
-	login = () => {
+	register = () => {
 		const login = (this.refFormPage as any).current.valuesByID['login'];
 		const password = (this.refFormPage as any).current.valuesByID[
 			'password'
@@ -62,42 +54,27 @@ class LoginPage extends React.Component<Props, State> {
 			<div className={baseClassName}>
 				<FormPage
 					ref={this.refFormPage}
-					title={'Login to post-board'}
+					title={'Register in post-board'}
 					fields={[
 						{
 							id: 'login',
-							placeholder: 'Login',
-							required: true
+							placeholder: 'Login'
+						},
+						{
+							id: 'email',
+							placeholder: 'E-mail'
 						},
 						{
 							id: 'password',
 							placeholder: 'Password',
-							password: true,
-							required: true
+							password: true
 						}
 					]}
-					buttonLabel={'Login'}
-					onFormSubmit={this.login}
+					buttonLabel={'Register'}
+					onFormSubmit={this.register}
 				/>
-				<p>
-					No account? <Link to={'/register'}>Register here</Link>!
-				</p>
 			</div>
 		);
 	}
 }
-
-const mapDispatchToProps = (dispatch: Dispatch) => {
-	return {
-		setKeycloakData: (keycloakData: TKeycloakData) =>
-			dispatch({
-				type: 'ACTION_SET_KEYCLOAK_DATA',
-				keycloakData: keycloakData
-			})
-	};
-};
-
-export default connect(
-	null,
-	mapDispatchToProps
-)(LoginPage);
+export default RegisterPage;
