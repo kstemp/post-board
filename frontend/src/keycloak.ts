@@ -1,7 +1,40 @@
-import { KEYCLOAK_URL } from './Config';
-import { displayErrorNotification } from './util/notification';
+import { BACKEND_URL } from './Config';
 import store from './entities/store';
+import { displayErrorNotification } from './util/notification';
 
+export const keycloakLogin = (login: string, password: string) => {
+	const fetchParams = {
+		method: 'POST',
+		headers: new Headers({ 'Content-Type': 'application/json' }),
+		body: JSON.stringify({
+			login: login,
+			password: password
+		})
+	};
+	fetch(`${BACKEND_URL}/login`, fetchParams)
+		.then(response => {
+			console.log(response);
+			if (!response.ok) {
+				throw response;
+			}
+			return response.json();
+		})
+		.then(json => {
+			console.log(json);
+			return store.dispatch({
+				type: 'ACTION_SET_ACCESS_TOKEN',
+				accessToken: json.access_token
+			});
+		})
+
+		.catch(error => {
+			console.log(error);
+			return displayErrorNotification(
+				`Login failed - ${error.status}: ${error.statusText}`
+			);
+		});
+};
+/*
 export const keycloakLogin = (login: string, password: string) => {
 	const body = new URLSearchParams();
 	body.append('username', login);
@@ -41,3 +74,4 @@ export const keycloakLogin = (login: string, password: string) => {
 				)
 		);
 };
+*/
