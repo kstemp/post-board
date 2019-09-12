@@ -3,15 +3,14 @@ import Button from '../../controls/Button/Button';
 
 import { connect } from 'react-redux';
 
-import { withRouter } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 import './Page.scss';
-import { Link, Redirect } from 'react-router-dom';
 import { ReducerStateType, TKeycloakData } from '../../entities/types';
-import { isEmpty } from '../../util/string';
-import { keycloakLogin, keycloakLogout } from '../../keycloak';
+import { keycloakLogout, keycloakGetUserData } from '../../keycloak';
 import { displayErrorNotification } from '../../util/notification';
 import { Dispatch } from 'redux';
+import { string } from 'prop-types';
 
 const baseClassName = 'page';
 
@@ -20,12 +19,20 @@ interface OwnProps {
 }
 
 interface StateProps {
+	login: string;
 	keycloakData: TKeycloakData;
 	isLoggedIn: boolean;
 	setKeycloakData: (arg0: TKeycloakData) => void;
 }
 
 class Page extends React.Component<OwnProps & StateProps> {
+	componentDidMount() {
+		if (this.props.isLoggedIn) {
+			keycloakGetUserData(this.props.keycloakData)
+				.then(data => console.log(data))
+				.catch(error => console.log(error));
+		}
+	}
 	// TODO remove user data from state
 	logout = () => {
 		keycloakLogout(this.props.keycloakData)
@@ -44,19 +51,26 @@ class Page extends React.Component<OwnProps & StateProps> {
 		return (
 			<div className={baseClassName}>
 				<header className={`${baseClassName}__header`}>
-					post-board
-					{!this.props.hideLoginButton &&
-						(this.props.isLoggedIn ? (
-							<Button
-								fill
-								label={'Logout'}
-								onClick={this.logout}
-							/>
-						) : (
-							<Link to={'/login'}>
-								<Button fill label={'Login'} />
-							</Link>
-						))}
+					<span>post-board</span>
+					<div className={`${baseClassName}__header-container`}>
+						{this.props.isLoggedIn && (
+							<span id={'user-name'}>
+								logged in as: {this.props.login}
+							</span>
+						)}
+						{!this.props.hideLoginButton &&
+							(this.props.isLoggedIn ? (
+								<Button
+									fill
+									label={'Logout'}
+									onClick={this.logout}
+								/>
+							) : (
+								<NavLink to={'/login'}>
+									<Button fill label={'Login'} />
+								</NavLink>
+							))}
+					</div>
 				</header>
 				<div className={`${baseClassName}__body`}>
 					{this.props.children}
@@ -69,7 +83,8 @@ class Page extends React.Component<OwnProps & StateProps> {
 const mapStateToProps = (state: ReducerStateType) => {
 	return {
 		isLoggedIn: !!state.keycloakData.accessToken,
-		keycloakData: state.keycloakData
+		keycloakData: state.keycloakData,
+		login: state.login
 	};
 };
 

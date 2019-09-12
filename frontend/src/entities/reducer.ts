@@ -10,7 +10,8 @@ const initialState = {
 	keycloakData: {
 		accessToken: sessionStorage.getItem('accessToken') || '',
 		refreshToken: sessionStorage.getItem('refreshToken') || ''
-	}
+	},
+	login: ''
 };
 
 const reducer = (state: ReducerStateType = initialState, action: TAction) => {

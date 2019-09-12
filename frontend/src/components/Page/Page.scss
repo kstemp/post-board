@@ -2,9 +2,6 @@
 	&__header {
 		border-bottom: 1px solid lightgray;
 
-		font-size: 1.2em;
-		font-weight: 500;
-
 		position: fixed;
 		top: 0;
 		left: 0;
@@ -14,7 +11,12 @@
 
 		background-color: white;
 
-		a {
+		> span {
+			font-size: 1.2em;
+			font-weight: 500;
+		}
+
+		&-container {
 			float: right;
 		}
 	}

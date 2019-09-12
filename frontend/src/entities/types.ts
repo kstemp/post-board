@@ -31,4 +31,5 @@ export interface ReducerStateType {
 	post: PostType[];
 	comment: { [postID: number]: CommentType[] };
 	keycloakData: TKeycloakData;
+	login: string;
 }

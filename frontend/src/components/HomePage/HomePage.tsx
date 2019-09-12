@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import Button from '../../controls/Button/Button';
 
 import './HomePage.scss';
@@ -15,9 +15,9 @@ class HomePage extends React.Component {
 				<p>Welcome to post-board.</p>
 				<p>Sample communities:</p>
 				{SAMPLE_COMMUNITIES.map(community => (
-					<Link to={`/community/${community}`}>
+					<NavLink to={`/community/${community}`}>
 						<Button fill label={`Community ${community}`} />
-					</Link>
+					</NavLink>
 				))}
 			</div>
 		);
