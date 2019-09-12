@@ -38,6 +38,7 @@ const login = (login, password) => {
 	});
 };
 */
+
 const isTokenActive = accessToken => {
 	const body = new URLSearchParams();
 	body.append('client_id', CLIENT_NAME);

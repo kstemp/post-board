@@ -10,11 +10,12 @@ import { keycloakLogin } from '../../keycloak';
 import { displayErrorNotification } from '../../util/notification';
 import { connect } from 'react-redux';
 import { TKeycloakData } from '../../entities/types';
+import { Link } from 'react-router-dom';
 
 const baseClassName = 'login-page';
 
 interface OwnProps {
-	redirectTo?: string;
+	redirectTo: string;
 }
 
 interface StateProps {
@@ -43,12 +44,15 @@ class LoginPage extends React.Component<Props, State> {
 			(this.refInputLogin as any).current.value,
 			(this.refInputPassword as any).current.value
 		)
-			.then((data: any) =>
+			.then((data: any) => {
 				this.props.setKeycloakData({
 					accessToken: data.access_token,
 					refreshToken: data.refresh_token
-				})
-			)
+				});
+				return window.location.replace(this.props.redirectTo);
+
+				//return;
+			})
 			.catch(errorMessage =>
 				displayErrorNotification(`Login failed - ${errorMessage}`)
 			);
@@ -65,6 +69,9 @@ class LoginPage extends React.Component<Props, State> {
 					type={'password'}
 				/>
 				<Button fill label={'Login'} onClick={this.login} />
+				<p>
+					No account? <Link to={'/register'}>Register here</Link>!
+				</p>
 			</div>
 		);
 	}

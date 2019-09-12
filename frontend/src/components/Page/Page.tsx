@@ -3,12 +3,15 @@ import Button from '../../controls/Button/Button';
 
 import { connect } from 'react-redux';
 
+import { withRouter } from 'react-router-dom';
+
 import './Page.scss';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { ReducerStateType, TKeycloakData } from '../../entities/types';
 import { isEmpty } from '../../util/string';
 import { keycloakLogin, keycloakLogout } from '../../keycloak';
 import { displayErrorNotification } from '../../util/notification';
+import { Dispatch } from 'redux';
 
 const baseClassName = 'page';
 
@@ -19,13 +22,20 @@ interface OwnProps {
 interface StateProps {
 	keycloakData: TKeycloakData;
 	isLoggedIn: boolean;
+	setKeycloakData: (arg0: TKeycloakData) => void;
 }
 
 class Page extends React.Component<OwnProps & StateProps> {
 	// TODO remove user data from state
 	logout = () => {
 		keycloakLogout(this.props.keycloakData)
-			.then(() => displayErrorNotification('LOGGED OUT!'))
+			.then(() => {
+				this.props.setKeycloakData({
+					accessToken: '',
+					refreshToken: ''
+				});
+				return window.location.replace('/');
+			})
 			.catch(errorMessage =>
 				displayErrorNotification(`failed - ${errorMessage}`)
 			);
@@ -63,4 +73,17 @@ const mapStateToProps = (state: ReducerStateType) => {
 	};
 };
 
-export default connect(mapStateToProps)(Page);
+const mapDispatchToProps = (dispatch: Dispatch) => {
+	return {
+		setKeycloakData: (keycloakData: TKeycloakData) =>
+			dispatch({
+				type: 'ACTION_SET_KEYCLOAK_DATA',
+				keycloakData: keycloakData
+			})
+	};
+};
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(Page);

@@ -42,7 +42,7 @@ class MainRouter extends React.Component {
 						path={'/login'}
 						render={() => (
 							<Page hideLoginButton>
-								<LoginPage />
+								<LoginPage redirectTo={'/'} />
 							</Page>
 						)}
 					/>

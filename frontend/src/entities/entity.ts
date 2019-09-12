@@ -17,7 +17,11 @@ export const fetchEntityAndPlaceInStore = (
 	//	}
 
 	return new Promise((resolve, reject) => {
-		fetch(`${BACKEND_URL}${route}`)
+		fetch(`${BACKEND_URL}${route}`, {
+			headers: new Headers({
+				token: store.getState().keycloakData.accessToken
+			})
+		})
 			.then(response => {
 				console.log('RESPONSE ', response);
 				if (response.ok) {
@@ -27,7 +31,7 @@ export const fetchEntityAndPlaceInStore = (
 				throw new Error(response.status + ': ' + response.statusText);
 			})
 			.then(entities => {
-				console.log('ETITIES ', entities);
+				console.log('ENTITIES ', entities);
 				//if (callbackNotifyLoading) {
 				//	callbackNotifyLoading(false);
 				//}
@@ -40,17 +44,11 @@ export const fetchEntityAndPlaceInStore = (
 					}
 				});
 
-				resolve();
+				return resolve();
 			})
 			.catch(error => {
-				//	if (callbackNotifyLoading) {
-				//		callbackNotifyLoading(false);
-				//	}
-				//	return displayErrorNotification(
-				//		`Failed to fetch resource of type '${entityType}': ${error.message}`
-				//	);
 				console.log('ERROR ', error);
-				reject(error.message);
+				return reject(error.message);
 			});
 	});
 };
