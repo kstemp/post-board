@@ -1,0 +1,17 @@
+.user-page {
+	&-name-surname {
+		text-align: center;
+		font-weight: 500;
+	}
+
+	&-about-me {
+		text-align: justify;
+
+		width: 50%;
+	}
+
+	&__buttons {
+		display: flex;
+		justify-content: space-between;
+	}
+}

@@ -11,6 +11,7 @@ import LoginPage from './components/LoginPage/LoginPage';
 import Page from './components/Page/Page';
 import HomePage from './components/HomePage/HomePage';
 import RegisterPage from './components/RegisterPage/RegisterPage';
+import UserPage from './components/UserPage/UserPage';
 
 interface MatchParams {
 	communityID: string;
@@ -71,8 +72,12 @@ class MainRouter extends React.Component {
 						component={CommunityRouter}
 					/>
 					<Route
-						path='/user/:communityID'
-						render={() => <Page>User page goes here.</Page>}
+						path='/user/:userID'
+						render={() => (
+							<Page>
+								<UserPage />
+							</Page>
+						)}
 					/>
 				</Switch>
 			</Router>

@@ -4,10 +4,12 @@ const bodyParser = require('body-parser');
 const string = require('./util/string');
 const keycloak = require('./keycloak');
 const app = express();
+const db = require('./db');
+const { check, validationResult } = require('express-validator');
 
 /* UN-FUCK CORS */
 app.use(cors());
-app.options('*', cors());
+//app.options('*', cors());
 
 const community = require('./routes/community');
 const post = require('./routes/post');
@@ -22,9 +24,52 @@ app.use('/community', community);
 
 app.use('/post', post);
 
+const bcrypt = require('bcryptjs');
+
+const SALT_ROUNDS = 10;
+
+const hashPassword = plaintextPassword =>
+	new Promise(resolve =>
+		bcrypt
+			.genSalt(SALT_ROUNDS)
+			.then(salt =>
+				bcrypt
+					.hash(plaintextPassword, salt)
+					.then(password => resolve(password))
+			)
+	);
+
+app.post(
+	'/register',
+	[
+		check('login').isAlphanumeric(),
+		check('email').isEmail(),
+		check('password').isLength({ min: 8 })
+	],
+	(req, res) => {
+		const errors = validationResult(req);
+
+		if (!errors.isEmpty()) {
+			res.sendStatus(400);
+		}
+
+		hashPassword(req.body.password).then(hashedPassword => {
+			db.none(
+				'INSERT INTO users (login, email, password) VALUES ($1, $2, $3)',
+				[req.body.login, req.body.email, hashedPassword]
+			)
+				.then(() => res.sendStatus(204))
+				.catch(error => {
+					console.log(error);
+					return res.sendStatus(500);
+				});
+		});
+	}
+);
+/*
 let accessToken;
 let refreshToken;
-
+*/
 /*
 keycloak
 	.isTokenActive(

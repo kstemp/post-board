@@ -3,6 +3,7 @@
 ## CRITICAL:
 
 -   figure out why Keycloak has problems with redirect_uri
+-   DON't USE window.location.replace, use React.router instead (browser history is not updated)
 
 ## OTHER:
 

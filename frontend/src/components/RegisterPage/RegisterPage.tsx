@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { keycloakLogin } from '../../keycloak';
 import { displayErrorNotification } from '../../util/notification';
-import { TKeycloakData } from '../../entities/types';
 import FormPage from '../FormPage/FormPage';
+
+import { register } from '../../security';
 
 const baseClassName = 'register-page';
 
@@ -28,11 +28,17 @@ class RegisterPage extends React.Component<Props, State> {
 
 	register = () => {
 		const login = (this.refFormPage as any).current.valuesByID['login'];
+		const email = (this.refFormPage as any).current.valuesByID['email'];
 		const password = (this.refFormPage as any).current.valuesByID[
 			'password'
 		];
 
 		console.log('login: ', login, ' password: ', password);
+
+		register(login, email, password)
+			.then(() => window.location.replace('/login'))
+			.catch(error => displayErrorNotification(error));
+
 		/*
 		keycloakLogin(login, password)
 			.then((data: any) => {

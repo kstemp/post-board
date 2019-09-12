@@ -39,12 +39,11 @@ class FormPage extends React.Component<OwnProps> {
 					<Input
 						placeholder={field.placeholder}
 						type={field.password ? 'password' : 'text'}
-						onChange={(
-							event: React.ChangeEvent<HTMLInputElement>
-						) => {
-							this.valuesByID[field.id] = event.target.value;
-							console.log(this.valuesByID);
-						}}
+						onChange={
+							(event: React.ChangeEvent<HTMLInputElement>) =>
+								(this.valuesByID[field.id] = event.target.value)
+							//console.log(this.valuesByID);
+						}
 					/>
 				))}
 				<Button

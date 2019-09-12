@@ -5,6 +5,17 @@ const string = require('../util/string');
 const keycloak = require('../keycloak');
 
 router.get('/:communityID', (req, res) => {
+	const reqCommunityID = parseInt(req.params.communityID);
+
+	db.any('SELECT * FROM posts WHERE community_id = $1', [
+		// ORDER BY date DESC
+		reqCommunityID
+	])
+		.then(data => res.status(200).send(data))
+		.catch(error => {
+			console.log(error);
+			return res.sendStatus(500);
+		}); /*
 	//console.log(req);
 	if (!req.headers.token) {
 		return res.status(403).send('Auth token not provided');
@@ -31,7 +42,7 @@ router.get('/:communityID', (req, res) => {
 				return res.status(403).send('Auth token not active');
 			}
 		})
-		.catch(err => console.log(err));
+		.catch(err => console.log(err));*/
 });
 
 router.post('/:communityID', (req, res) => {
