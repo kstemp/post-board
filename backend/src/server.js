@@ -3,36 +3,53 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const Keycloak = require('keycloak-connect');
 const session = require('express-session');
-
+const fetch = require('node-fetch');
 const app = express();
 
-var memoryStore = new session.MemoryStore();
-var keycloak = new Keycloak({ store: memoryStore });
+/* UN-FUCK CORS */
+app.use(cors());
+app.options('*', cors());
 
-app.use(
-	session({
-		secret: 'JennyNicholson',
-		resave: false,
-		saveUninitialized: true,
-		store: memoryStore
-	})
-);
+const keycloakLogin = (login, password) => {
+	const body = new URLSearchParams();
+	body.append('username', login);
+	body.append('password', password);
+	body.append('grant_type', 'password');
+	body.append('client_id', 'post-backend');
+	body.append('client_secret', '8c34563c-ccd8-4421-ba55-080c62ca0589');
 
-app.use(keycloak.middleware());
+	const fetchParams = {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded'
+		},
+		body: body
+	};
+
+	console.log(fetchParams);
+
+	fetch(
+		`http://localhost:8080/auth/realms/post/protocol/openid-connect/token`,
+		fetchParams
+	)
+		.then(response => {
+			if (!response.ok) {
+				throw response;
+			}
+			return response.json();
+		})
+		.then(json => {
+			return console.log(json);
+		})
+		.catch(error => console.log(error));
+};
+
+keycloakLogin('julia', 'julia');
 
 const community = require('./routes/community');
 const post = require('./routes/post');
 
-app.use(cors());
 app.use(bodyParser.json());
-
-app.get('/protected', keycloak.protect(), (req, res) => {
-	res.status(200).send('notice me senpai uwu');
-});
-
-app.get('/unprotected', (req, res) => {
-	res.status(200).send("let's have shrex");
-});
 
 app.get('/', (req, res) => {
 	res.status(200).send('backend is running');

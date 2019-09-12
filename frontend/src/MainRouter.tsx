@@ -41,7 +41,7 @@ class MainRouter extends React.Component {
 						exact
 						path={'/login'}
 						render={() => (
-							<Page>
+							<Page hideLoginButton>
 								<LoginPage />
 							</Page>
 						)}

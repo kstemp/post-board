@@ -7,7 +7,7 @@ import { ReducerStateType } from './types';
 const initialState = {
 	post: [],
 	comment: {},
-	accessToken: localStorage.getItem('accessToken') || ''
+	accessToken: sessionStorage.getItem('accessToken') || ''
 };
 
 const reducer = (state: ReducerStateType = initialState, action: TAction) => {

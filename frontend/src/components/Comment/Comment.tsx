@@ -20,9 +20,7 @@ class Comment extends React.Component<CommentProps> {
 						UserName
 					</span>
 				</Link>
-				<span className={`${baseClassName}-text`}>
-					{this.props.comment.text}
-				</span>
+				{this.props.comment.text}
 			</div>
 		);
 	}

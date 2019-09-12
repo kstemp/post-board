@@ -1,5 +1,11 @@
 .comment {
 	display: block;
+
+	word-break: break-word;
+	text-align: justify;
+
+	background: #f0f0f0;
+
 	width: fit-content;
 
 	padding-left: 5px;
@@ -19,13 +25,5 @@
 	&-user-name {
 		font-weight: 500;
 		margin-right: 5px;
-	}
-
-	&-text {
-		position: relative;
-		background: #f0f0f0;
-
-		padding-left: 5px;
-		padding-right: 5px;
 	}
 }

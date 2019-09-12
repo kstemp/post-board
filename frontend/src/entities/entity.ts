@@ -12,39 +12,47 @@ export const fetchEntityAndPlaceInStore = (
 	callbackNotifyLoading?: (arg0: boolean) => void,
 	parentID?: IDType
 ) => {
-	if (callbackNotifyLoading) {
-		callbackNotifyLoading(true);
-	}
+	//	if (callbackNotifyLoading) {
+	//	callbackNotifyLoading(true);
+	//	}
 
-	fetch(`${BACKEND_URL}${route}`, { method: 'GET' })
-		.then(response => {
-			if (response.ok) {
-				return response.json();
-			}
-
-			throw new Error(response.status + ': ' + response.statusText);
-		})
-		.then(entities => {
-			if (callbackNotifyLoading) {
-				callbackNotifyLoading(false);
-			}
-			return store.dispatch({
-				type: ACTION_SET_ENTITIES,
-				data: {
-					entityType: entityType,
-					parentID: parentID,
-					entities: entities
+	return new Promise((resolve, reject) => {
+		fetch(`${BACKEND_URL}${route}`)
+			.then(response => {
+				console.log('RESPONSE ', response);
+				if (response.ok) {
+					return response.json();
 				}
+
+				throw new Error(response.status + ': ' + response.statusText);
+			})
+			.then(entities => {
+				console.log('ETITIES ', entities);
+				//if (callbackNotifyLoading) {
+				//	callbackNotifyLoading(false);
+				//}
+				store.dispatch({
+					type: ACTION_SET_ENTITIES,
+					data: {
+						entityType: entityType,
+						parentID: parentID,
+						entities: entities
+					}
+				});
+
+				resolve();
+			})
+			.catch(error => {
+				//	if (callbackNotifyLoading) {
+				//		callbackNotifyLoading(false);
+				//	}
+				//	return displayErrorNotification(
+				//		`Failed to fetch resource of type '${entityType}': ${error.message}`
+				//	);
+				console.log('ERROR ', error);
+				reject(error.message);
 			});
-		})
-		.catch(error => {
-			if (callbackNotifyLoading) {
-				callbackNotifyLoading(false);
-			}
-			return displayErrorNotification(
-				`Failed to fetch resource of type '${entityType}': ${error.message}`
-			);
-		});
+	});
 };
 
 export const createEntity = (

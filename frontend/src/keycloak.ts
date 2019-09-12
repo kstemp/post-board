@@ -16,6 +16,7 @@ export const keycloakLogin = (login: string, password: string) => {
 		}),
 		body: body
 	};
+
 	fetch(`${KEYCLOAK_URL}/protocol/openid-connect/token`, fetchParams)
 		.then(response => {
 			if (!response.ok) {

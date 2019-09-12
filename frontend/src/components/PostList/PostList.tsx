@@ -7,6 +7,7 @@ import { PostType, ReducerStateType, IDType } from '../../entities/types';
 import LoadingSpinner from '../../controls/LoadingSpinner/LoadingSpinner';
 
 import { fetchPostsForCommunityID } from '../../entities/posts';
+import { displayErrorNotification } from '../../util/notification';
 
 const baseClassName = 'post-list';
 
@@ -38,10 +39,15 @@ class PostList extends React.Component<Props, State> {
 		});
 
 	componentDidMount() {
-		fetchPostsForCommunityID(
-			this.props.communityID,
-			this.setIsLoadingPosts
-		);
+		this.setIsLoadingPosts(true);
+		fetchPostsForCommunityID(this.props.communityID, this.setIsLoadingPosts)
+			.then(() => this.setIsLoadingPosts(false))
+			.catch((errorMessage: string) => {
+				this.setIsLoadingPosts(false);
+				displayErrorNotification(
+					`Failed to fetch posts - ${errorMessage}`
+				);
+			});
 	}
 
 	render() {
