@@ -1,15 +1,15 @@
 import React from 'react';
 
 import { Dispatch } from 'redux';
-import { securityLogin } from '../../security';
-import { keycloakLogin } from '../../keycloak';
+import { securityLogin } from '../../../security';
+import { keycloakLogin } from '../../../keycloak';
 import {
 	displayErrorNotification,
 	formatResponse,
 	displaySuccessNotification
-} from '../../util/notification';
+} from '../../../util/notification';
 import { connect } from 'react-redux';
-import { TKeycloakData } from '../../entities/types';
+import { TKeycloakData } from '../../../entities/types';
 import { Link } from 'react-router-dom';
 import FormPage from '../FormPage/FormPage';
 

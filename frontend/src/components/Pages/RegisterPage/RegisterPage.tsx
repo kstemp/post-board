@@ -4,10 +4,10 @@ import {
 	displayErrorNotification,
 	formatResponse,
 	displaySuccessNotification
-} from '../../util/notification';
+} from '../../../util/notification';
 import FormPage from '../FormPage/FormPage';
 
-import { register } from '../../security';
+import { register } from '../../../security';
 import { Link } from 'react-router-dom';
 
 const baseClassName = 'register-page';

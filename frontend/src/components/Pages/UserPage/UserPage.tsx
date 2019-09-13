@@ -1,7 +1,7 @@
 import React from 'react';
 
 import './UserPage.scss';
-import Button from '../../controls/Button/Button';
+import Button from '../../../controls/Button/Button';
 const baseClassName = 'user-page';
 
 class UserPage extends React.Component {

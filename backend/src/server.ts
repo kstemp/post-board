@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
+import verifyToken from './verify-token';
 
 const app = express();
 
@@ -12,7 +13,7 @@ const community = require('./routes/community');
 app.use('/community', community);
 
 const post = require('./routes/post');
-app.use('/post', post);
+app.use('/post', verifyToken, post);
 
 const session = require('./routes/session');
 app.use('/session', session);

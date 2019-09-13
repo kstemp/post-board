@@ -7,11 +7,11 @@ import {
 	RouteComponentProps,
 	Switch
 } from 'react-router-dom';
-import LoginPage from './components/LoginPage/LoginPage';
-import Page from './components/Page/Page';
-import HomePage from './components/HomePage/HomePage';
-import RegisterPage from './components/RegisterPage/RegisterPage';
-import UserPage from './components/UserPage/UserPage';
+import LoginPage from './components/Pages/LoginPage/LoginPage';
+import Page from './components/Pages/Page/Page';
+import HomePage from './components/Pages/HomePage/HomePage';
+import RegisterPage from './components/Pages/RegisterPage/RegisterPage';
+import UserPage from './components/Pages/UserPage/UserPage';
 
 interface MatchParams {
 	communityID: string;

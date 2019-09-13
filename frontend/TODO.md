@@ -1,5 +1,9 @@
 # TODO
 
+## NOTES
+
+-   use status(400).send({message: 'blabla'}) and then get message from response in frontend
+
 ## CRITICAL:
 
 -   figure out why Keycloak has problems with redirect_uri

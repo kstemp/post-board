@@ -1,16 +1,15 @@
 import React from 'react';
-import Button from '../../controls/Button/Button';
+import Button from '../../../controls/Button/Button';
 
 import { connect } from 'react-redux';
 
 import { NavLink } from 'react-router-dom';
 
 import './Page.scss';
-import { ReducerStateType, TKeycloakData } from '../../entities/types';
-import { keycloakLogout, keycloakGetUserData } from '../../keycloak';
-import { displayErrorNotification } from '../../util/notification';
+import { ReducerStateType, TKeycloakData } from '../../../entities/types';
+import { keycloakLogout, keycloakGetUserData } from '../../../keycloak';
+import { displayErrorNotification } from '../../../util/notification';
 import { Dispatch } from 'redux';
-import { string } from 'prop-types';
 
 const baseClassName = 'page';
 

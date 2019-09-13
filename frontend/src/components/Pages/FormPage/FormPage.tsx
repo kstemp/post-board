@@ -1,9 +1,9 @@
 import React from 'react';
-import Input from '../../controls/Input/Input';
-import Button from '../../controls/Button/Button';
+import Input from '../../../controls/Input/Input';
+import Button from '../../../controls/Button/Button';
 
 import './FormPage.scss';
-import { isEmpty } from '../../util/string';
+import { isEmpty } from '../../../util/string';
 
 const baseClassName = 'form-page';
 
