@@ -5,6 +5,7 @@ export type CommentType = {
 	id: IDType;
 	post_id: number;
 	text: string;
+	created_on: string;
 };
 
 export type CommunityType = {
@@ -16,6 +17,8 @@ export type PostType = {
 	id: IDType;
 	text: string;
 	community_id: IDType;
+	created_on: string;
+	login: string;
 };
 
 export type EntityTypeEnum = 'post' | 'comment';

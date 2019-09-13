@@ -6,11 +6,15 @@ import Button from '../../controls/Button/Button';
 import { PostType, CommentType } from '../../entities/types';
 
 import './Post.scss';
+import { prettyPrintDateDifference } from '../../util/date';
+import { ReducerStateType } from '../../entities/reducer';
+import { connect } from 'react-redux';
 
 const baseClassName = 'post';
 
 interface StateProps {
 	post: PostType;
+	isLoggedIn: boolean;
 }
 
 interface State {
@@ -37,22 +41,38 @@ class Post extends React.Component<Props, State> {
 	};
 
 	render() {
+		console.log(
+			new Date(this.props.post.created_on),
+			'    ',
+			this.props.post.created_on
+		);
 		return (
 			<div className={`${baseClassName}`}>
 				<div className={`${baseClassName}__header`}>
 					<span className={`${baseClassName}__header-user`}>
-						<b>CID: {this.props.post.community_id}</b>
-						<a href='/community/2'>#{this.props.post.id}</a>
+						<b>{this.props.post.login || 'Anonymous'}</b>
 					</span>
 					<span className={`${baseClassName}__header-time`}>
-						posted 420 hours ago
+						{`${prettyPrintDateDifference(
+							new Date(this.props.post.created_on),
+							new Date()
+						)} ago`}
 					</span>
 				</div>
 				<div className={`${baseClassName}__body`}>
 					{this.props.post.text}
 				</div>
 				<div className={`${baseClassName}__buttons`}>
-					<Button icon={'favorite_border'} label={'React'} disabled />
+					<Button
+						icon={'favorite_border'}
+						label={'React'}
+						disabled={!this.props.isLoggedIn}
+						tooltip={
+							!this.props.isLoggedIn
+								? 'You must be logged in to react to posts'
+								: undefined
+						}
+					/>
 					<Button
 						icon={'chat_bubble_outline'}
 						label={'Comment'}
@@ -68,4 +88,10 @@ class Post extends React.Component<Props, State> {
 	}
 }
 
-export default Post;
+const mapStateToProps = (state: ReducerStateType) => {
+	return {
+		isLoggedIn: !!state.accessToken
+	};
+};
+
+export default connect(mapStateToProps)(Post);

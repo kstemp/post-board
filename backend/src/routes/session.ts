@@ -23,7 +23,7 @@ const hashPassword = (plaintextPassword: string) =>
 			.catch(() => reject())
 	);
 
-//TODO check if user name is already present
+//TODO check if email is in use
 router.post(
 	'/register',
 	[

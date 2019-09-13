@@ -7,13 +7,14 @@ const app = express();
 
 /* UN-FUCK CORS */
 app.use(cors());
+
 app.use(bodyParser.json());
 
 const community = require('./routes/community');
 app.use('/community', community);
 
 const post = require('./routes/post');
-app.use('/post', verifyToken, post);
+app.use('/post', /*verifyToken,*/ post);
 
 const session = require('./routes/session');
 app.use('/session', session);

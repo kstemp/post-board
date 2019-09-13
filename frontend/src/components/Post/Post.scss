@@ -1,3 +1,4 @@
+@import '../../controls/variables.scss';
 .post {
 	width: 100%;
 	border: 1px solid lightgray;
@@ -12,6 +13,7 @@
 		}
 		&-time {
 			float: right;
+			color: $color-disabled;
 		}
 	}
 
