@@ -1,15 +1,9 @@
-const { postIDExists } = require('./validator');
+import express from 'express';
+import db from '../db';
+import { param, check, sanitize, validationResult } from 'express-validator';
+import { postIDExists } from './validator';
 
-const express = require('express');
 const router = express.Router();
-const db = require('../db');
-
-const {
-	param,
-	check,
-	sanitize,
-	validationResult
-} = require('express-validator');
 
 router.get('/:postID/', (req, res) => {
 	// TODO check whether post ID is valid, etc.
@@ -40,7 +34,7 @@ router.post(
 			.not()
 			.isEmpty()
 	],
-	(req, res) => {
+	(req: express.Request, res: express.Response) => {
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
 			return res.status(422).send(errors.array());

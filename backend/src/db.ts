@@ -1,7 +1,9 @@
-const pgp = require('pg-promise')({});
+import pgpromise from 'pg-promise';
+
+const pgp = pgpromise({});
 
 const cn = 'postgres://postgres:postgres@localhost:5432/post_db';
 
 const db = pgp(cn);
 
-module.exports = db;
+export default db;

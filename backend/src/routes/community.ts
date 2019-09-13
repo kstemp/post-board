@@ -1,8 +1,9 @@
-const express = require('express');
+import express from 'express';
+import db from '../db';
+
 const router = express.Router();
-const db = require('../db');
-const string = require('../util/string');
-const keycloak = require('../keycloak');
+
+//const keycloak = require('../keycloak');
 
 router.get('/:communityID', (req, res) => {
 	const reqCommunityID = parseInt(req.params.communityID);
@@ -46,10 +47,10 @@ router.get('/:communityID', (req, res) => {
 });
 
 router.post('/:communityID', (req, res) => {
-	if (string.isEmptyOrOnlySpaces(req.body.text)) {
-		return res.sendStatus(400);
-	}
-
+	///if (string.isEmptyOrOnlySpaces(req.body.text)) {
+	//	return res.sendStatus(400);
+	//}
+	//
 	const reqCommunityID = parseInt(req.params.communityID);
 
 	db.none('INSERT INTO posts (community_id, text) VALUES ($1, $2)', [
