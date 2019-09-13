@@ -3,7 +3,11 @@ import React from 'react';
 import { Dispatch } from 'redux';
 import { securityLogin } from '../../security';
 import { keycloakLogin } from '../../keycloak';
-import { displayErrorNotification } from '../../util/notification';
+import {
+	displayErrorNotification,
+	formatResponse,
+	displaySuccessNotification
+} from '../../util/notification';
 import { connect } from 'react-redux';
 import { TKeycloakData } from '../../entities/types';
 import { Link } from 'react-router-dom';
@@ -43,8 +47,12 @@ class LoginPage extends React.Component<Props, State> {
 		console.log('login: ', login, ' password: ', password);
 
 		securityLogin(login, password)
-			.then(() => {})
-			.catch((err: any) => {});
+			.then(() => {
+				return;
+			})
+			.catch((error: Response) =>
+				displayErrorNotification(formatResponse(error))
+			);
 	};
 
 	render() {

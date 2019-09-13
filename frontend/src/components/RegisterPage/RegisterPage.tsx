@@ -1,6 +1,10 @@
 import React from 'react';
 
-import { displayErrorNotification } from '../../util/notification';
+import {
+	displayErrorNotification,
+	formatResponse,
+	displaySuccessNotification
+} from '../../util/notification';
 import FormPage from '../FormPage/FormPage';
 
 import { register } from '../../security';
@@ -37,8 +41,12 @@ class RegisterPage extends React.Component<Props, State> {
 		console.log('login: ', login, ' password: ', password);
 
 		register(login, email, password)
-			.then(() => window.location.replace('/login'))
-			.catch(error => displayErrorNotification(error));
+			.then(() => {
+				return window.location.replace('/login');
+			})
+			.catch((error: Response) =>
+				displayErrorNotification(formatResponse(error))
+			);
 	};
 
 	render() {

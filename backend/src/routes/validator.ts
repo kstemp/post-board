@@ -1,6 +1,5 @@
 import db from '../db';
-import pgPromise = require('pg-promise');
-import { validationResult, ValidationError, Result } from 'express-validator';
+import { ValidationError, Result } from 'express-validator';
 
 export const checkLoginExists = async (login: string) =>
 	new Promise((resolve, reject) => {
@@ -16,4 +15,5 @@ export const formatValidationResults = (
 ) =>
 	validationResults
 		.array()
-		.map(result => ({ id: result.param, message: result.msg }));
+		.map(result => `parameter: ${result.param}, problem: ${result.msg}`)
+		.join('\n');

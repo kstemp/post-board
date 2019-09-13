@@ -4,7 +4,8 @@ import { SECRET } from '../config';
 import { check, validationResult } from 'express-validator';
 import db from '../db';
 import { checkLoginExists, formatValidationResults } from './validator';
-import jwt from 'jsonwebtoken';
+import jwt, { VerifyOptions, VerifyCallback } from 'jsonwebtoken';
+import { ITokenPayload } from '../types';
 
 const router = express.Router();
 
@@ -64,28 +65,73 @@ router.post(
 	}
 );
 
-router.post('/login', (req, res) => {
-	console.log('Received password: ', req.body.password);
+router.post(
+	'/login',
+	[
+		check('login', 'Login does not exist').custom(login =>
+			checkLoginExists(login)
+				.then(exists => (exists ? Promise.resolve() : Promise.reject()))
+				.catch(err => Promise.reject())
+		)
+	],
+	(req: express.Request, res: express.Response) => {
+		console.log('Received password: ', req.body.password);
 
-	db.one('SELECT * FROM users WHERE login=$1', [req.body.login])
-		.then(data => {
-			console.log('Hashed password: ', data.password);
-			return bcrypt
-				.compare(req.body.password, data.password)
-				.then(correct => {
-					if (!correct) {
-						return res.sendStatus(403);
-					}
-					const token = jwt.sign(req.body.login, SECRET);
-					return res.status(200).send({
-						token: token
+		const errors = validationResult(req);
+		if (!errors.isEmpty()) {
+			return res.status(422).send(formatValidationResults(errors));
+		}
+
+		db.one('SELECT * FROM users WHERE login=$1', [req.body.login])
+			.then(data => {
+				console.log('Hashed password: ', data.password);
+				return bcrypt
+					.compare(req.body.password, data.password)
+					.then(correct => {
+						if (!correct) {
+							return res.sendStatus(403);
+						}
+						const token = jwt.sign(
+							{ login: req.body.login },
+							SECRET,
+							{
+								expiresIn: 60
+							}
+						);
+						return res.status(200).send({
+							token: token
+						});
+					})
+					.catch(err => {
+						return console.log(err);
 					});
-				});
-		})
-		.catch(error => {
-			console.log(error);
-			return res.sendStatus(500);
-		}); // TODO not good - this will also happen when there's no user of this name, but then it's 400(?)
+			})
+			.catch(error => {
+				console.log(error);
+				return res.sendStatus(500);
+			});
+	}
+);
+
+// TODO error handling
+router.get('/verifyToken', (req, res) => {
+	'Bearer ';
+	const token = (req.headers.authorization as any).slice(7);
+	console.log(token);
+
+	jwt.verify(
+		token,
+		SECRET,
+		(err: jwt.VerifyErrors, decoded: object | string) => {
+			if (err) {
+				res.sendStatus(403);
+			}
+
+			console.log(decoded);
+
+			res.sendStatus(204);
+		}
+	);
 });
 
 module.exports = router;

@@ -17,13 +17,15 @@ export const register = (login: string, email: string, password: string) => {
 	return new Promise((resolve, reject) => {
 		fetch(`${BACKEND_URL}/session/register`, fetchParams)
 			.then(response => {
+				console.log(response);
+
 				if (response.ok) {
 					return resolve();
 				}
 
 				throw response;
 			})
-			.catch(error => reject(`${error.status}: ${error.statusText}`));
+			.catch((error: Response) => reject(error));
 	});
 };
 
@@ -42,12 +44,13 @@ export const securityLogin = (login: string, password: string) => {
 	return new Promise((resolve, reject) => {
 		fetch(`${BACKEND_URL}/session/login`, fetchParams)
 			.then(response => {
+				console.log(response);
 				if (response.ok) {
 					return resolve();
 				}
 
 				throw response;
 			})
-			.catch(error => reject(`${error.status}: ${error.statusText}`));
+			.catch(error => reject(error));
 	});
 };
