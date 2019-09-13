@@ -84,7 +84,7 @@ class CommentList extends React.Component<Props, State> {
 							fill
 							label={'Send'}
 							onClick={this.createComment}
-							disabled={!this.state.isValid}
+							//	disabled={!this.state.isValid}
 						/>
 					</div>
 				}

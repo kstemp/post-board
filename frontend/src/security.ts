@@ -26,3 +26,28 @@ export const register = (login: string, email: string, password: string) => {
 			.catch(error => reject(`${error.status}: ${error.statusText}`));
 	});
 };
+
+export const securityLogin = (login: string, password: string) => {
+	const fetchParams = {
+		method: 'POST',
+		headers: new Headers({
+			'Content-Type': 'application/json'
+		}),
+		body: JSON.stringify({
+			login: login,
+			password: password
+		})
+	};
+
+	return new Promise((resolve, reject) => {
+		fetch(`${BACKEND_URL}/login`, fetchParams)
+			.then(response => {
+				if (response.ok) {
+					return resolve();
+				}
+
+				throw response;
+			})
+			.catch(error => reject(`${error.status}: ${error.statusText}`));
+	});
+};

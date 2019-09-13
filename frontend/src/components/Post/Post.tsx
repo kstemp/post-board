@@ -52,7 +52,7 @@ class Post extends React.Component<Props, State> {
 					{this.props.post.text}
 				</div>
 				<div className={`${baseClassName}__buttons`}>
-					<Button icon={'favorite_border'} label={'React'} />
+					<Button icon={'favorite_border'} label={'React'} disabled />
 					<Button
 						icon={'chat_bubble_outline'}
 						label={'Comment'}

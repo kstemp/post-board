@@ -4,6 +4,7 @@ import { displayErrorNotification } from '../../util/notification';
 import FormPage from '../FormPage/FormPage';
 
 import { register } from '../../security';
+import { Link } from 'react-router-dom';
 
 const baseClassName = 'register-page';
 
@@ -38,21 +39,6 @@ class RegisterPage extends React.Component<Props, State> {
 		register(login, email, password)
 			.then(() => window.location.replace('/login'))
 			.catch(error => displayErrorNotification(error));
-
-		/*
-		keycloakLogin(login, password)
-			.then((data: any) => {
-				this.props.setKeycloakData({
-					accessToken: data.access_token,
-					refreshToken: data.refresh_token
-				});
-				return window.location.replace(this.props.redirectTo);
-
-				//return;
-			})
-			.catch(errorMessage =>
-				displayErrorNotification(`Login failed - ${errorMessage}`)
-			);*/
 	};
 
 	render() {
@@ -79,6 +65,10 @@ class RegisterPage extends React.Component<Props, State> {
 					buttonLabel={'Register'}
 					onFormSubmit={this.register}
 				/>
+				<p>
+					Already have an account?{' '}
+					<Link to={'/login'}>Login here</Link>!
+				</p>
 			</div>
 		);
 	}

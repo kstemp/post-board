@@ -1,7 +1,15 @@
+const { postIDExists } = require('./validator');
+
 const express = require('express');
 const router = express.Router();
-const string = require('../util/string');
 const db = require('../db');
+
+const {
+	param,
+	check,
+	sanitize,
+	validationResult
+} = require('express-validator');
 
 router.get('/:postID/', (req, res) => {
 	// TODO check whether post ID is valid, etc.
@@ -23,18 +31,31 @@ router.get('/:postID/comments', (req, res) => {
 		.catch(error => res.sendStatus(500));
 });
 
-router.post('/:postID/comments', (req, res) => {
-	//TODO check whether post ID exists
-	// TODO check whether req body is valid, ID is nonempty etc.
-	// TODO nonempty text...
-	const reqPostID = parseInt(req.params.postID);
+//TODO check whether post ID exists
+router.post(
+	'/:postID/comments',
+	[
+		sanitize('text').trim(),
+		check('text', 'Comment text cannot be empty')
+			.not()
+			.isEmpty()
+	],
+	(req, res) => {
+		const errors = validationResult(req);
+		if (!errors.isEmpty()) {
+			return res.status(422).send(errors.array());
+		}
 
-	db.none('INSERT INTO comments (post_id, text) VALUES ($1, $2)', [
-		reqPostID,
-		req.body.text
-	])
-		.then(() => res.sendStatus(200))
-		.catch(error => res.sendStatus(500));
-});
+		const reqPostID = parseInt(req.params.postID);
+
+		return db
+			.none('INSERT INTO comments (post_id, text) VALUES ($1, $2)', [
+				reqPostID,
+				req.body.text
+			])
+			.then(() => res.sendStatus(204))
+			.catch(error => res.sendStatus(500));
+	}
+);
 
 module.exports = router;

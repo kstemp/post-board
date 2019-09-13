@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Dispatch } from 'redux';
-
+import { securityLogin } from '../../security';
 import { keycloakLogin } from '../../keycloak';
 import { displayErrorNotification } from '../../util/notification';
 import { connect } from 'react-redux';
@@ -41,20 +41,10 @@ class LoginPage extends React.Component<Props, State> {
 		];
 
 		console.log('login: ', login, ' password: ', password);
-		/*
-		keycloakLogin(login, password)
-			.then((data: any) => {
-				this.props.setKeycloakData({
-					accessToken: data.access_token,
-					refreshToken: data.refresh_token
-				});
-				return window.location.replace(this.props.redirectTo);
 
-				//return;
-			})
-			.catch(errorMessage =>
-				displayErrorNotification(`Login failed - ${errorMessage}`)
-			);*/
+		securityLogin(login, password)
+			.then(() => {})
+			.catch((err: any) => {});
 	};
 
 	render() {

@@ -53,11 +53,7 @@ class Page extends React.Component<OwnProps & StateProps> {
 				<header className={`${baseClassName}__header`}>
 					<span>post-board</span>
 					<div className={`${baseClassName}__header-container`}>
-						{this.props.isLoggedIn && (
-							<span id={'user-name'}>
-								logged in as: {this.props.login}
-							</span>
-						)}
+						<span id={'user-name'}>logged in as: Test Julia</span>
 						{!this.props.hideLoginButton &&
 							(this.props.isLoggedIn ? (
 								<Button
