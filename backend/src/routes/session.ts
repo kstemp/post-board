@@ -3,8 +3,8 @@ import bcrypt from 'bcryptjs';
 import { SECRET } from '../config';
 import { check, validationResult } from 'express-validator';
 import db from '../db';
-import { checkLoginExists } from './validator';
-import { rejects } from 'assert';
+import { checkLoginExists, formatValidationResults } from './validator';
+import jwt from 'jsonwebtoken';
 
 const router = express.Router();
 
@@ -29,23 +29,23 @@ router.post(
 	[
 		check(
 			'login',
-			'Login mu contain only alphanumeric characters'
+			'Login must contain only alphanumeric characters'
 		).isAlphanumeric(),
-		check('login', 'Login must be unique').custom(async login => {
-			const exists = await checkLoginExists(login);
-			return exists ? Promise.reject() : Promise.resolve();
-		}),
+		check('login', 'User with this login already exists').custom(login =>
+			checkLoginExists(login)
+				.then(exists => (exists ? Promise.reject() : Promise.resolve()))
+				.catch(err => Promise.reject())
+		),
 		check('email', 'Must be a valid e-mail address').isEmail(),
 		check(
 			'password',
 			'Password must be at least 8 characters long'
 		).isLength({ min: 8 })
 	],
-	async (req: express.Request, res: express.Response) => {
-		const errors = await validationResult(req);
-		console.log(errors);
+	(req: express.Request, res: express.Response) => {
+		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
-			return res.sendStatus(422);
+			return res.status(422).send(formatValidationResults(errors));
 		}
 
 		hashPassword(req.body.password)
@@ -57,14 +57,12 @@ router.post(
 					.then(() => res.sendStatus(204))
 					.catch(error => {
 						console.log(error);
-						return res.sendStatus(500); // Not good - duplicate user name is a PSQL error, but we should inform user about this
+						return res.sendStatus(500);
 					});
 			})
 			.catch(error => res.sendStatus(500));
 	}
 );
-
-const jwt = require('jsonwebtoken');
 
 router.post('/login', (req, res) => {
 	console.log('Received password: ', req.body.password);
