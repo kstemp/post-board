@@ -1,9 +1,15 @@
 import db from '../db';
+import pgPromise = require('pg-promise');
 
-export const postIDExists = async (postID: string) => {
-	const exists = await db.one(
-		'SELECT EXISTS(SELECT 1 FROM posts WHERE id=$1)',
-		[postID]
+export const checkLoginExists = async (login: string) => {
+	const result = await db.one(
+		'SELECT EXISTS (SELECT 1 FROM users WHERE login=$1)',
+		[login]
 	);
-	return exists;
+
+	console.log(
+		login + ' ',
+		(result as any).exists ? ' exists' : ' is not here'
+	);
+	return (result as any).exists;
 };

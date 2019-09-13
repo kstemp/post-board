@@ -3,48 +3,64 @@ import bcrypt from 'bcryptjs';
 import { SECRET } from '../config';
 import { check, validationResult } from 'express-validator';
 import db from '../db';
+import { checkLoginExists } from './validator';
+import { rejects } from 'assert';
 
 const router = express.Router();
 
 const SALT_ROUNDS = 10;
 
 const hashPassword = (plaintextPassword: string) =>
-	new Promise(resolve =>
+	new Promise((resolve, reject) =>
 		bcrypt
 			.genSalt(SALT_ROUNDS)
 			.then((salt: string) =>
 				bcrypt
 					.hash(plaintextPassword, salt)
 					.then((password: string) => resolve(password))
+					.catch(() => reject())
 			)
+			.catch(() => reject())
 	);
 
 //TODO check if user name is already present
 router.post(
 	'/register',
 	[
-		check('login').isAlphanumeric(),
-		check('email').isEmail(),
-		check('password').isLength({ min: 8 })
+		check(
+			'login',
+			'Login mu contain only alphanumeric characters'
+		).isAlphanumeric(),
+		check('login', 'Login must be unique').custom(async login => {
+			const exists = await checkLoginExists(login);
+			return exists ? Promise.reject() : Promise.resolve();
+		}),
+		check('email', 'Must be a valid e-mail address').isEmail(),
+		check(
+			'password',
+			'Password must be at least 8 characters long'
+		).isLength({ min: 8 })
 	],
-	(req: express.Request, res: express.Response) => {
-		const errors = validationResult(req);
-
+	async (req: express.Request, res: express.Response) => {
+		const errors = await validationResult(req);
+		console.log(errors);
 		if (!errors.isEmpty()) {
-			res.sendStatus(400);
+			return res.sendStatus(422);
 		}
 
-		hashPassword(req.body.password).then(hashedPassword => {
-			db.none(
-				'INSERT INTO users (login, email, password) VALUES ($1, $2, $3)',
-				[req.body.login, req.body.email, hashedPassword]
-			)
-				.then(() => res.sendStatus(204))
-				.catch(error => {
-					console.log(error);
-					return res.sendStatus(500); // Not good - duplicate user name is a PSQL error, but we should inform user about this
-				});
-		});
+		hashPassword(req.body.password)
+			.then(hashedPassword => {
+				db.none(
+					'INSERT INTO users (login, email, password) VALUES ($1, $2, $3)',
+					[req.body.login, req.body.email, hashedPassword]
+				)
+					.then(() => res.sendStatus(204))
+					.catch(error => {
+						console.log(error);
+						return res.sendStatus(500); // Not good - duplicate user name is a PSQL error, but we should inform user about this
+					});
+			})
+			.catch(error => res.sendStatus(500));
 	}
 );
 

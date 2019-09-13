@@ -1,7 +1,6 @@
 import express from 'express';
 import db from '../db';
 import { param, check, sanitize, validationResult } from 'express-validator';
-import { postIDExists } from './validator';
 
 const router = express.Router();
 
