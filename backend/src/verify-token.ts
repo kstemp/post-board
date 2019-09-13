@@ -7,7 +7,6 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import { SECRET } from './config';
-import { check, validationResult } from 'express-validator';
 
 const verifyToken = (
 	req: express.Request,

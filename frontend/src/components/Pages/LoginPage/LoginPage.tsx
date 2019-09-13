@@ -1,17 +1,15 @@
 import React from 'react';
-
 import { Dispatch } from 'redux';
 import { securityLogin } from '../../../security';
-import { keycloakLogin } from '../../../keycloak';
 import {
 	displayErrorNotification,
-	formatResponse,
-	displaySuccessNotification
+	formatResponse
 } from '../../../util/notification';
 import { connect } from 'react-redux';
-import { TKeycloakData } from '../../../entities/types';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import FormPage from '../FormPage/FormPage';
+import { thisExpression } from '@babel/types';
+import { ReducerStateType } from '../../../entities/reducer';
 
 const baseClassName = 'login-page';
 
@@ -20,16 +18,13 @@ interface OwnProps {
 }
 
 interface StateProps {
-	setKeycloakData: (arg0: TKeycloakData) => void;
-}
-
-interface State {
-	isValid: boolean;
+	setAccessToken: (arg0: string) => void;
+	isLoggedIn: boolean;
 }
 
 type Props = OwnProps & StateProps;
 
-class LoginPage extends React.Component<Props, State> {
+class LoginPage extends React.Component<Props> {
 	private refFormPage: React.RefObject<FormPage>;
 
 	constructor(props: Props) {
@@ -47,8 +42,9 @@ class LoginPage extends React.Component<Props, State> {
 		console.log('login: ', login, ' password: ', password);
 
 		securityLogin(login, password)
-			.then(() => {
-				return;
+			.then(token => {
+				console.log(token);
+				return this.props.setAccessToken(token);
 			})
 			.catch((error: Response) =>
 				displayErrorNotification(formatResponse(error))
@@ -56,7 +52,9 @@ class LoginPage extends React.Component<Props, State> {
 	};
 
 	render() {
-		return (
+		return this.props.isLoggedIn ? (
+			<Redirect to={'/'} />
+		) : (
 			<div className={baseClassName}>
 				<FormPage
 					ref={this.refFormPage}
@@ -85,17 +83,21 @@ class LoginPage extends React.Component<Props, State> {
 	}
 }
 
+const mapStateToProps = (state: ReducerStateType) => ({
+	isLoggedIn: !!state.accessToken
+});
+
 const mapDispatchToProps = (dispatch: Dispatch) => {
 	return {
-		setKeycloakData: (keycloakData: TKeycloakData) =>
+		setAccessToken: (accessToken: string) =>
 			dispatch({
-				type: 'ACTION_SET_KEYCLOAK_DATA',
-				keycloakData: keycloakData
+				type: 'ACTION_SET_ACCESS_TOKEN',
+				accessToken: accessToken
 			})
 	};
 };
 
 export default connect(
-	null,
+	mapStateToProps,
 	mapDispatchToProps
 )(LoginPage);

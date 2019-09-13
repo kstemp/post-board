@@ -17,11 +17,7 @@ export const fetchEntityAndPlaceInStore = (
 	//	}
 
 	return new Promise((resolve, reject) => {
-		fetch(`${BACKEND_URL}${route}`, {
-			headers: new Headers({
-				token: store.getState().keycloakData.accessToken
-			})
-		})
+		fetch(`${BACKEND_URL}${route}`)
 			.then(response => {
 				console.log('RESPONSE ', response);
 				if (response.ok) {

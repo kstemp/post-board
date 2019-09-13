@@ -4,6 +4,10 @@
 
 -   use status(400).send({message: 'blabla'}) and then get message from response in frontend
 
+## BACKEND
+
+-   logging out should also add token to server blacklist, or something like that
+
 ## CRITICAL:
 
 -   figure out why Keycloak has problems with redirect_uri

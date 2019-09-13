@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Button from '../../controls/Button/Button';
 import Comment from '../Comment/Comment';
 
-import { IDType, CommentType, ReducerStateType } from '../../entities/types';
+import { IDType, CommentType } from '../../entities/types';
 
 import {
 	createCommentForPostID,
@@ -14,6 +14,7 @@ import LoadingSpinner from '../../controls/LoadingSpinner/LoadingSpinner';
 
 import './CommentList.scss';
 import Input from '../../controls/Input/Input';
+import { ReducerStateType } from '../../entities/reducer';
 
 const baseClassName = 'comment-list';
 

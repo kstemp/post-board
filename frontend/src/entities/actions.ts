@@ -3,12 +3,11 @@ import {
 	IDType,
 	CommunityType,
 	CommentType,
-	PostType,
-	TKeycloakData
+	PostType
 } from './types';
 
 export const ACTION_SET_ENTITIES = 'ACTION_SET_ENTITIES';
-export const ACTION_SET_KEYCLOAK_DATA = 'ACTION_SET_KEYCLOAK_DATA';
+export const ACTION_SET_ACCESS_TOKEN = 'ACTION_SET_ACCESS_TOKEN';
 
 interface TActionSetEntities {
 	type: 'ACTION_SET_ENTITIES';
@@ -19,9 +18,9 @@ interface TActionSetEntities {
 	};
 }
 
-interface TActionSetKeycloakData {
-	type: 'ACTION_SET_KEYCLOAK_DATA';
-	keycloakData: TKeycloakData;
+interface TActionSetAccessToken {
+	type: 'ACTION_SET_ACCESS_TOKEN';
+	accessToken: string;
 }
 
-export type TAction = TActionSetEntities | TActionSetKeycloakData;
+export type TAction = TActionSetEntities | TActionSetAccessToken;

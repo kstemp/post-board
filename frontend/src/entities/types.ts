@@ -1,5 +1,3 @@
-import { KeycloakInstance } from 'keycloak-js';
-
 export type IDType = number;
 
 // NOTE we use snake_case here since this is how entries are stored in the PostgreSQL database
@@ -20,16 +18,4 @@ export type PostType = {
 	community_id: IDType;
 };
 
-export interface TKeycloakData {
-	accessToken: string;
-	refreshToken: string;
-}
-
 export type EntityTypeEnum = 'post' | 'comment';
-
-export interface ReducerStateType {
-	post: PostType[];
-	comment: { [postID: number]: CommentType[] };
-	keycloakData: TKeycloakData;
-	login: string;
-}

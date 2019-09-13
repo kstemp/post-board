@@ -4,8 +4,7 @@ import { SECRET } from '../config';
 import { check, validationResult } from 'express-validator';
 import db from '../db';
 import { checkLoginExists, formatValidationResults } from './validator';
-import jwt, { VerifyOptions, VerifyCallback } from 'jsonwebtoken';
-import { ITokenPayload } from '../types';
+import jwt from 'jsonwebtoken';
 
 const router = express.Router();
 

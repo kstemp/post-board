@@ -3,11 +3,12 @@ import { connect } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router';
 
 import Post from '../Post/Post';
-import { PostType, ReducerStateType, IDType } from '../../entities/types';
+import { PostType, IDType } from '../../entities/types';
 import LoadingSpinner from '../../controls/LoadingSpinner/LoadingSpinner';
 
 import { fetchPostsForCommunityID } from '../../entities/posts';
 import { displayErrorNotification } from '../../util/notification';
+import { ReducerStateType } from '../../entities/reducer';
 
 const baseClassName = 'post-list';
 
