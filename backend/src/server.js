@@ -84,7 +84,9 @@ app.post('/login', (req, res) => {
 						return res.sendStatus(403);
 					}
 					const token = jwt.sign(req.body.login, config.SECRET);
-					return res.status(200).send(token);
+					return res.status(200).send({
+						token: token
+					});
 				});
 		})
 		.catch(error => {
