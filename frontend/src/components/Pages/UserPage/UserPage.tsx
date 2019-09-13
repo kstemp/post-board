@@ -8,7 +8,7 @@ class UserPage extends React.Component {
 	render() {
 		return (
 			<div className={baseClassName}>
-				<img></img>
+				<img alt={'User'}></img>
 				<p className={`${baseClassName}-name-surname`}>Name Surname</p>
 				<div className={`${baseClassName}_buttons`}>
 					<Button label={'Follow'} />

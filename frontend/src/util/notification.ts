@@ -1,4 +1,4 @@
-import { toast, ToastOptions } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 export const formatResponse = (response: Response) =>
 	`${response.status}: ${response.statusText}`;

@@ -2,8 +2,7 @@ import React from 'react';
 
 import {
 	displayErrorNotification,
-	formatResponse,
-	displaySuccessNotification
+	formatResponse
 } from '../../../util/notification';
 import FormPage from '../FormPage/FormPage';
 

@@ -3,13 +3,14 @@ import Button from '../../../controls/Button/Button';
 
 import { connect } from 'react-redux';
 
-import { NavLink, Router } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 import { Dispatch } from 'redux';
 import { ReducerStateType } from '../../../entities/reducer';
 
-import './Page.scss';
 import { securityLogout } from '../../../security';
+
+import './Page.scss';
 
 const baseClassName = 'page';
 
@@ -22,22 +23,23 @@ interface StateProps {
 }
 
 class Page extends React.Component<OwnProps & StateProps> {
-	// TODO remove user data from state
-	logout = () => securityLogout();
-
 	render() {
 		return (
 			<div className={baseClassName}>
 				<header className={`${baseClassName}__header`}>
-					{this.props.isLoggedIn && <span>post-board</span>}
+					<span>post-board</span>
 					<div className={`${baseClassName}__header-container`}>
-						<span id={'user-name'}>logged in as: Test Julia</span>
+						{this.props.isLoggedIn && (
+							<span id={'user-name'}>
+								logged in as: Test Julia
+							</span>
+						)}
 						{!this.props.hideLoginButton &&
 							(this.props.isLoggedIn ? (
 								<Button
 									fill
 									label={'Logout'}
-									onClick={this.logout}
+									onClick={securityLogout}
 								/>
 							) : (
 								<NavLink to={'/login'}>

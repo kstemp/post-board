@@ -8,7 +8,6 @@ import {
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import FormPage from '../FormPage/FormPage';
-import { thisExpression } from '@babel/types';
 import { ReducerStateType } from '../../../entities/reducer';
 
 const baseClassName = 'login-page';
