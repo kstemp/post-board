@@ -15,7 +15,7 @@ export const register = (login: string, email: string, password: string) => {
 	};
 
 	return new Promise((resolve, reject) => {
-		fetch(`${BACKEND_URL}/register`, fetchParams)
+		fetch(`${BACKEND_URL}/session/register`, fetchParams)
 			.then(response => {
 				if (response.ok) {
 					return resolve();
@@ -40,7 +40,7 @@ export const securityLogin = (login: string, password: string) => {
 	};
 
 	return new Promise((resolve, reject) => {
-		fetch(`${BACKEND_URL}/login`, fetchParams)
+		fetch(`${BACKEND_URL}/session/login`, fetchParams)
 			.then(response => {
 				if (response.ok) {
 					return resolve();
