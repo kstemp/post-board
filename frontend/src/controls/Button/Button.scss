@@ -4,12 +4,12 @@
 	min-width: 8.4375rem;
 	height: $form-field-height;
 
-	border: 0;
-
 	color: black;
 	background: white;
 
 	transition: all 0.2s ease 0s;
+
+	border: 0;
 
 	&--fill {
 		color: white;

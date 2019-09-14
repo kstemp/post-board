@@ -10,6 +10,7 @@ class UserPage extends React.Component {
 			<div className={baseClassName}>
 				<img alt={'User'}></img>
 				<p className={`${baseClassName}-name-surname`}>Name Surname</p>
+				<p className={`${baseClassName}-login`}>@julia</p>
 				<div className={`${baseClassName}_buttons`}>
 					<Button label={'Follow'} />
 					<Button label={'test'} />

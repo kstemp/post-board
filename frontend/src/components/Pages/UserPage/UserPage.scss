@@ -1,6 +1,9 @@
 .user-page {
-	&-name-surname {
+	&-name-surname,
+	&-login {
 		text-align: center;
+	}
+	&-name-surname {
 		font-weight: 500;
 	}
 

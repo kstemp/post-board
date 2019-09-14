@@ -23,6 +23,9 @@ interface StateProps {
 }
 
 class Page extends React.Component<OwnProps & StateProps> {
+	redirectToProfile = () => {
+		console.log('redirect here');
+	};
 	render() {
 		return (
 			<div className={baseClassName}>
@@ -32,9 +35,11 @@ class Page extends React.Component<OwnProps & StateProps> {
 					</Link>
 					<div className={`${baseClassName}__header-container`}>
 						{this.props.isLoggedIn && (
-							<span id={'user-name'}>
-								logged in as: Test Julia
-							</span>
+							<Button
+								fill
+								label={'My profile'}
+								onClick={this.redirectToProfile}
+							/>
 						)}
 						{!this.props.hideLoginButton &&
 							(this.props.isLoggedIn ? (

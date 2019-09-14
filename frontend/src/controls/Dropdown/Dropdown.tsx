@@ -6,7 +6,7 @@ const baseClassName = 'dropdown';
 
 type DropdownOption = {
 	label: string;
-	id: number;
+	id: string;
 };
 
 interface OwnProps {
