@@ -15,11 +15,17 @@ class Comment extends React.Component<CommentProps> {
 	render() {
 		return (
 			<div className={baseClassName}>
-				<Link to={'/user/123874263'}>
+				{this.props.comment.login ? (
+					<Link to={`/user/${this.props.comment.login}`}>
+						<span className={`${baseClassName}-user-name`}>
+							{this.props.comment.login}
+						</span>
+					</Link>
+				) : (
 					<span className={`${baseClassName}-user-name`}>
-						UserName
+						Anonymous
 					</span>
-				</Link>
+				)}
 				{this.props.comment.text}
 			</div>
 		);

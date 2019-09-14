@@ -6,6 +6,7 @@ export type CommentType = {
 	post_id: number;
 	text: string;
 	created_on: string;
+	login: string;
 };
 
 export type CommunityType = {

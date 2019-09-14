@@ -9,6 +9,7 @@ import './Post.scss';
 import { prettyPrintDateDifference } from '../../util/date';
 import { ReducerStateType } from '../../entities/reducer';
 import { connect } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 
 const baseClassName = 'post';
 
@@ -50,7 +51,13 @@ class Post extends React.Component<Props, State> {
 			<div className={`${baseClassName}`}>
 				<div className={`${baseClassName}__header`}>
 					<span className={`${baseClassName}__header-user`}>
-						<b>{this.props.post.login || 'Anonymous'}</b>
+						{this.props.post.login ? (
+							<NavLink to={`/user/${this.props.post.login}`}>
+								<b>{this.props.post.login}</b>
+							</NavLink>
+						) : (
+							'Anonymous'
+						)}
 					</span>
 					<span className={`${baseClassName}__header-time`}>
 						{`${prettyPrintDateDifference(

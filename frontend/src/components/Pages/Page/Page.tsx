@@ -3,7 +3,7 @@ import Button from '../../../controls/Button/Button';
 
 import { connect } from 'react-redux';
 
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 
 import { Dispatch } from 'redux';
 import { ReducerStateType } from '../../../entities/reducer';
@@ -27,7 +27,9 @@ class Page extends React.Component<OwnProps & StateProps> {
 		return (
 			<div className={baseClassName}>
 				<header className={`${baseClassName}__header`}>
-					<span>post-board</span>
+					<Link to={'/'}>
+						<span>post-board</span>
+					</Link>
 					<div className={`${baseClassName}__header-container`}>
 						{this.props.isLoggedIn && (
 							<span id={'user-name'}>

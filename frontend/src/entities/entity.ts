@@ -54,11 +54,20 @@ export const createEntity = (
 	bodyText: string,
 	updateCallback?: (arg0: IDType) => void
 ) => {
-	const fetchParams = {
+	const headers = store.getState().accessToken
+		? new Headers({
+				'Content-Type': 'application/json',
+				token: store.getState().accessToken
+		  })
+		: new Headers({
+				'Content-Type': 'application/json'
+		  });
+
+	console.log('Headers: ', headers);
+
+	let fetchParams = {
 		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		},
+		headers: headers,
 		body: JSON.stringify({ text: bodyText })
 	};
 

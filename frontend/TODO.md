@@ -10,7 +10,6 @@
 
 ## CRITICAL:
 
--   figure out why Keycloak has problems with redirect_uri
 -   DON't USE window.location.replace, use React.router instead (browser history is not updated)
 
 ## OTHER:
@@ -19,4 +18,4 @@
 -   long comment formatting
 -   make CommentList be in collapsible, with nice unfolding animation etc.
 -   dropdown positioning is slightly wrong - the list is ~2px to the right
--   change the loading spinner color to match \$baseColor from rcl-style.scss
+-   change the loading spinner color to match \$color-base from rcl-style.scss

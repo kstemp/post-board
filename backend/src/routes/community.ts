@@ -34,12 +34,23 @@ router.post(
 			return res.status(422).send(errors.array());
 		}
 
-		const reqCommunityID = parseInt(req.params.communityID);
+		console.log('HERE , ', (req as any).login);
 
-		db.none('INSERT INTO posts (community_id, text) VALUES ($1, $2)', [
-			reqCommunityID,
-			req.body.text
-		])
+		const reqCommunityID = parseInt(req.params.communityID);
+		let SQLquery, queryParams;
+
+		if ((req as any).login) {
+			SQLquery =
+				'INSERT INTO posts (community_id, text, login) VALUES ($1, $2, $3)';
+			queryParams = [reqCommunityID, req.body.text, (req as any).login];
+		} else {
+			SQLquery = 'INSERT INTO posts (community_id, text) VALUES ($1, $2)';
+			queryParams = [reqCommunityID, req.body.text];
+		}
+
+		//	const query = INSERT INTO posts (community_id, text) VALUES ($1, $2)
+
+		db.none(SQLquery, queryParams)
 			.then(() => res.sendStatus(200))
 			.catch(error => {
 				console.log(error);
