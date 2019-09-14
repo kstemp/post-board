@@ -1,24 +1,40 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import db from '../db';
 import { check, sanitize, validationResult } from 'express-validator';
 import verifyToken from '../verify-token';
+import { checkCommunityExists } from '../validator';
 
 const router = express.Router();
 
-// TODO check for communityID - whether it exists
-router.get('/:communityID', (req, res) => {
-	const reqCommunityID = parseInt(req.params.communityID);
+router.get(
+	'/:communityID',
+	[
+		check('communityID', 'Community with specified ID must exists')
+			.exists()
+			.custom(communityID =>
+				checkCommunityExists(communityID)
+					.then(exists =>
+						exists ? Promise.resolve() : Promise.reject()
+					)
+					.catch(err => Promise.reject())
+			)
+	],
+	(req: Request, res: Response) => {
+		const errors = validationResult(req);
+		if (!errors.isEmpty()) {
+			return res.status(422).send(errors.array());
+		}
 
-	db.any(
-		'SELECT * FROM posts WHERE community_id = $1 LIMIT 20', // ORDER BY CREATED_ON LIMIT 5
-		[reqCommunityID]
-	)
-		.then(data => res.status(200).send(data))
-		.catch(error => {
-			console.log(error);
-			return res.sendStatus(500);
-		});
-});
+		const reqCommunityID = parseInt(req.params.communityID);
+
+		db.any('SELECT * FROM posts WHERE community_id = $1', [reqCommunityID])
+			.then(data => res.status(200).send(data))
+			.catch(error => {
+				console.log(error);
+				return res.sendStatus(500);
+			});
+	}
+);
 
 // TODO check for communityID - whether it exists
 router.post(
@@ -27,10 +43,19 @@ router.post(
 		sanitize('text').trim(),
 		check('text', 'Post text must not be empty')
 			.not()
-			.isEmpty()
+			.isEmpty(),
+		check('communityID', 'Community with specified ID must exist')
+			.exists()
+			.custom(communityID =>
+				checkCommunityExists(communityID)
+					.then(exists =>
+						exists ? Promise.resolve() : Promise.reject()
+					)
+					.catch(err => Promise.reject())
+			)
 	],
 	verifyToken,
-	(req: express.Request, res: express.Response) => {
+	(req: Request, res: Response) => {
 		const errors = validationResult(req); // TODO we need one function for all of these
 		if (!errors.isEmpty()) {
 			return res.status(422).send(errors.array());
