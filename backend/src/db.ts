@@ -1,9 +1,14 @@
 import pgpromise from 'pg-promise';
+import {
+	POSTGRES_USER,
+	POSTGRES_PASSWORD,
+	POSTGRES_HOST,
+	POSTGRES_PORT,
+	POSTGRES_DB
+} from './config';
 
-const pgp = pgpromise({});
+const postgresURL = `postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}`;
 
-const cn = 'postgres://postgres:postgres@localhost:5432/post_db';
-
-const db = pgp(cn);
+const db = pgpromise({})(postgresURL);
 
 export default db;
