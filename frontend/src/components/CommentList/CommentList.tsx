@@ -16,6 +16,7 @@ import Input from '../../controls/Input/Input';
 import { ReducerStateType } from '../../entities/reducer';
 
 import './CommentList.scss';
+import { displayErrorNotification } from '../../util/notification';
 
 const baseClassName = 'comment-list';
 
@@ -68,7 +69,11 @@ class CommentList extends React.Component<Props, State> {
 		createCommentForPostID(
 			this.props.postID,
 			(this.commentTextInput as any).current.value // TODO this is an ugly hack...
-		);
+		)
+			.then(() => fetchCommentsForPostID(this.props.postID, () => {}))
+			.catch(err =>
+				displayErrorNotification('Failed to create comment ' + err)
+			);
 	};
 
 	render() {

@@ -71,17 +71,15 @@ export const createEntity = (
 		body: JSON.stringify({ text: bodyText })
 	};
 
-	fetch(`${BACKEND_URL}${route}`, fetchParams)
-		.then(response => {
-			if (response.ok) {
-				return response;
-			}
-			throw new Error(response.status + ': ' + response.statusText);
-		})
-		.then(response => {
-			return; // TODO auto-fetch after succesful call
-		}) //fetchPostsForCommunityID(communityID, () => {})}) // TODO COMMUNITY ID
-		.catch(error => {
-			displayErrorNotification(`Failed to create post: ${error.message}`); // TODO entity and not post
-		});
+	return new Promise((resolve, reject) => {
+		fetch(`${BACKEND_URL}${route}`, fetchParams)
+			.then(response => {
+				if (response.ok) {
+					return response;
+				}
+				throw new Error(response.status + ': ' + response.statusText);
+			})
+			.then(response => resolve()) //fetchPostsForCommunityID(communityID, () => {})}) // TODO COMMUNITY ID
+			.catch(error => reject(error.message));
+	});
 };

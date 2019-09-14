@@ -4,10 +4,12 @@ import { RouteComponentProps, withRouter } from 'react-router';
 
 import Button from '../../controls/Button/Button';
 
-import { createPost } from '../../entities/posts';
+import { createPost, fetchPostsForCommunityID } from '../../entities/posts';
+
+import { displayErrorNotification } from '../../util/notification';
+import TextArea from '../../controls/TextArea/TextArea';
 
 import './PostCreator.scss';
-import Input from '../../controls/Input/Input';
 
 const baseClassName = 'post-creator';
 
@@ -21,7 +23,7 @@ type RouteProps = RouteComponentProps<{ communityID: string }>;
 type Props = RouteProps;
 
 class PostCreator extends React.Component<Props, State> {
-	private postTextField: React.RefObject<Input>;
+	private postTextField: React.RefObject<TextArea>;
 
 	constructor(props: Props) {
 		super(props);
@@ -35,12 +37,22 @@ class PostCreator extends React.Component<Props, State> {
 	}
 	createPost = () => {
 		createPost(
-			(this.postTextField.current as any).value,
+			(this.postTextField as any).current.value,
 			parseInt(this.props.match.params.communityID)
-		); // TODO get rid of 'as any'
+		)
+			.then(() =>
+				fetchPostsForCommunityID(
+					parseInt(this.props.match.params.communityID)
+				)
+			)
+			.catch(err =>
+				displayErrorNotification(
+					'Failed to create post TODO err message'
+				)
+			); // TODO get rid of 'as any'
 	};
 
-	fieldChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
+	fieldChanged = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
 		this.setState({
 			isValid: event.target.validity.valid
 		});
@@ -50,7 +62,7 @@ class PostCreator extends React.Component<Props, State> {
 		return (
 			<div className={baseClassName}>
 				<p>Create a post: </p>
-				<Input
+				<TextArea
 					ref={this.postTextField}
 					placeholder={'Post text goes here'}
 					onChange={this.fieldChanged}

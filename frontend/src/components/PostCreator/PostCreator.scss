@@ -9,4 +9,12 @@
 	> * {
 		width: 100%;
 	}
+
+	> .pb-textarea {
+		height: 50px;
+
+		&:focus {
+			height: 150px;
+		}
+	}
 }
