@@ -42,11 +42,6 @@ class Post extends React.Component<Props, State> {
 	};
 
 	render() {
-		console.log(
-			new Date(this.props.post.created_on),
-			'    ',
-			this.props.post.created_on
-		);
 		return (
 			<div className={`${baseClassName}`}>
 				<div className={`${baseClassName}__header`}>
@@ -63,7 +58,7 @@ class Post extends React.Component<Props, State> {
 						{`${prettyPrintDateDifference(
 							new Date(this.props.post.created_on),
 							new Date()
-						)} ago`}
+						)}`}
 					</span>
 				</div>
 				<div className={`${baseClassName}__body`}>

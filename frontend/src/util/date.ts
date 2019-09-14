@@ -1,5 +1,9 @@
 // TODO finish, refactor etc.
-export const prettyPrintDateDifference = (date1: Date, date2: Date): string => {
+export const prettyPrintDateDifference = (
+	date1: Date,
+	date2: Date,
+	addAgo?: boolean
+): string => {
 	const timeDiff = Math.abs(date1.getTime() - date2.getTime());
 
 	const milisecInMinute = 1000 * 60;
@@ -12,14 +16,12 @@ export const prettyPrintDateDifference = (date1: Date, date2: Date): string => {
 	}
 
 	if (timeDiff < milisecInHour) {
-		return `${Math.floor(timeDiff / milisecInMinute)} minutes`;
+		return `${Math.floor(timeDiff / milisecInMinute)} m`;
 	}
 
 	if (timeDiff < milisecInDay) {
-		return `${Math.floor(timeDiff / milisecInHour)} hours`;
+		return `${Math.floor(timeDiff / milisecInHour)} h`;
 	}
 
-	//if (timeDiff < milisecInWeek) {
-	return `${Math.floor(timeDiff / milisecInDay)} days`;
-	//}
+	return `${Math.floor(timeDiff / milisecInDay)} d`;
 };
