@@ -11,10 +11,10 @@ app.use(cors());
 app.use(bodyParser.json());
 
 const community = require('./routes/community');
-app.use('/community', verifyToken, community);
+app.use('/community', community);
 
 const post = require('./routes/post');
-app.use('/post', verifyToken, post);
+app.use('/post', post);
 
 const session = require('./routes/session');
 app.use('/session', session);

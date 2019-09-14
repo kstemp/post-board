@@ -1,6 +1,7 @@
 import express from 'express';
 import db from '../db';
 import { param, check, sanitize, validationResult } from 'express-validator';
+import verifyToken from '../verify-token';
 
 const router = express.Router();
 
@@ -17,11 +18,12 @@ router.get('/:postID/comments', (req, res) => {
 	// TODO check whether post ID is valid, etc.
 	const reqPostID = parseInt(req.params.postID);
 
-	db.any('SELECT * FROM comments WHERE post_id=$1 ORDER BY date DESC', [
-		reqPostID
-	])
+	db.any('SELECT * FROM comments WHERE post_id=$1', [reqPostID])
 		.then(data => res.status(200).send(data))
-		.catch(error => res.sendStatus(500));
+		.catch(error => {
+			console.log(error);
+			return res.sendStatus(500);
+		});
 });
 
 //TODO check whether post ID exists
@@ -33,6 +35,7 @@ router.post(
 			.not()
 			.isEmpty()
 	],
+	verifyToken,
 	(req: express.Request, res: express.Response) => {
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
@@ -41,11 +44,18 @@ router.post(
 
 		const reqPostID = parseInt(req.params.postID);
 
+		const [SQLquery, queryParams] = (req as any).login
+			? [
+					'INSERT INTO comments (post_id, text, login) VALUES ($1, $2, $3)',
+					[reqPostID, req.body.text, (req as any).login]
+			  ]
+			: [
+					'INSERT INTO comments (post_id, text) VALUES ($1, $2)',
+					[reqPostID, req.body.text]
+			  ];
+
 		return db
-			.none('INSERT INTO comments (post_id, text) VALUES ($1, $2)', [
-				reqPostID,
-				req.body.text
-			])
+			.none(SQLquery, queryParams)
 			.then(() => res.sendStatus(204))
 			.catch(error => res.sendStatus(500));
 	}
