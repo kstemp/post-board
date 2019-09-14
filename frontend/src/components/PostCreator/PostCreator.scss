@@ -16,5 +16,8 @@
 		&:focus {
 			height: 150px;
 		}
+		&:not(:invalid) {
+			height: 150px;
+		}
 	}
 }

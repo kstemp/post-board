@@ -15,6 +15,10 @@
 			float: right;
 			color: $color-disabled;
 		}
+
+		&-id {
+			color: $color-disabled;
+		}
 	}
 
 	&__body {

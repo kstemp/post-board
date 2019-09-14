@@ -54,6 +54,9 @@ class Post extends React.Component<Props, State> {
 							'Anonymous'
 						)}
 					</span>
+					<span className={`${baseClassName}__header-id`}>
+						#{this.props.post.id}
+					</span>
 					<span className={`${baseClassName}__header-time`}>
 						{`${prettyPrintDateDifference(
 							new Date(this.props.post.created_on),
