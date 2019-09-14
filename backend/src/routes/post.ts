@@ -1,64 +1,33 @@
 import express, { Request, Response } from 'express';
-import db from '../db';
-import { param, check, sanitize, validationResult } from 'express-validator';
-import verifyToken from '../verify-token';
-import { checkPostExists } from '../validator';
+import db, { PSQLERR } from '../modules/db';
+import { check, sanitize, validationResult } from 'express-validator';
+import verifyToken from '../modules/verify-token';
 
 const router = express.Router();
 
-router.get(
-	'/:postID/',
-	[
-		check('postID', 'Post with specified ID must exist').custom(postID =>
-			checkPostExists(postID)
-				.then(exists => (exists ? Promise.resolve() : Promise.reject()))
-				.catch(err => Promise.reject())
-		)
-	],
-	(req: Request, res: Response) => {
-		const errors = validationResult(req);
-		if (!errors.isEmpty()) {
-			return res.status(422).send(errors.array());
-		}
+router.get('/:postID/', (req: Request, res: Response) => {
+	const reqPostID = parseInt(req.params.postID);
 
-		const reqPostID = parseInt(req.params.postID);
+	db.any('SELECT * FROM posts WHERE id=$1', [reqPostID])
+		.then(data => res.status(200).send(data))
+		.catch(error => {
+			console.log(error);
+			return res.sendStatus(500);
+		});
+});
 
-		db.any('SELECT * FROM posts WHERE id=$1', [reqPostID])
-			.then(data => res.status(200).send(data))
-			.catch(error => {
-				console.log(error);
-				return res.sendStatus(500);
-			});
-	}
-);
+// TODO check whet
+router.get('/:postID/comments', (req: Request, res: Response) => {
+	const reqPostID = parseInt(req.params.postID);
 
-router.get(
-	'/:postID/comments',
-	[
-		check('postID', 'Post with specified ID must exist').custom(postID =>
-			checkPostExists(postID)
-				.then(exists => (exists ? Promise.resolve() : Promise.reject()))
-				.catch(err => Promise.reject())
-		)
-	],
-	(req: Request, res: Response) => {
-		const errors = validationResult(req);
-		if (!errors.isEmpty()) {
-			return res.status(422).send(errors.array());
-		}
+	db.any('SELECT * FROM comments WHERE post_id=$1', [reqPostID])
+		.then(data => res.status(200).send(data))
+		.catch(error => {
+			console.log(error);
+			return res.sendStatus(500);
+		});
+});
 
-		const reqPostID = parseInt(req.params.postID);
-
-		db.any('SELECT * FROM comments WHERE post_id=$1', [reqPostID])
-			.then(data => res.status(200).send(data))
-			.catch(error => {
-				console.log(error);
-				return res.sendStatus(500);
-			});
-	}
-);
-
-//TODO check whether post ID exists
 router.post(
 	'/:postID/comments',
 	[
@@ -89,7 +58,13 @@ router.post(
 		return db
 			.none(SQLquery, queryParams)
 			.then(() => res.sendStatus(204))
-			.catch(error => res.sendStatus(500));
+			.catch(error => {
+				console.log(error);
+				if (error.code === PSQLERR.FOREIGN_KEY_VIOLATION) {
+					return res.sendStatus(400);
+				}
+				return res.sendStatus(500);
+			});
 	}
 );
 

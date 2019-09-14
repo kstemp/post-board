@@ -12,9 +12,10 @@ import {
 
 import LoadingSpinner from '../../controls/LoadingSpinner/LoadingSpinner';
 
-import './CommentList.scss';
 import Input from '../../controls/Input/Input';
 import { ReducerStateType } from '../../entities/reducer';
+
+import './CommentList.scss';
 
 const baseClassName = 'comment-list';
 

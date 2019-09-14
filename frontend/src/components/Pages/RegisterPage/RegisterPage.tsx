@@ -7,7 +7,7 @@ import {
 import FormPage from '../FormPage/FormPage';
 
 import { register } from '../../../security';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
 const baseClassName = 'register-page';
 
@@ -16,7 +16,7 @@ interface OwnProps {
 }
 
 interface State {
-	isValid: boolean;
+	redirect: boolean;
 }
 
 type Props = OwnProps;
@@ -28,6 +28,10 @@ class RegisterPage extends React.Component<Props, State> {
 		super(props);
 
 		this.refFormPage = React.createRef();
+
+		this.state = {
+			redirect: false
+		};
 	}
 
 	register = () => {
@@ -41,7 +45,9 @@ class RegisterPage extends React.Component<Props, State> {
 
 		register(login, email, password)
 			.then(() => {
-				return window.location.replace('/login');
+				return this.setState({
+					redirect: true
+				});
 			})
 			.catch((error: Response) =>
 				displayErrorNotification(formatResponse(error))
@@ -49,7 +55,9 @@ class RegisterPage extends React.Component<Props, State> {
 	};
 
 	render() {
-		return (
+		return this.state.redirect ? (
+			<Redirect to={'login'} />
+		) : (
 			<div className={baseClassName}>
 				<FormPage
 					ref={this.refFormPage}

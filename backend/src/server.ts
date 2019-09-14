@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import verifyToken from './verify-token';
+import verifyToken from './modules/verify-token';
 
 const app = express();
 

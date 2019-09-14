@@ -1,9 +1,12 @@
 import express from 'express';
 import bcrypt from 'bcryptjs';
-import { SECRET } from '../config';
+import { SECRET } from '../modules/config';
 import { check, validationResult } from 'express-validator';
-import db from '../db';
-import { checkLoginExists, formatValidationResults } from '../validator';
+import db from '../modules/db';
+import {
+	checkLoginExists,
+	formatValidationResults
+} from '../modules/validator';
 import jwt from 'jsonwebtoken';
 
 const router = express.Router();

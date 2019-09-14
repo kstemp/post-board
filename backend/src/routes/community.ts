@@ -1,58 +1,28 @@
 import express, { Request, Response } from 'express';
-import db from '../db';
+import db, { PSQLERR } from '../modules/db';
 import { check, sanitize, validationResult } from 'express-validator';
-import verifyToken from '../verify-token';
-import { checkCommunityExists } from '../validator';
+import verifyToken from '../modules/verify-token';
 
 const router = express.Router();
 
-router.get(
-	'/:communityID',
-	[
-		check('communityID', 'Community with specified ID must exists')
-			.exists()
-			.custom(communityID =>
-				checkCommunityExists(communityID)
-					.then(exists =>
-						exists ? Promise.resolve() : Promise.reject()
-					)
-					.catch(err => Promise.reject())
-			)
-	],
-	(req: Request, res: Response) => {
-		const errors = validationResult(req);
-		if (!errors.isEmpty()) {
-			return res.status(422).send(errors.array());
-		}
+router.get('/:communityID', (req: Request, res: Response) => {
+	const reqCommunityID = parseInt(req.params.communityID);
 
-		const reqCommunityID = parseInt(req.params.communityID);
+	db.any('SELECT * FROM posts WHERE community_id = $1', [reqCommunityID])
+		.then(data => res.status(200).send(data))
+		.catch(error => {
+			console.log(error);
+			return res.sendStatus(500);
+		});
+});
 
-		db.any('SELECT * FROM posts WHERE community_id = $1', [reqCommunityID])
-			.then(data => res.status(200).send(data))
-			.catch(error => {
-				console.log(error);
-				return res.sendStatus(500);
-			});
-	}
-);
-
-// TODO check for communityID - whether it exists
 router.post(
 	'/:communityID',
 	[
 		sanitize('text').trim(),
 		check('text', 'Post text must not be empty')
 			.not()
-			.isEmpty(),
-		check('communityID', 'Community with specified ID must exist')
-			.exists()
-			.custom(communityID =>
-				checkCommunityExists(communityID)
-					.then(exists =>
-						exists ? Promise.resolve() : Promise.reject()
-					)
-					.catch(err => Promise.reject())
-			)
+			.isEmpty()
 	],
 	verifyToken,
 	(req: Request, res: Response) => {
@@ -79,6 +49,11 @@ router.post(
 			.then(() => res.sendStatus(200))
 			.catch(error => {
 				console.log(error);
+				// this error means that there's no community of specified ID,
+				// so hit the user with that 'Bad Request'
+				if (error.code === PSQLERR.FOREIGN_KEY_VIOLATION) {
+					return res.sendStatus(400);
+				}
 				return res.sendStatus(500);
 			});
 	}
