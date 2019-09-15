@@ -23,4 +23,6 @@ export type PostType = {
 	parent_id: IDType;
 	created_on: string;
 	login: string;
+
+	auto_comment_count: number;
 };

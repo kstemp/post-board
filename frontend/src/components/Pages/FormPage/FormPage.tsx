@@ -34,10 +34,12 @@ class FormPage extends React.Component<OwnProps> {
 		return (
 			<div className={baseClassName}>
 				<p>{this.props.title}</p>
-				{this.props.fields.map(field => (
+				{this.props.fields.map((field, index) => (
 					<Input
+						autoFocus={index === 0}
 						placeholder={field.placeholder}
 						type={field.password ? 'password' : 'text'}
+						onSubmit={this.props.onFormSubmit}
 						onChange={(
 							event: React.ChangeEvent<HTMLInputElement>
 						) => (this.valuesByID[field.id] = event.target.value)}

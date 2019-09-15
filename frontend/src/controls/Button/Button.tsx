@@ -10,7 +10,8 @@ interface OwnProps {
 	disabled?: boolean;
 	icon?: string;
 	fill?: boolean;
-	tooltip?: string;
+	toolTipEnabled?: string;
+	toolTipDisabled?: string;
 }
 
 // TODO getClassNames...
@@ -22,12 +23,16 @@ class Button extends React.Component<OwnProps> {
 			className += ` ${baseClassName}--fill`;
 		}
 
+		const toolTip = this.props.disabled
+			? this.props.toolTipDisabled
+			: this.props.toolTipEnabled;
+
 		return (
 			<button
 				className={className}
 				onClick={this.props.onClick}
 				disabled={this.props.disabled}
-				title={this.props.tooltip}
+				title={toolTip}
 			>
 				{this.props.icon && (
 					<i className={'material-icons-outlined md-18'}>

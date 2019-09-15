@@ -19,7 +19,7 @@ interface MatchParams {
 
 // TODO just pass the CommunityID as prop ffs, we don't need this withRouter extravaganza
 const CommunityRouter = ({ match }: RouteComponentProps<MatchParams>) => (
-	<Page>
+	<Page location={match.url}>
 		<PostCreator />
 		<PostList />
 	</Page>
@@ -34,7 +34,7 @@ class MainRouter extends React.Component {
 						exact
 						path={'/'}
 						render={() => (
-							<Page>
+							<Page location={'/'}>
 								<HomePage />
 							</Page>
 						)}
@@ -61,7 +61,7 @@ class MainRouter extends React.Component {
 						exact
 						path='/community'
 						render={() => (
-							<Page>
+							<Page location={'/community'}>
 								You need to specify community ID, as in
 								'/community/12345'
 							</Page>

@@ -10,6 +10,7 @@ import { prettyPrintDateDifference } from '../../util/date';
 import { ReducerStateType } from '../../entities/reducer';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
+import { isLoggedIn } from '../../entities/selectors';
 
 const baseClassName = 'post';
 
@@ -78,21 +79,25 @@ class Post extends React.Component<Props, State> {
 				<div className={`${baseClassName}__buttons`}>
 					<Button
 						icon={`favorite${this.state.liked ? '' : '_border'}`}
-						label={'React'}
+						label={'0'}
 						disabled={!this.props.isLoggedIn}
-						tooltip={
-							!this.props.isLoggedIn
-								? 'You must be logged in to react to posts'
-								: undefined
+						toolTipEnabled={'React'}
+						toolTipDisabled={
+							'You must be logged in to react to posts'
 						}
 						onClick={this.toggleLiked}
 					/>
 					<Button
 						icon={'chat_bubble_outline'}
-						label={'Comment'}
+						label={this.props.post.auto_comment_count.toString()}
+						toolTipEnabled={'Comment'}
 						onClick={this.toggleShowComments}
 					/>
-					<Button icon={'link'} label={'Link'} />
+					<Button
+						icon={'link'}
+						toolTipEnabled={'Tag'}
+						//	label={'Link'}
+					/>
 				</div>
 				{this.state.showComments && (
 					<CommentList postID={this.props.post.id} />
@@ -104,7 +109,7 @@ class Post extends React.Component<Props, State> {
 
 const mapStateToProps = (state: ReducerStateType) => {
 	return {
-		isLoggedIn: !!state.accessToken
+		isLoggedIn: isLoggedIn(state)
 	};
 };
 

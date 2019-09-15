@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import FormPage from '../FormPage/FormPage';
 import { ReducerStateType } from '../../../entities/reducer';
+import { isLoggedIn } from '../../../entities/selectors';
 
 const baseClassName = 'login-page';
 
@@ -83,7 +84,7 @@ class LoginPage extends React.Component<Props> {
 }
 
 const mapStateToProps = (state: ReducerStateType) => ({
-	isLoggedIn: !!state.accessToken
+	isLoggedIn: isLoggedIn(state)
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => {

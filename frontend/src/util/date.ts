@@ -16,12 +16,12 @@ export const prettyPrintDateDifference = (
 	}
 
 	if (timeDiff < milisecInHour) {
-		return `${Math.floor(timeDiff / milisecInMinute)} m`;
+		return `${Math.floor(timeDiff / milisecInMinute)}m`;
 	}
 
 	if (timeDiff < milisecInDay) {
-		return `${Math.floor(timeDiff / milisecInHour)} h`;
+		return `${Math.floor(timeDiff / milisecInHour)}h`;
 	}
 
-	return `${Math.floor(timeDiff / milisecInDay)} d`;
+	return `${Math.floor(timeDiff / milisecInDay)}d`;
 };

@@ -16,6 +16,7 @@ const baseClassName = 'page';
 
 interface OwnProps {
 	hideLoginButton?: boolean;
+	location?: string;
 }
 
 interface StateProps {
@@ -49,7 +50,13 @@ class Page extends React.Component<OwnProps & StateProps> {
 									onClick={securityLogout}
 								/>
 							) : (
-								<NavLink to={'/login'}>
+								<NavLink
+									to={
+										this.props.location
+											? `/login?redirectTo="${this.props.location}"`
+											: '/login'
+									}
+								>
 									<Button fill label={'Login'} />
 								</NavLink>
 							))}
