@@ -59,7 +59,7 @@ class PostList extends React.Component<Props, State> {
 					<LoadingSpinner text={'Loading posts...'} />
 				) : this.props.posts.length ? (
 					this.props.posts.map(post => (
-						<Post key={post.id} post={post} />
+						<Post key={post.entity_id} post={post} />
 					))
 				) : (
 					'No posts here.'

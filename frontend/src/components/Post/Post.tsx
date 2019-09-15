@@ -11,6 +11,7 @@ import { ReducerStateType } from '../../entities/reducer';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { isLoggedIn } from '../../entities/selectors';
+import { fetchMetadataForPostID } from '../../entities/posts';
 
 const baseClassName = 'post';
 
@@ -20,9 +21,9 @@ interface StateProps {
 }
 
 interface State {
-	comments: CommentType[];
 	showComments: boolean;
 	liked: boolean;
+	numberOfComments: number;
 }
 
 type Props = StateProps;
@@ -32,11 +33,28 @@ class Post extends React.Component<Props, State> {
 		super(props);
 
 		this.state = {
-			comments: [],
 			showComments: false,
-			liked: false
+			liked: false,
+			numberOfComments: 0
 		};
 	}
+
+	fetchMetadata = () =>
+		fetchMetadataForPostID(this.props.post.entity_id)
+			.then((metadata: any) =>
+				this.setState({
+					numberOfComments: (metadata as any).commentCount
+				})
+			)
+			.catch(err => console.log(err));
+
+	componentDidMount() {
+		this.updateCommentList();
+	}
+
+	updateCommentList = () => {
+		this.fetchMetadata();
+	};
 
 	toggleShowComments = () => {
 		this.setState({
@@ -64,7 +82,7 @@ class Post extends React.Component<Props, State> {
 						)}
 					</span>
 					<span className={`${baseClassName}__header-id`}>
-						#{this.props.post.id}
+						#{this.props.post.entity_id}
 					</span>
 					<span className={`${baseClassName}__header-time`}>
 						{`${prettyPrintDateDifference(
@@ -89,7 +107,7 @@ class Post extends React.Component<Props, State> {
 					/>
 					<Button
 						icon={'chat_bubble_outline'}
-						label={this.props.post.auto_comment_count.toString()}
+						label={this.state.numberOfComments.toString()}
 						toolTipEnabled={'Comment'}
 						onClick={this.toggleShowComments}
 					/>
@@ -100,7 +118,10 @@ class Post extends React.Component<Props, State> {
 					/>
 				</div>
 				{this.state.showComments && (
-					<CommentList postID={this.props.post.id} />
+					<CommentList
+						postID={this.props.post.entity_id}
+						onUpdate={this.updateCommentList}
+					/>
 				)}
 			</div>
 		);

@@ -6,43 +6,78 @@ CREATE DATABASE post_db ENCODING 'UTF8'	LC_COLLATE = 'en_US.UTF-8' LC_CTYPE = 'e
 --
 CREATE TABLE users
 (
-	login VARCHAR PRIMARY KEY,
-	email VARCHAR NOT NULL,
-	password VARCHAR NOT NULL,
+	login VARCHAR NOT NULL,
+	PRIMARY KEY (login),
 
-	name VARCHAR
+	email VARCHAR NOT NULL,
+	password VARCHAR NOT NULL
 );
 --
-CREATE TABLE communities
-(
-	id SERIAL PRIMARY KEY,
-	name VARCHAR NOT NULL
+CREATE TABLE communities (
+	community_id SERIAL,
+	PRIMARY KEY (community_id),
+	
+	name VARCHAR NOT NULL 
 );
--- 
-CREATE TABLE posts
-(
-	id SERIAL PRIMARY KEY,
-	community_id INTEGER NOT NULL REFERENCES communities (id),
-	text VARCHAR NOT NULL,
+--
+CREATE TABLE entities (
+	entity_id SERIAL,
+	PRIMARY KEY (entity_id)
+);
+--
+CREATE TABLE posts (
+
+	entity_id INTEGER UNIQUE NOT NULL REFERENCES entities (entity_id),
+	PRIMARY KEY (entity_id),
+
+	parent_community_id INTEGER REFERENCES communities (community_id), 
+
 	created_on TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT (NOW() AT TIME ZONE 'utc'),
+
+	text VARCHAR NOT NULL,
+
+	login VARCHAR
+
+);
+
+CREATE TABLE comments (
+
+	entity_id INTEGER UNIQUE NOT NULL REFERENCES entities (entity_id),
+	parent_post_id INTEGER NOT NULL REFERENCES posts (entity_id),
+
+	PRIMARY KEY (entity_id),
+
 	login VARCHAR,
 
-	auto_comment_count INTEGER DEFAULT 0
+	text VARCHAR NOT NULL
+
 );
 --
-CREATE TABLE comments
-(
-	id SERIAL PRIMARY KEY,
-	post_id INTEGER NOT NULL REFERENCES posts (id),
-	text VARCHAR NOT NULL,
-	created_on TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT (NOW() AT TIME ZONE 'utc'),
-	login VARCHAR
+CREATE TABLE reactions (
+
+	reaction_id SERIAL,
+	parent_entity_id INTEGER NOT NULL REFERENCES entities (entity_id),
+
+	PRIMARY KEY (reaction_id)
+
 );
+
+
+--
+
+/*INSERT INTO persons (lastname,firstname) VALUES ('Smith', 'John') RETURNING id;
+
+
+
+
+
 /*
+	DEPRECATED - ONLY FOR REFERENCE
 	auto-increment/decrement number of comments when a new one is created (one is removed) for a given post.
 	This is so that we can always see the total number of comments without the need to fetch potentially
 	large number of them.
 */
+/*
 CREATE OR REPLACE FUNCTION increment_comment_number() 
 RETURNS TRIGGER AS $$
 BEGIN
@@ -61,5 +96,7 @@ $$ LANGUAGE plpgsql VOLATILE;
 
 -- TODO rename to increment_comment_count, etc.
 -- TODO for each row?
+/*
 CREATE TRIGGER increment_comment_number AFTER INSERT ON comments FOR EACH ROW EXECUTE PROCEDURE increment_comment_number(); 
 CREATE TRIGGER decrement_comment_number AFTER INSERT ON comments FOR EACH ROW EXECUTE PROCEDURE decrement_comment_number(); 
+*/

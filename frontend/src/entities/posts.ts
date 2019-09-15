@@ -1,4 +1,8 @@
-import { fetchEntityAndPlaceInStore, createEntity } from './entity';
+import {
+	fetchEntityAndPlaceInStore,
+	createEntity,
+	fetchEntity
+} from './entity';
 import { IDType } from './types';
 
 export const fetchPostsForCommunityID = (
@@ -10,6 +14,9 @@ export const fetchPostsForCommunityID = (
 		'post',
 		callbackNotifyLoading
 	);
+
+export const fetchMetadataForPostID = (postID: IDType) =>
+	fetchEntity(`/post/${postID}/metadata`);
 
 export const fetchCommentsForPostID = (
 	postID: IDType,
@@ -23,29 +30,7 @@ export const fetchCommentsForPostID = (
 	);
 
 export const createPost = (postText: string, communityID: IDType) =>
-	createEntity(`/community/${communityID}`, postText);
-
-/*
-	const fetchParams = {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify({ text: postText })
-	};
-
-	fetch(`${BACKEND_URL}/community/${communityID}`, fetchParams)
-		.then(response => {
-			if (response.ok) {
-				return response;
-			}
-			throw new Error(response.status + ': ' + response.statusText);
-		})
-		.then(response => fetchPostsForCommunityID(communityID, () => {})) // TODO COMMUNITY ID
-		.catch(error => {
-			displayErrorNotification('Failed to create post', error.message);
-		});
-};*/
+	createEntity(`/post?communityID=${communityID}`, postText);
 
 export const createCommentForPostID = (postID: IDType, commentText: string) =>
 	createEntity(`/post/${postID}/comments`, commentText);

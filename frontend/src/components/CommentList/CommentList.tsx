@@ -22,6 +22,7 @@ const baseClassName = 'comment-list';
 
 interface OwnProps {
 	postID: IDType;
+	onUpdate: () => void;
 }
 
 interface StateProps {
@@ -70,7 +71,10 @@ class CommentList extends React.Component<Props, State> {
 			this.props.postID,
 			(this.commentTextInput as any).current.value // TODO this is an ugly hack...
 		)
-			.then(() => fetchCommentsForPostID(this.props.postID, () => {}))
+			.then(() => {
+				this.props.onUpdate();
+				fetchCommentsForPostID(this.props.postID, () => {});
+			})
 			.catch(err =>
 				displayErrorNotification('Failed to create comment ' + err)
 			);
@@ -95,7 +99,7 @@ class CommentList extends React.Component<Props, State> {
 					<LoadingSpinner text={'Loading comments...'} />
 				) : this.props.comments.length ? (
 					this.props.comments.map(comment => (
-						<Comment key={comment.id} comment={comment} />
+						<Comment key={comment.entity_id} comment={comment} />
 					))
 				) : (
 					<div>No comments yet.</div>

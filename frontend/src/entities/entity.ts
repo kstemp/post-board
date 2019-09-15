@@ -6,6 +6,23 @@ import { EntityTypeEnum, IDType } from './types';
 import store from './store';
 import { ACTION_SET_ENTITIES } from './actions';
 
+export const fetchEntity = (route: string) =>
+	new Promise((resolve, reject) => {
+		fetch(`${BACKEND_URL}${route}`)
+			.then(response => {
+				if (response.ok) {
+					return response.json();
+				}
+
+				throw new Error(response.status + ': ' + response.statusText);
+			})
+			.then(json => resolve(json))
+			.catch(error => {
+				console.log('ERROR ', error);
+				return reject(error.message);
+			});
+	});
+
 export const fetchEntityAndPlaceInStore = (
 	route: string,
 	entityType: EntityTypeEnum,
