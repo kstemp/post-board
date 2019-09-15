@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router';
 
 import Post from '../Post/Post';
-import { PostType, IDType } from '../../entities/types';
+import { TPost, IDType } from '../../entities/types';
 import LoadingSpinner from '../../controls/LoadingSpinner/LoadingSpinner';
 
 import { fetchPostsForCommunityID } from '../../entities/posts';
@@ -13,7 +13,7 @@ import { ReducerStateType } from '../../entities/reducer';
 const baseClassName = 'post-list';
 
 interface StateProps {
-	posts: PostType[];
+	posts: TPost[];
 	communityID: IDType;
 }
 

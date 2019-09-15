@@ -1,17 +1,19 @@
 import React from 'react';
 
-import { CommentType } from '../../entities/types';
+import { TComment } from '../../entities/types';
+
+import { Link } from 'react-router-dom';
+import { prettyPrintDateDifference } from '../../util/date';
 
 import './Comment.scss';
-import { Link } from 'react-router-dom';
 
 const baseClassName = 'comment';
 
-type CommentProps = {
-	comment: CommentType;
-};
+interface OwnProps {
+	comment: TComment;
+}
 
-class Comment extends React.Component<CommentProps> {
+class Comment extends React.Component<OwnProps> {
 	render() {
 		return (
 			<div className={baseClassName}>

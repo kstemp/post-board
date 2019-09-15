@@ -123,14 +123,14 @@ router.post(
 
 		db.one('INSERT INTO entities DEFAULT VALUES RETURNING entity_id').then(
 			result => {
-				console.log(result);
+				//	console.log(result);
 
 				const entityID = result.entity_id;
-				console.log('REQUEST: ', req);
+				//	console.log('REQUEST: ', req);
 
 				const reqPostID = parseInt(req.params.postID);
 
-				console.log('POST ID: ', reqPostID);
+				//	console.log('POST ID: ', reqPostID);
 
 				const [SQLquery, queryParams] = (req as any).login
 					? [

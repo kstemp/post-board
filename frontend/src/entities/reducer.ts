@@ -2,11 +2,11 @@ import { ACTION_SET_ENTITIES, ACTION_SET_ACCESS_TOKEN } from './actions';
 
 import { TAction } from './actions';
 
-import { PostType, CommentType } from './types';
+import { TPost, TComment } from './types';
 
 export interface ReducerStateType {
-	post: PostType[];
-	comment: { [postID: number]: CommentType[] };
+	post: TPost[];
+	comment: { [postID: number]: TComment[] };
 	accessToken: string;
 }
 

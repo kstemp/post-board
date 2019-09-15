@@ -1,9 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Button from '../../controls/Button/Button';
 import Comment from '../Comment/Comment';
 
-import { IDType, CommentType } from '../../entities/types';
+import { IDType, TComment } from '../../entities/types';
 
 import {
 	createCommentForPostID,
@@ -15,8 +14,9 @@ import LoadingSpinner from '../../controls/LoadingSpinner/LoadingSpinner';
 import Input from '../../controls/Input/Input';
 import { ReducerStateType } from '../../entities/reducer';
 
-import './CommentList.scss';
 import { displayErrorNotification } from '../../util/notification';
+
+import './CommentList.scss';
 
 const baseClassName = 'comment-list';
 
@@ -26,7 +26,7 @@ interface OwnProps {
 }
 
 interface StateProps {
-	comments: CommentType[];
+	comments: TComment[];
 }
 
 type Props = OwnProps & StateProps;

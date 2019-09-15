@@ -1,10 +1,4 @@
-import {
-	EntityTypeEnum,
-	IDType,
-	CommunityType,
-	CommentType,
-	PostType
-} from './types';
+import { EntityTypeEnum, IDType, TCommunity, TComment, TPost } from './types';
 
 export const ACTION_SET_ENTITIES = 'ACTION_SET_ENTITIES';
 export const ACTION_SET_ACCESS_TOKEN = 'ACTION_SET_ACCESS_TOKEN';
@@ -14,7 +8,7 @@ interface IActionSetEntities {
 	data: {
 		entityType: EntityTypeEnum;
 		parentID?: IDType;
-		entities: CommunityType | PostType | CommentType;
+		entities: TCommunity | TPost | TComment;
 	};
 }
 

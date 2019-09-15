@@ -3,9 +3,8 @@ import React from 'react';
 import CommentList from '../CommentList/CommentList';
 import Button from '../../controls/Button/Button';
 
-import { PostType, CommentType } from '../../entities/types';
+import { TPost } from '../../entities/types';
 
-import './Post.scss';
 import { prettyPrintDateDifference } from '../../util/date';
 import { ReducerStateType } from '../../entities/reducer';
 import { connect } from 'react-redux';
@@ -13,10 +12,12 @@ import { NavLink } from 'react-router-dom';
 import { isLoggedIn } from '../../entities/selectors';
 import { fetchMetadataForPostID } from '../../entities/posts';
 
+import './Post.scss';
+
 const baseClassName = 'post';
 
 interface StateProps {
-	post: PostType;
+	post: TPost;
 	isLoggedIn: boolean;
 }
 
