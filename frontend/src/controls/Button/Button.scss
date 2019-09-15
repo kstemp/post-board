@@ -25,9 +25,7 @@
 		background: $color-disabled;
 		transition: all 0.2s ease 0s;
 
-		color: black;
-
-		opacity: 0.3;
+		color: $color-disabled-text;
 	}
 
 	&:hover:enabled {

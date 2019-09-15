@@ -7,8 +7,6 @@ import store from './entities/store';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import './App.scss';
-
 const baseClassName = 'App';
 
 class App extends React.Component {
@@ -17,7 +15,7 @@ class App extends React.Component {
 			<Provider store={store}>
 				<div className={baseClassName}>
 					<link
-						href='https://fonts.googleapis.com/icon?family=Material+Icons+Outlined'
+						href='https://fonts.googleapis.com/css?family=Material+Icons+Outlined'
 						rel='stylesheet'
 					></link>
 					<ToastContainer />

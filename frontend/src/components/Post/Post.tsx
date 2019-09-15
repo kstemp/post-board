@@ -21,6 +21,7 @@ interface StateProps {
 interface State {
 	comments: CommentType[];
 	showComments: boolean;
+	liked: boolean;
 }
 
 type Props = StateProps;
@@ -31,13 +32,20 @@ class Post extends React.Component<Props, State> {
 
 		this.state = {
 			comments: [],
-			showComments: false
+			showComments: false,
+			liked: false
 		};
 	}
 
 	toggleShowComments = () => {
 		this.setState({
 			showComments: !this.state.showComments
+		});
+	};
+
+	toggleLiked = () => {
+		this.setState({
+			liked: !this.state.liked
 		});
 	};
 
@@ -69,7 +77,7 @@ class Post extends React.Component<Props, State> {
 				</div>
 				<div className={`${baseClassName}__buttons`}>
 					<Button
-						icon={'favorite_border'}
+						icon={`favorite${this.state.liked ? '' : '_border'}`}
 						label={'React'}
 						disabled={!this.props.isLoggedIn}
 						tooltip={
@@ -77,6 +85,7 @@ class Post extends React.Component<Props, State> {
 								? 'You must be logged in to react to posts'
 								: undefined
 						}
+						onClick={this.toggleLiked}
 					/>
 					<Button
 						icon={'chat_bubble_outline'}

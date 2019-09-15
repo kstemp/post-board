@@ -83,15 +83,11 @@ class CommentList extends React.Component<Props, State> {
 					<div className={`${baseClassName}__new-comment`}>
 						<Input
 							required
-							placeholder={'Comment text goes here...'}
+							autoFocus
+							placeholder={'Write something...'}
 							ref={this.commentTextInput}
 							onChange={this.fieldChanged}
-						/>
-						<Button
-							fill
-							label={'Send'}
-							onClick={this.createComment}
-							disabled={!this.state.isValid}
+							onSubmit={this.createComment}
 						/>
 					</div>
 				}
