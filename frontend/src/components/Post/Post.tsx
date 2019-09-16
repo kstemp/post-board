@@ -13,6 +13,8 @@ import { isLoggedIn } from '../../entities/selectors';
 import { fetchMetadataForPostID } from '../../entities/posts';
 
 import './Post.scss';
+import { createReactionForEntityID } from '../../entities/reactions';
+import { displayErrorNotification } from '../../util/notification';
 
 const baseClassName = 'post';
 
@@ -64,9 +66,14 @@ class Post extends React.Component<Props, State> {
 	};
 
 	toggleLiked = () => {
-		this.setState({
-			liked: !this.state.liked
-		});
+		createReactionForEntityID(this.props.post.entity_id)
+			.then(() => {
+				this.setState({
+					liked: !this.state.liked
+				});
+			})
+			.catch(error => displayErrorNotification(error));
+		////
 	};
 
 	render() {

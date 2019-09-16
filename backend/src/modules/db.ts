@@ -8,7 +8,8 @@ import {
 } from './config';
 
 export const PSQLERR = {
-	FOREIGN_KEY_VIOLATION: '23503'
+	FOREIGN_KEY_VIOLATION: '23503',
+	UNIQUE_VIOLATION: '23505'
 };
 
 const postgresURL = `postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}`;

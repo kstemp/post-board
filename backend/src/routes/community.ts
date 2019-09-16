@@ -1,7 +1,5 @@
 import express, { Request, Response } from 'express';
-import db, { PSQLERR } from '../modules/db';
-import { check, sanitize, validationResult } from 'express-validator';
-import verifyToken from '../modules/verify-token';
+import db from '../modules/db';
 
 const router = express.Router();
 

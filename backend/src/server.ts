@@ -19,6 +19,9 @@ app.use('/post', post);
 const session = require('./routes/session');
 app.use('/session', session);
 
+const reactions = require('./routes/reactions');
+app.use('/reactions', reactions);
+
 app.get('/', (req: express.Request, res: express.Response) => {
 	res.status(200).send('backend is running');
 });

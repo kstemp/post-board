@@ -6,10 +6,10 @@ CREATE DATABASE post_db ENCODING 'UTF8'	LC_COLLATE = 'en_US.UTF-8' LC_CTYPE = 'e
 --
 CREATE TABLE users
 (
-	login VARCHAR NOT NULL,
+	login VARCHAR,
 	PRIMARY KEY (login),
 
-	email VARCHAR NOT NULL,
+	email VARCHAR NOT NULL UNIQUE,
 	password VARCHAR NOT NULL
 );
 --
@@ -36,7 +36,7 @@ CREATE TABLE posts (
 
 	text VARCHAR NOT NULL,
 
-	login VARCHAR
+	login VARCHAR REFERENCES users (login)
 
 );
 
@@ -47,7 +47,7 @@ CREATE TABLE comments (
 
 	PRIMARY KEY (entity_id),
 
-	login VARCHAR,
+	login VARCHAR REFERENCES users (login),
 
 	text VARCHAR NOT NULL
 
@@ -58,7 +58,9 @@ CREATE TABLE reactions (
 	reaction_id SERIAL,
 	parent_entity_id INTEGER NOT NULL REFERENCES entities (entity_id),
 
-	PRIMARY KEY (reaction_id)
+	login VARCHAR NOT NULL REFERENCES users (login),
+
+	PRIMARY KEY (parent_entity_id, login)
 
 );
 

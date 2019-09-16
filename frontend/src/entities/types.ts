@@ -7,25 +7,23 @@ export type TCommunity = {
 	name: string;
 };
 
+// NOTE we use snake_case here since this is how entries are stored in the PostgreSQL database
 type TEntity = {
 	entity_id: IDType;
+
+	created_on: string;
+
+	login: string;
 };
 
-// NOTE we use snake_case here since this is how entries are stored in the PostgreSQL database
 export type TComment = TEntity & {
 	parent_post_id: IDType;
 
 	text: string;
-	created_on: string;
-
-	login: string;
 };
 
 export type TPost = TEntity & {
 	parent_community_id?: IDType;
 
 	text: string;
-	created_on: string;
-
-	login: string;
 };
