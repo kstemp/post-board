@@ -27,6 +27,7 @@ interface State {
 	showComments: boolean;
 	liked: boolean;
 	numberOfComments: number;
+	numberOfReactions: number;
 }
 
 type Props = StateProps;
@@ -38,15 +39,17 @@ class Post extends React.Component<Props, State> {
 		this.state = {
 			showComments: false,
 			liked: false,
-			numberOfComments: 0
+			numberOfComments: 0,
+			numberOfReactions: 0
 		};
 	}
-
+	//TODO types etc.
 	fetchMetadata = () =>
 		fetchMetadataForPostID(this.props.post.entity_id)
 			.then((metadata: any) =>
 				this.setState({
-					numberOfComments: (metadata as any).commentCount
+					numberOfComments: (metadata as any).commentCount,
+					numberOfReactions: (metadata as any).reactionCount
 				})
 			)
 			.catch(err => console.log(err));
@@ -103,27 +106,38 @@ class Post extends React.Component<Props, State> {
 					{this.props.post.text}
 				</div>
 				<div className={`${baseClassName}__buttons`}>
-					<Button
-						icon={`favorite${this.state.liked ? '' : '_border'}`}
-						label={'0'}
-						disabled={!this.props.isLoggedIn}
-						toolTipEnabled={'React'}
-						toolTipDisabled={
-							'You must be logged in to react to posts'
-						}
-						onClick={this.toggleLiked}
-					/>
-					<Button
-						icon={'chat_bubble_outline'}
-						label={this.state.numberOfComments.toString()}
-						toolTipEnabled={'Comment'}
-						onClick={this.toggleShowComments}
-					/>
-					<Button
-						icon={'link'}
-						toolTipEnabled={'Tag'}
-						//	label={'Link'}
-					/>
+					<div className={`${baseClassName}__buttons-left`}>
+						<Button
+							icon={`favorite${
+								this.state.liked ? '' : '_border'
+							}`}
+							label={'0'}
+							disabled={!this.props.isLoggedIn}
+							toolTipEnabled={'React'}
+							toolTipDisabled={
+								'You must be logged in to react to posts'
+							}
+							onClick={this.toggleLiked}
+						/>
+						<Button
+							icon={'chat_bubble_outline'}
+							label={this.state.numberOfComments.toString()}
+							toolTipEnabled={'Comment'}
+							onClick={this.toggleShowComments}
+						/>
+					</div>
+					<div className={`${baseClassName}__buttons-right`}>
+						<Button
+							icon={'link'}
+							toolTipEnabled={'Tag'}
+							//	label={'Link'}
+						/>
+						<Button
+							icon={'more_horiz'}
+							toolTipEnabled={'More options'}
+							//	label={'Link'}
+						/>
+					</div>
 				</div>
 				{this.state.showComments && (
 					<CommentList

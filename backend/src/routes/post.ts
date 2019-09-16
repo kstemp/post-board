@@ -81,11 +81,17 @@ router.get('/:postID/', (req: Request, res: Response) => {
 router.get('/:postID/metadata', (req: Request, res: Response) => {
 	const reqPostID = parseInt(req.params.postID);
 
-	db.one('SELECT COUNT(*) FROM comments WHERE parent_post_id=$1', [reqPostID])
+	db.many(
+		'SELECT COUNT(*) FROM comments WHERE parent_post_id=$1 UNION SELECT COUNT(*) FROM reactions WHERE parent_entity_id=$1',
+		[reqPostID]
+	)
 		.then(result => {
 			console.log(result);
 			res.status(200).send({
-				commentCount: parseInt(result.count)
+				commentCount: parseInt(result[1].count),
+				reactionCount: parseInt(result[0].count)
+				//	,
+				//reactionCount: parseInt(result.count)
 			});
 		})
 		.catch(error => {

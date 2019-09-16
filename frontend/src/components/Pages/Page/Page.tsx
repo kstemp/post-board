@@ -36,11 +36,14 @@ class Page extends React.Component<OwnProps & StateProps> {
 					</Link>
 					<div className={`${baseClassName}__header-container`}>
 						{this.props.isLoggedIn && (
-							<Button
-								fill
-								label={'My profile'}
-								onClick={this.redirectToProfile}
-							/>
+							<>
+								<Button icon={'message'} />
+								<Button
+									fill
+									label={'My profile'}
+									onClick={this.redirectToProfile}
+								/>
+							</>
 						)}
 						{!this.props.hideLoginButton &&
 							(this.props.isLoggedIn ? (

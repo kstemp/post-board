@@ -20,6 +20,17 @@ CREATE TABLE communities (
 	name VARCHAR NOT NULL 
 );
 --
+CREATE TABLE user_roles (
+
+	community_id INTEGER NOT NULL REFERENCES communities (community_id),
+	login VARCHAR NOT NULL REFERENCES users (login),
+
+	PRIMARY KEY (community_id, login),
+
+	role VARCHAR NOT NULL CHECK IN ('admin')
+
+);
+--
 CREATE TABLE entities (
 	entity_id SERIAL,
 	PRIMARY KEY (entity_id)

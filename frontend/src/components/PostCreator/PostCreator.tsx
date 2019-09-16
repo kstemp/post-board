@@ -10,6 +10,7 @@ import { displayErrorNotification } from '../../util/notification';
 import TextArea from '../../controls/TextArea/TextArea';
 
 import './PostCreator.scss';
+import Switch from '../../controls/Switch/Switch';
 
 const baseClassName = 'post-creator';
 
@@ -74,6 +75,7 @@ class PostCreator extends React.Component<Props, State> {
 					disabled={!this.state.isValid}
 					onClick={this.createPost}
 				/>
+				<Switch />
 			</div>
 		);
 	}
