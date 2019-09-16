@@ -132,11 +132,35 @@ class Post extends React.Component<Props, State> {
 							toolTipEnabled={'Tag'}
 							//	label={'Link'}
 						/>
-						<Button
-							icon={'more_horiz'}
-							toolTipEnabled={'More options'}
-							//	label={'Link'}
-						/>
+						<div className={'dropdown'}>
+							<Button
+								icon={'more_horiz'}
+								toolTipEnabled={'More options'}
+								//	label={'Link'}
+							/>
+							<div className={'dropdown-content'}>
+								<Button
+									//fill
+									icon={'edit'}
+									//	toolTipEnabled={'More options'}
+									label={'Edit'}
+									disabled={!this.props.isLoggedIn}
+								/>
+								<Button
+									//fill
+									icon={'delete'}
+									//toolTipEnabled={'More options'}
+									label={'Delete'}
+									disabled={!this.props.isLoggedIn}
+								/>
+								<Button
+									//fill
+									icon={'report'}
+									//toolTipEnabled={'More options'}
+									label={'Report'}
+								/>
+							</div>
+						</div>
 					</div>
 				</div>
 				{this.state.showComments && (
