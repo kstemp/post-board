@@ -24,6 +24,9 @@ export const fetchPostByID = (postID: IDType) => fetchEntity(`/post/${postID}`);
 export const fetchMetadataForPostID = (postID: IDType) =>
 	fetchEntity(`/post/${postID}/metadata`);
 
+export const fetchCommentsForPostID = (postID: IDType) =>
+	fetchEntity(`/post/${postID}/comments`);
+/*
 export const fetchCommentsForPostID = (
 	postID: IDType,
 	callbackNotifyLoading: (arg0: boolean) => void
@@ -33,7 +36,7 @@ export const fetchCommentsForPostID = (
 		'comment',
 		callbackNotifyLoading,
 		postID
-	);
+	);*/
 
 export const createPost = (postText: string, communityID: IDType) =>
 	createEntity(`/post?communityID=${communityID}`, postText);

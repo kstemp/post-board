@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import Comment from '../Comment/Comment';
 
 import { IDType, TComment } from '../../entities/types';
@@ -12,7 +11,6 @@ import {
 import LoadingSpinner from '../../controls/LoadingSpinner/LoadingSpinner';
 
 import Input from '../../controls/Input/Input';
-import { ReducerStateType } from '../../entities/reducer';
 
 import { displayErrorNotification } from '../../util/notification';
 
@@ -25,14 +23,10 @@ interface OwnProps {
 	onUpdate: () => void;
 }
 
-interface StateProps {
-	comments: TComment[];
-}
-
-type Props = OwnProps & StateProps;
+type Props = OwnProps;
 
 interface State {
-	isLoadingComments: boolean;
+	comments?: TComment[];
 	isValid: boolean;
 }
 
@@ -45,40 +39,36 @@ class CommentList extends React.Component<Props, State> {
 		this.commentTextInput = React.createRef();
 
 		this.state = {
-			isLoadingComments: false,
 			isValid: false
 		};
 	}
 
+	fetchComments = () =>
+		fetchCommentsForPostID(this.props.postID)
+			.then((comments: any) => this.setState({ comments: comments }))
+			.catch(err => displayErrorNotification(err));
+
 	componentDidMount() {
-		fetchCommentsForPostID(this.props.postID, this.setIsLoadingComments);
+		this.fetchComments();
 	}
 
-	setIsLoadingComments = (isLoadingComments: boolean = true) => {
-		this.setState({
-			isLoadingComments: isLoadingComments
-		});
-	};
-
-	fieldChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
+	fieldChanged = (event: React.ChangeEvent<HTMLInputElement>) =>
 		this.setState({
 			isValid: event.target.validity.valid
 		});
-	};
 
-	createComment = () => {
+	createComment = () =>
 		createCommentForPostID(
 			this.props.postID,
 			(this.commentTextInput as any).current.value // TODO this is an ugly hack...
 		)
 			.then(() => {
 				this.props.onUpdate();
-				fetchCommentsForPostID(this.props.postID, () => {});
+				this.fetchComments();
 			})
 			.catch(err =>
 				displayErrorNotification('Failed to create comment ' + err)
 			);
-	};
 
 	render() {
 		return (
@@ -95,24 +85,23 @@ class CommentList extends React.Component<Props, State> {
 						/>
 					</div>
 				}
-				{this.state.isLoadingComments ? (
-					<LoadingSpinner text={'Loading comments...'} />
-				) : this.props.comments.length ? (
-					this.props.comments.map(comment => (
-						<Comment key={comment.entity_id} comment={comment} />
-					))
+				{this.state.comments ? (
+					this.state.comments.length ? (
+						this.state.comments.map(comment => (
+							<Comment
+								key={comment.entity_id}
+								comment={comment}
+							/>
+						))
+					) : (
+						<div>No comments yet.</div>
+					)
 				) : (
-					<div>No comments yet.</div>
+					<LoadingSpinner text={'Loading comments...'} />
 				)}
 			</div>
 		);
 	}
 }
 
-const mapStateToProps = (state: ReducerStateType, ownProps: OwnProps) => {
-	return {
-		comments: state.comment[ownProps.postID] || [] // TODO is this '||' really a decent solution here?,
-	};
-};
-
-export default connect(mapStateToProps)(CommentList);
+export default CommentList;

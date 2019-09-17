@@ -2,8 +2,9 @@
 	"name": "backend",
 	"version": "1.0.0",
 	"scripts": {
-		"dev": "nodemon src/server.ts",
-		"build": "tsc"
+		"dev": "set NODE_ENV=production&& nodemon src/server.ts",
+		"build": "tsc",
+		"test": "ts-mocha  'src/test/**/*.js' --w --recursive --timeout 10000"
 	},
 	"author": "",
 	"dependencies": {
@@ -28,6 +29,10 @@
 		"typescript": "^3.6.3"
 	},
 	"devDependencies": {
-		"nodemon": "^1.19.2"
+		"chai": "^4.2.0",
+		"chai-http": "^4.3.0",
+		"mocha": "^6.2.0",
+		"nodemon": "^1.19.2",
+		"ts-mocha": "^6.0.0"
 	}
 }

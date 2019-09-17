@@ -46,12 +46,8 @@ router.post(
 			'Password must be at least 8 characters long'
 		).isLength({ min: 8 })
 	],
-	(req: express.Request, res: express.Response) => {
-		const errors = validationResult(req);
-		if (!errors.isEmpty()) {
-			return res.status(422).send(formatValidationResults(errors));
-		}
-
+	checkValidation,
+	(req: express.Request, res: express.Response) =>
 		hashPassword(req.body.password)
 			.then(hashedPassword => {
 				db.none(
@@ -64,8 +60,7 @@ router.post(
 						return res.sendStatus(500);
 					});
 			})
-			.catch(error => res.sendStatus(500));
-	}
+			.catch(error => res.sendStatus(500))
 );
 
 router.post(
@@ -110,7 +105,7 @@ router.post(
 	}
 );
 
-// TODO error handling
+// TODO this won't be in the final API, I guess?
 router.get('/verifyToken', (req, res) => {
 	'Bearer ';
 	const token = (req.headers.authorization as any).slice(7);

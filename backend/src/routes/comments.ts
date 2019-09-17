@@ -17,32 +17,23 @@ router.post(
 	verifyToken(false),
 	checkValidation,
 	(req: express.Request, res: express.Response) => {
-		console.log('PPP ', req.params.postID);
-
 		db.one('INSERT INTO entities DEFAULT VALUES RETURNING entity_id').then(
 			result => {
 				//	console.log(result);
-
-				const entityID = result.entity_id;
-				//	console.log('REQUEST: ', req);
-
-				const reqPostID = parseInt(req.params.postID);
-
-				//	console.log('POST ID: ', reqPostID);
 
 				const [SQLquery, queryParams] = (req as any).login
 					? [
 							'INSERT INTO comments (entity_id, parent_post_id, text, login) VALUES ($1, $2, $3, $4)',
 							[
-								entityID,
-								reqPostID,
+								result.entity_id,
+								req.params.postID,
 								req.body.text,
 								(req as any).login
 							]
 					  ]
 					: [
 							'INSERT INTO comments (entity_id, parent_post_id, text) VALUES ($1, $2, $3)',
-							[entityID, reqPostID, req.body.text]
+							[result.entity_id, req.params.postID, req.body.text]
 					  ];
 
 				return db
@@ -60,16 +51,16 @@ router.post(
 	}
 );
 
-router.get('/', (req, res) => {
-	const reqPostID = parseInt(req.params.postID);
-
-	return db
-		.any('SELECT * FROM comments WHERE parent_post_id = $1', [reqPostID])
+router.get('/', (req, res) =>
+	db
+		.any('SELECT * FROM comments WHERE parent_post_id = $1', [
+			req.params.postID
+		])
 		.then(data => res.status(200).send(data))
 		.catch(error => {
 			console.log(error);
 			return res.sendStatus(500);
-		});
-});
+		})
+);
 
 module.exports = router;

@@ -1,4 +1,3 @@
-import { displayErrorNotification } from '../util/notification';
 import { BACKEND_URL } from '../Config';
 
 import { EntityTypeEnum, IDType } from './types';

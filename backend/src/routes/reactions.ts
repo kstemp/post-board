@@ -12,13 +12,11 @@ router.post(
 	checkValidation,
 	verifyToken(true),
 	(req: express.Request, res: express.Response) => {
-		const entityID = parseInt(req.query.entityID);
-
 		const login = (req as any).login;
 
 		db.none(
 			'INSERT INTO reactions (parent_entity_id, login) VALUES ($1, $2)',
-			[entityID, login]
+			[req.query.entityID, login]
 		)
 			.then(() => res.sendStatus(204))
 			.catch(error => {

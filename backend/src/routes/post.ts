@@ -12,16 +12,14 @@ router.get(
 	'/:postID/',
 	[check('postID', 'Post ID must be an integer').isInt()],
 	checkValidation,
-	(req: Request, res: Response) => {
-		const reqPostID = parseInt(req.params.postID);
-
-		db.one('SELECT * FROM posts WHERE entity_id=$1', [reqPostID])
+	(req: Request, res: Response) =>
+		db
+			.one('SELECT * FROM posts WHERE entity_id=$1', [req.params.postID])
 			.then(data => res.status(200).send(data))
 			.catch(error => {
 				console.log(error);
 				return res.sendStatus(500);
-			});
-	}
+			})
 );
 
 router.post(
@@ -38,22 +36,23 @@ router.post(
 	(req: Request, res: Response) => {
 		db.one('INSERT INTO entities DEFAULT VALUES RETURNING entity_id')
 			.then(result => {
-				const entityID = result.entity_id;
-				const reqCommunityID = parseInt(req.query.communityID);
-
 				const [SQLquery, queryParams] = (req as any).login
 					? [
 							'INSERT INTO posts (entity_id, parent_community_id, text, login) VALUES ($1, $2, $3, $4)',
 							[
-								entityID,
-								reqCommunityID,
+								result.entity_id,
+								req.query.communityID,
 								req.body.text,
 								(req as any).login
 							]
 					  ]
 					: [
 							'INSERT INTO posts (entity_id, parent_community_id, text) VALUES ($1, $2, $3)',
-							[entityID, reqCommunityID, req.body.text]
+							[
+								result.entity_id,
+								req.query.communityID,
+								req.body.text
+							]
 					  ];
 
 				db.none(SQLquery, queryParams)
@@ -82,11 +81,6 @@ router.delete(
 	checkValidation,
 	verifyToken(true),
 	(req: Request, res: Response) => {
-		if (!(req as any).login) {
-			return res.sendStatus(403);
-		}
-
-		const reqEntityID = parseInt(req.params.postID);
 		const login = (req as any).login;
 
 		const SQLquery = `WITH deleted AS (
@@ -105,7 +99,7 @@ router.delete(
 		) SELECT COUNT(*) FROM deleted`;
 
 		return db
-			.one(SQLquery, [reqEntityID, login])
+			.one(SQLquery, [req.params.postID, login])
 			.then(result => {
 				console.log(result);
 				if ((result as any).count == 0) {
