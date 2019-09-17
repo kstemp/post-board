@@ -5,6 +5,54 @@ import verifyToken from '../modules/verify-token';
 
 const router = express.Router();
 
+router.delete(
+	'/:postID',
+	[check('postID', 'post ID must be an integer').isInt()],
+	verifyToken,
+	(req: Request, res: Response) => {
+		const errors = validationResult(req); // TODO we need one function for all of these
+		if (!errors.isEmpty()) {
+			return res.status(422).send(errors.array());
+		}
+
+		if (!(req as any).login) {
+			return res.sendStatus(403);
+		}
+
+		const reqEntityID = parseInt(req.params.postID);
+		const login = (req as any).login;
+
+		const SQLquery = `WITH deleted AS (
+			DELETE FROM posts 
+			WHERE posts.entity_id = $1 
+			AND (
+				posts.login = $2 
+				OR EXISTS (
+							SELECT * FROM user_roles 
+							WHERE user_roles.community_id = posts.parent_community_id  
+							AND user_roles.login = $2 
+							AND user_roles.role = 'admin'
+						)
+			) 
+			RETURNING *
+		) SELECT COUNT(*) FROM deleted`;
+
+		return db
+			.one(SQLquery, [reqEntityID, login])
+			.then(result => {
+				console.log(result);
+				if ((result as any).count == 0) {
+					return res.sendStatus(400); //TODO bad request or unauthorized?
+				}
+				return res.sendStatus(204);
+			})
+			.catch(err => {
+				console.log(err);
+				return res.sendStatus(500);
+			});
+	}
+);
+
 router.post(
 	'/',
 	[
@@ -12,7 +60,7 @@ router.post(
 		check('text', 'Post text must not be empty')
 			.not()
 			.isEmpty(),
-		query('communityID', 'community ID must be a numeric value').isInt()
+		query('communityID', 'community ID must be an integer').isInt()
 	],
 	verifyToken,
 	(req: Request, res: Response) => {

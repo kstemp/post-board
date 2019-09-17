@@ -20,6 +20,8 @@ CREATE TABLE communities (
 	name VARCHAR NOT NULL 
 );
 --
+CREATE TYPE type_role AS ENUM ('admin');
+--
 CREATE TABLE user_roles (
 
 	community_id INTEGER NOT NULL REFERENCES communities (community_id),
@@ -27,7 +29,7 @@ CREATE TABLE user_roles (
 
 	PRIMARY KEY (community_id, login),
 
-	role VARCHAR NOT NULL CHECK IN ('admin')
+	role type_role NOT NULL DEFAULT 'admin'
 
 );
 --
@@ -38,7 +40,7 @@ CREATE TABLE entities (
 --
 CREATE TABLE posts (
 
-	entity_id INTEGER UNIQUE NOT NULL REFERENCES entities (entity_id),
+	entity_id INTEGER UNIQUE NOT NULL REFERENCES entities (entity_id) ON DELETE CASCADE,
 	PRIMARY KEY (entity_id),
 
 	parent_community_id INTEGER REFERENCES communities (community_id), 

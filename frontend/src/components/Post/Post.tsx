@@ -74,7 +74,7 @@ class Post extends React.Component<Props, State> {
 
 	componentDidMount() {
 		this.fetchPost();
-		this.updateCommentList();
+		//	this.updateCommentList();
 	}
 
 	updateCommentList = () => {
@@ -186,7 +186,7 @@ class Post extends React.Component<Props, State> {
 				)}
 			</div>
 		) : (
-			<span>No post loaded.</span>
+			<span>What to put here, when loading comment?</span> // TODO
 		);
 	}
 }
