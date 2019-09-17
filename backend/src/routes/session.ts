@@ -5,7 +5,8 @@ import { check, validationResult } from 'express-validator';
 import db from '../modules/db';
 import {
 	checkLoginExists,
-	formatValidationResults
+	formatValidationResults,
+	checkValidation
 } from '../modules/validator';
 import jwt from 'jsonwebtoken';
 
@@ -76,14 +77,8 @@ router.post(
 				.catch(err => Promise.reject())
 		)
 	],
+	checkValidation,
 	(req: express.Request, res: express.Response) => {
-		console.log('Received password: ', req.body.password);
-
-		const errors = validationResult(req);
-		if (!errors.isEmpty()) {
-			return res.status(422).send(formatValidationResults(errors));
-		}
-
 		db.one('SELECT * FROM users WHERE login=$1', [req.body.login])
 			.then(data => {
 				console.log('Hashed password: ', data.password);

@@ -25,5 +25,7 @@ export const checkValidation = (
 	next: NextFunction
 ) => {
 	const errors = validationResult(req);
-	return errors.isEmpty() ? next() : res.status(422).send(errors.array());
+	return errors.isEmpty()
+		? next()
+		: res.status(422).send(formatValidationResults(errors));
 };
