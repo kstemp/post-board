@@ -8,6 +8,7 @@
 
 ## BACKEND
 
+-   verify token should be top-level
 -   rename /post, /community to /posts, /communities etc.
 -   logging out should also add token to server blacklist, or something like that
 
