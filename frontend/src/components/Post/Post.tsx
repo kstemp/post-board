@@ -3,14 +3,14 @@ import React from 'react';
 import CommentList from '../CommentList/CommentList';
 import Button from '../../controls/Button/Button';
 
-import { TPost } from '../../entities/types';
+import { TPost, IDType } from '../../entities/types';
 
 import { prettyPrintDateDifference } from '../../util/date';
 import { ReducerStateType } from '../../entities/reducer';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { isLoggedIn } from '../../entities/selectors';
-import { fetchMetadataForPostID } from '../../entities/posts';
+import { fetchMetadataForPostID, fetchPostByID } from '../../entities/posts';
 
 import { createReactionForEntityID } from '../../entities/reactions';
 import { displayErrorNotification } from '../../util/notification';
@@ -20,8 +20,11 @@ import './Post.scss';
 
 const baseClassName = 'post';
 
+interface OwnProps {
+	entity_id: IDType;
+}
+
 interface StateProps {
-	post: TPost;
 	isLoggedIn: boolean;
 }
 
@@ -30,9 +33,10 @@ interface State {
 	liked: boolean;
 	numberOfComments: number;
 	numberOfReactions: number;
+	post?: TPost;
 }
 
-type Props = StateProps;
+type Props = OwnProps & StateProps;
 
 class Post extends React.Component<Props, State> {
 	constructor(props: Props) {
@@ -45,18 +49,31 @@ class Post extends React.Component<Props, State> {
 			numberOfReactions: 0
 		};
 	}
+
+	fetchPost = () => {
+		console.log('fetching post... ');
+		fetchPostByID(this.props.entity_id)
+			.then((post: any) => {
+				console.log('my post: ', post);
+				return this.setState({ post: post });
+			})
+			.catch(err => displayErrorNotification(err));
+	};
 	//TODO types etc.
-	fetchMetadata = () =>
-		fetchMetadataForPostID(this.props.post.entity_id)
+	fetchMetadata = () => 0;
+
+	/*
+		fetchMetadataForPostID(this.state.post.entity_id)
 			.then((metadata: any) =>
 				this.setState({
 					numberOfComments: (metadata as any).commentCount,
 					numberOfReactions: (metadata as any).reactionCount
 				})
 			)
-			.catch(err => console.log(err));
+			.catch(err => console.log(err));*/
 
 	componentDidMount() {
+		this.fetchPost();
 		this.updateCommentList();
 	}
 
@@ -71,41 +88,42 @@ class Post extends React.Component<Props, State> {
 	};
 
 	toggleLiked = () => {
-		createReactionForEntityID(this.props.post.entity_id)
+		/*
+		createReactionForEntityID(this.state.post.entity_id)
 			.then(() => {
 				this.setState({
 					liked: !this.state.liked
 				});
 			})
 			.catch(error => displayErrorNotification(error));
-		////
+		////*/
 	};
 
 	render() {
-		return (
+		return this.state.post ? (
 			<div className={`${baseClassName}`}>
 				<div className={`${baseClassName}__header`}>
 					<span className={`${baseClassName}__header-user`}>
-						{this.props.post.login ? (
-							<NavLink to={`/user/${this.props.post.login}`}>
-								<b>{this.props.post.login}</b>
+						{this.state.post.login ? (
+							<NavLink to={`/user/${this.state.post.login}`}>
+								<b>{this.state.post.login}</b>
 							</NavLink>
 						) : (
 							'Anonymous'
 						)}
 					</span>
 					<span className={`${baseClassName}__header-id`}>
-						#{this.props.post.entity_id}
+						#{this.state.post.entity_id}
 					</span>
 					<span className={`${baseClassName}__header-time`}>
 						{`${prettyPrintDateDifference(
-							new Date(this.props.post.created_on),
+							new Date(this.state.post.created_on),
 							new Date()
 						)}`}
 					</span>
 				</div>
 				<div className={`${baseClassName}__body`}>
-					{this.props.post.text}
+					{this.state.post.text}
 				</div>
 				<div className={`${baseClassName}__buttons`}>
 					<div className={`${baseClassName}__buttons-left`}>
@@ -162,11 +180,13 @@ class Post extends React.Component<Props, State> {
 				</div>
 				{this.state.showComments && (
 					<CommentList
-						postID={this.props.post.entity_id}
+						postID={this.state.post.entity_id}
 						onUpdate={this.updateCommentList}
 					/>
 				)}
 			</div>
+		) : (
+			<span>No post loaded.</span>
 		);
 	}
 }

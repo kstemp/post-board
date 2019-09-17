@@ -4,7 +4,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 
 import Button from '../../controls/Button/Button';
 
-import { createPost, fetchPostsForCommunityID } from '../../entities/posts';
+import { createPost } from '../../entities/posts';
 
 import { displayErrorNotification } from '../../util/notification';
 import TextArea from '../../controls/TextArea/TextArea';
@@ -41,10 +41,11 @@ class PostCreator extends React.Component<Props, State> {
 			(this.postTextField as any).current.value,
 			parseInt(this.props.match.params.communityID)
 		)
-			.then(() =>
-				fetchPostsForCommunityID(
-					parseInt(this.props.match.params.communityID)
-				)
+			.then(
+				() => 0
+				//fetchPostsForCommunityID(
+				//	parseInt(this.props.match.params.communityID)
+				//)
 			)
 			.catch(err =>
 				displayErrorNotification(

@@ -6,22 +6,21 @@ import Post from '../Post/Post';
 import { TPost, IDType } from '../../entities/types';
 import LoadingSpinner from '../../controls/LoadingSpinner/LoadingSpinner';
 
-import { fetchPostsForCommunityID } from '../../entities/posts';
 import { displayErrorNotification } from '../../util/notification';
 import { ReducerStateType } from '../../entities/reducer';
+import { fetchPostIDsForCommunityID } from '../../entities/posts';
 
 const baseClassName = 'post-list';
 
 interface StateProps {
-	posts: TPost[];
 	communityID: IDType;
 }
-
 type RouteProps = RouteComponentProps<{ communityID: string }>;
 
 type Props = RouteProps & StateProps;
 
 interface State {
+	postIDs: IDType[];
 	isLoadingPosts: boolean;
 }
 
@@ -30,6 +29,7 @@ class PostList extends React.Component<Props, State> {
 		super(props);
 
 		this.state = {
+			postIDs: [],
 			isLoadingPosts: false
 		};
 	}
@@ -40,34 +40,46 @@ class PostList extends React.Component<Props, State> {
 		});
 
 	componentDidMount() {
-		this.setIsLoadingPosts(true);
-		fetchPostsForCommunityID(this.props.communityID, this.setIsLoadingPosts)
-			.then(() => this.setIsLoadingPosts(false))
-			.catch((errorMessage: string) => {
-				this.setIsLoadingPosts(false);
+		//	this.setIsLoadingPosts(true);
+
+		fetchPostIDsForCommunityID(this.props.communityID)
+			.then((postIDs: any) => {
+				console.log(postIDs);
+				return this.setState({ postIDs: postIDs });
+			})
+			.catch((errorMessage: string) =>
+				//	this.setIsLoadingPosts(false);
 				displayErrorNotification(
 					`Failed to fetch posts - ${errorMessage}`
-				);
-			});
+				)
+			);
 	}
 
 	render() {
 		//	console.log('COMM ID is here ', this.props.communityID);
 		return (
 			<div className={baseClassName}>
-				{this.state.isLoadingPosts ? (
-					<LoadingSpinner text={'Loading posts...'} />
-				) : this.props.posts.length ? (
-					this.props.posts.map(post => (
-						<Post key={post.entity_id} post={post} />
-					))
-				) : (
-					'No posts here.'
-				)}
+				{this.state.postIDs.length
+					? this.state.postIDs.map(postID => (
+							<Post key={postID} entity_id={postID} />
+					  ))
+					: 'No posts here.'}
 			</div>
 		);
 	}
 }
+
+/*
+{this.state.isLoadingPosts ? (
+			//		<LoadingSpinner text={'Loading posts...'} />
+				) : this.props.posts.length ? (
+					this.props.posts.map(post => (
+						
+					))
+				) : (
+					
+				)}
+*/
 
 const mapStateToProps = (state: ReducerStateType, props: RouteProps) => ({
 	posts: state.post,

@@ -6,8 +6,8 @@ import { EntityTypeEnum, IDType } from './types';
 import store from './store';
 import { ACTION_SET_ENTITIES } from './actions';
 
-export const fetchEntity = (route: string) => {
-	return new Promise((resolve, reject) => {
+export const fetchEntity = (route: string) =>
+	new Promise((resolve, reject) => {
 		// TODO add this header conditionally
 		const fetchParams = {
 			headers: new Headers({
@@ -31,8 +31,6 @@ export const fetchEntity = (route: string) => {
 				return reject(error.message);
 			});
 	});
-};
-
 // TODO merge the two into one...
 export const fetchEntityAndPlaceInStore = (
 	route: string,

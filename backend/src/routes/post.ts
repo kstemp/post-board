@@ -69,7 +69,7 @@ router.post(
 router.get('/:postID/', (req: Request, res: Response) => {
 	const reqPostID = parseInt(req.params.postID);
 
-	db.any('SELECT * FROM posts WHERE entity_id=$1', [reqPostID])
+	db.one('SELECT * FROM posts WHERE entity_id=$1', [reqPostID])
 		.then(data => res.status(200).send(data))
 		.catch(error => {
 			console.log(error);

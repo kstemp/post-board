@@ -5,7 +5,8 @@ import {
 } from './entity';
 import { IDType } from './types';
 
-export const fetchPostsForCommunityID = (
+/*
+export const fetchPostIDsForCommunityID = (
 	communityID: IDType,
 	callbackNotifyLoading?: (arg0: boolean) => void
 ) =>
@@ -13,7 +14,12 @@ export const fetchPostsForCommunityID = (
 		`/community/${communityID}`,
 		'post',
 		callbackNotifyLoading
-	);
+	);*/
+
+export const fetchPostIDsForCommunityID = (communityID: IDType) =>
+	fetchEntity(`/community/${communityID}`);
+
+export const fetchPostByID = (postID: IDType) => fetchEntity(`/post/${postID}`);
 
 export const fetchMetadataForPostID = (postID: IDType) =>
 	fetchEntity(`/post/${postID}/metadata`);
