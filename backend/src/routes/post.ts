@@ -77,8 +77,11 @@ router.get('/:postID/', (req: Request, res: Response) => {
 		});
 });
 
+/*
+metadata
+ */
 // TODO verify postID
-router.get('/:postID/metadata', (req: Request, res: Response) => {
+router.get('/:postID/metadata', verifyToken, (req: Request, res: Response) => {
 	const reqPostID = parseInt(req.params.postID);
 
 	db.many(

@@ -11,6 +11,7 @@ import { SECRET } from './config';
 const verifyToken = (req: Request, res: Response, next: NextFunction) => {
 	console.log(req.headers);
 
+	// TODO this is absolutely bad
 	if (!req.headers.token) {
 		return next();
 	}

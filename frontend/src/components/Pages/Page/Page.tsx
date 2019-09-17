@@ -37,12 +37,16 @@ class Page extends React.Component<OwnProps & StateProps> {
 					<div className={`${baseClassName}__header-container`}>
 						{this.props.isLoggedIn && (
 							<>
-								<Button icon={'message'} />
+								{' '}
 								<Button
-									fill
-									label={'My profile'}
-									onClick={this.redirectToProfile}
+									icon={'message'}
+									toolTipEnabled={'Messages'}
 								/>
+								<Button
+									icon={'people_alt'}
+									toolTipEnabled={'My friends'}
+								/>
+								<Button icon={'person'} />
 							</>
 						)}
 						{!this.props.hideLoginButton &&

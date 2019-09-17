@@ -1,3 +1,5 @@
+@import '../../controls/variables.scss';
+
 .post-creator {
 	padding: 10px;
 	border: 1px solid lightgray;
@@ -8,6 +10,10 @@
 
 	> * {
 		width: 100%;
+	}
+
+	> .pb-button {
+		height: $form-field-height;
 	}
 
 	> .pb-textarea {

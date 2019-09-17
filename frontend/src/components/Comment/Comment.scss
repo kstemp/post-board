@@ -1,12 +1,7 @@
 .comment {
 	display: block;
 
-	word-break: break-word;
-	text-align: justify;
-
-	background: #f0f0f0;
-
-	width: fit-content;
+	width: 90%;
 
 	padding-left: 5px;
 	padding-right: 5px;
@@ -22,8 +17,27 @@
 		}
 	}
 
-	&-user-name {
-		font-weight: 500;
-		margin-right: 5px;
+	&__content {
+		display: inline-block;
+		&-user-name {
+			font-weight: 500;
+			margin-right: 5px;
+		}
+
+		width: fit-content;
+		max-width: 90%;
+
+		word-break: break-word;
+		text-align: justify;
+
+		background: #f0f0f0;
+	}
+
+	.test-button {
+		display: none;
+	}
+
+	&:hover .test-button {
+		display: inline-block;
 	}
 }

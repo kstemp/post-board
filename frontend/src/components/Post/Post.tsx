@@ -12,9 +12,11 @@ import { NavLink } from 'react-router-dom';
 import { isLoggedIn } from '../../entities/selectors';
 import { fetchMetadataForPostID } from '../../entities/posts';
 
-import './Post.scss';
 import { createReactionForEntityID } from '../../entities/reactions';
 import { displayErrorNotification } from '../../util/notification';
+import Dropdown from '../../controls/Dropdown/Dropdown';
+
+import './Post.scss';
 
 const baseClassName = 'post';
 
@@ -132,35 +134,30 @@ class Post extends React.Component<Props, State> {
 							toolTipEnabled={'Tag'}
 							//	label={'Link'}
 						/>
-						<div className={'dropdown'}>
+						<Dropdown
+							controller={
+								<Button
+									icon={'more_horiz'}
+									toolTipEnabled={'More options'}
+								/>
+							}
+						>
 							<Button
-								icon={'more_horiz'}
-								toolTipEnabled={'More options'}
-								//	label={'Link'}
+								icon={'edit'}
+								label={'Edit'}
+								disabled={!this.props.isLoggedIn}
 							/>
-							<div className={'dropdown-content'}>
-								<Button
-									//fill
-									icon={'edit'}
-									//	toolTipEnabled={'More options'}
-									label={'Edit'}
-									disabled={!this.props.isLoggedIn}
-								/>
-								<Button
-									//fill
-									icon={'delete'}
-									//toolTipEnabled={'More options'}
-									label={'Delete'}
-									disabled={!this.props.isLoggedIn}
-								/>
-								<Button
-									//fill
-									icon={'report'}
-									//toolTipEnabled={'More options'}
-									label={'Report'}
-								/>
-							</div>
-						</div>
+							<Button
+								icon={'delete'}
+								label={'Delete'}
+								disabled={!this.props.isLoggedIn}
+							/>
+							<Button
+								icon={'report'}
+								label={'Report'}
+								onClick={() => console.log('hej!')}
+							/>
+						</Dropdown>
 					</div>
 				</div>
 				{this.state.showComments && (

@@ -97,7 +97,7 @@ router.post(
 							{ login: req.body.login },
 							SECRET,
 							{
-								expiresIn: 60
+								expiresIn: 600
 							}
 						);
 						return res.status(200).send({

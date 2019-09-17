@@ -1,39 +1,36 @@
 @import '../variables.scss';
 
 .pb-button {
-	min-width: 8.4375rem;
-	height: $form-field-height;
-	//width: 22px;
-	//height: 22px;
-
-	color: black;
-	background: white;
-
-	transition: all 0.2s ease 0s;
+	//	min-width: 8.4375rem;
+	//
 
 	border: 0;
-
-	&--fill {
-		color: white;
-		background-color: $color-base;
-	}
 
 	> i {
 		font-size: 18px;
 		vertical-align: middle;
 	}
 
-	&:disabled {
-		background: $color-disabled;
-		transition: all 0.2s ease 0s;
+	color: black;
+	background-color: white;
 
+	&--fill {
+		color: white;
+		background-color: $color-base;
+	}
+
+	&:disabled {
 		color: $color-disabled-text;
+		background-color: $color-disabled;
+
+		transition: $transition;
 	}
 
 	&:hover:enabled {
 		color: $color-label;
-		background: $color-hover;
-		transition: all 0.2s ease 0s;
+		background-color: $color-hover;
+
+		transition: $transition;
 	}
 
 	&:focus {

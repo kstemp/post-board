@@ -6,9 +6,18 @@ import { EntityTypeEnum, IDType } from './types';
 import store from './store';
 import { ACTION_SET_ENTITIES } from './actions';
 
-export const fetchEntity = (route: string) =>
-	new Promise((resolve, reject) => {
-		fetch(`${BACKEND_URL}${route}`)
+export const fetchEntity = (route: string) => {
+	return new Promise((resolve, reject) => {
+		// TODO add this header conditionally
+		const fetchParams = {
+			headers: new Headers({
+				token: store.getState().accessToken
+			})
+		};
+
+		console.log('PARAMS ', fetchParams);
+
+		fetch(`${BACKEND_URL}${route}`, fetchParams)
 			.then(response => {
 				if (response.ok) {
 					return response.json();
@@ -22,17 +31,15 @@ export const fetchEntity = (route: string) =>
 				return reject(error.message);
 			});
 	});
+};
 
+// TODO merge the two into one...
 export const fetchEntityAndPlaceInStore = (
 	route: string,
 	entityType: EntityTypeEnum,
 	callbackNotifyLoading?: (arg0: boolean) => void,
 	parentID?: IDType
 ) => {
-	//	if (callbackNotifyLoading) {
-	//	callbackNotifyLoading(true);
-	//	}
-
 	return new Promise((resolve, reject) => {
 		fetch(`${BACKEND_URL}${route}`)
 			.then(response => {

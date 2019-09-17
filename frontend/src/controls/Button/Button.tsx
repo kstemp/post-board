@@ -1,6 +1,7 @@
 import React from 'react';
 
 import './Button.scss';
+import { getClassNames, TClassNames } from '../../util/class-names';
 
 const baseClassName = 'pb-button';
 
@@ -12,16 +13,16 @@ interface OwnProps {
 	fill?: boolean;
 	toolTipEnabled?: string;
 	toolTipDisabled?: string;
+	classNames?: TClassNames;
 }
 
-// TODO getClassNames...
 class Button extends React.Component<OwnProps> {
 	render() {
-		let className = baseClassName;
-
-		if (this.props.fill) {
-			className += ` ${baseClassName}--fill`;
-		}
+		const className = getClassNames({
+			...this.props.classNames,
+			[baseClassName]: true,
+			[`${baseClassName}--fill`]: !!this.props.fill
+		});
 
 		const toolTip = this.props.disabled
 			? this.props.toolTipDisabled
