@@ -1,5 +1,6 @@
 import db from './db';
-import { ValidationError, Result } from 'express-validator';
+import { ValidationError, Result, validationResult } from 'express-validator';
+import { Request, Response, NextFunction } from 'express';
 
 export const checkLoginExists = async (login: string) =>
 	new Promise((resolve, reject) => {
@@ -17,3 +18,12 @@ export const formatValidationResults = (
 		.array()
 		.map(result => `parameter: ${result.param}, problem: ${result.msg}`)
 		.join('\n');
+
+export const checkValidation = (
+	req: Request,
+	res: Response,
+	next: NextFunction
+) => {
+	const errors = validationResult(req);
+	return errors.isEmpty() ? next() : res.status(422).send(errors.array());
+};

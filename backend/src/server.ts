@@ -9,17 +9,10 @@ app.use(cors());
 
 app.use(bodyParser.json());
 
-const community = require('./routes/community');
-app.use('/community', community);
-
-const post = require('./routes/post');
-app.use('/post', post);
-
-const session = require('./routes/session');
-app.use('/session', session);
-
-const reactions = require('./routes/reactions');
-app.use('/reactions', reactions);
+app.use('/community', require('./routes/community'));
+app.use('/post', require('./routes/post'));
+app.use('/session', require('./routes/session'));
+app.use('/reactions', require('./routes/reactions'));
 
 app.get('/', (req: express.Request, res: express.Response) => {
 	res.status(200).send('backend is running');

@@ -8,28 +8,33 @@ import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { SECRET } from './config';
 
-const verifyToken = (req: Request, res: Response, next: NextFunction) => {
-	console.log(req.headers);
+const verifyToken = (mustBeLoggedIn: boolean) => {
+	return (req: Request, res: Response, next: NextFunction) => {
+		console.log(req.headers);
 
-	// TODO this is absolutely bad
-	if (!req.headers.token) {
-		return next();
-	}
-
-	const token = req.headers.token as string;
-
-	console.log('The token is ', token);
-
-	jwt.verify(token, SECRET, (err, decoded) => {
-		if (err) {
-			return res.sendStatus(403);
+		if (!req.headers.token) {
+			if (mustBeLoggedIn) {
+				return res.sendStatus(403);
+			} else {
+				return next();
+			}
 		}
 
-		console.log('Login: ', (decoded as any).login);
-		(req as any).login = (decoded as any).login;
+		const token = req.headers.token as string;
 
-		return next();
-	});
+		console.log('The token is ', token);
+
+		jwt.verify(token, SECRET, (err, decoded) => {
+			if (err) {
+				return res.sendStatus(403);
+			}
+
+			console.log('Login: ', (decoded as any).login);
+			(req as any).login = (decoded as any).login;
+
+			return next();
+		});
+	};
 };
 
 export default verifyToken;

@@ -1,20 +1,17 @@
 import express from 'express';
-import { check, validationResult } from 'express-validator';
+import { check } from 'express-validator';
 import verifyToken from '../modules/verify-token';
 import db, { PSQLERR } from '../modules/db';
+import { checkValidation } from '../modules/validator';
 
 const router = express.Router();
 
 router.post(
 	'/',
 	[check('entityID').isNumeric(), check('token').isJWT()],
-	verifyToken,
+	checkValidation,
+	verifyToken(true),
 	(req: express.Request, res: express.Response) => {
-		const errors = validationResult(req);
-		if (!errors.isEmpty()) {
-			return res.status(422).send(errors.array());
-		}
-
 		const entityID = parseInt(req.query.entityID);
 
 		const login = (req as any).login;
