@@ -1,13 +1,9 @@
 .dropdown {
-	position: relative;
+	//position: relative;
 	display: inline-block;
 
-	&:hover .dropdown-content {
-		display: block;
-	}
-
 	&-content {
-		display: none;
+		display: block;
 		position: absolute;
 		background-color: #f1f1f1;
 		width: fit-content;

@@ -5,9 +5,12 @@ import { getClassNames, TClassNames } from '../../util/class-names';
 
 const baseClassName = 'pb-button';
 
-interface OwnProps {
+export interface IButtonProps {
 	label?: string;
+
 	onClick?: () => void;
+	onMouseDown?: () => void;
+
 	disabled?: boolean;
 	icon?: string;
 	fill?: boolean;
@@ -16,7 +19,7 @@ interface OwnProps {
 	classNames?: TClassNames;
 }
 
-class Button extends React.Component<OwnProps> {
+class Button extends React.Component<IButtonProps> {
 	render() {
 		const className = getClassNames({
 			...this.props.classNames,
@@ -32,6 +35,7 @@ class Button extends React.Component<OwnProps> {
 			<button
 				className={className}
 				onClick={this.props.onClick}
+				onMouseDown={this.props.onMouseDown}
 				disabled={this.props.disabled}
 				title={toolTip}
 			>

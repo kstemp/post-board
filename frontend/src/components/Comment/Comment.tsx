@@ -36,35 +36,40 @@ class Comment extends React.Component<OwnProps> {
 					{this.props.comment.text}
 				</div>
 				<Dropdown
-					controller={
-						<Button
-							classNames={{ 'test-button': true }}
-							label={'...'}
-						/>
-					}
-				>
-					<Button
-						//fill
-						icon={'edit'}
-						//	toolTipEnabled={'More options'}
-						label={'Edit'}
-					/>
-					<Button
-						//fill
-						icon={'delete'}
-						//toolTipEnabled={'More options'}
-						label={'Delete'}
-					/>
-					<Button
-						//fill
-						icon={'report'}
-						//toolTipEnabled={'More options'}
-						label={'Report'}
-					/>
-				</Dropdown>
+					options={[
+						{
+							onClick: () => console.log('1'),
+							buttonProps: {
+								icon: 'edit',
+								label: 'Edit'
+							}
+						},
+						{
+							onClick: () => console.log('2'),
+							buttonProps: {
+								icon: 'delete',
+								label: 'Delete'
+							}
+						},
+						{
+							onClick: () => console.log('3'),
+							buttonProps: {
+								icon: 'report',
+								label: 'Report'
+							}
+						}
+					]}
+				/>
 			</div>
 		);
 	}
 }
+
+/*controller={
+						<Button
+							classNames={{ 'test-button': true }}
+							label={'...'}
+						/>
+					}*/
 
 export default Comment;

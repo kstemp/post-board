@@ -1,20 +1,64 @@
 import React from 'react';
 
 import './Dropdown.scss';
+import Button, { IButtonProps } from '../Button/Button';
+import { TClassNames } from '../../util/class-names';
 const baseClassName = 'dropdown';
 
-interface OwnProps {
-	controller: React.ReactNode;
+interface IDropdownOptions {
+	onClick: () => void;
+	buttonProps?: IButtonProps;
 }
 
-class Dropdown extends React.Component<OwnProps> {
+interface OwnProps {
+	controllerClassNames?: TClassNames;
+	options: IDropdownOptions[];
+}
+
+interface State {
+	isOpen: boolean;
+}
+
+class Dropdown extends React.Component<OwnProps, State> {
+	constructor(props: OwnProps) {
+		super(props);
+
+		this.state = { isOpen: false };
+	}
+
+	toggleOpen = (isOpen: boolean) =>
+		this.setState({
+			isOpen: isOpen
+		});
+
 	render() {
 		return (
-			<div className={baseClassName}>
-				{this.props.controller}
-				<div className={`${baseClassName}-content`}>
-					{this.props.children}
-				</div>
+			<div
+				className={baseClassName}
+				onBlur={() => this.toggleOpen(false)}
+			>
+				<Button
+					onClick={() => this.toggleOpen(true)}
+					classNames={this.props.controllerClassNames}
+					icon={'more_horiz'}
+				/>
+				{this.state.isOpen && (
+					<div
+						className={`${baseClassName}-content`}
+						tabIndex={1}
+						onBlur={() => this.toggleOpen(false)}
+					>
+						{this.props.options.map(option => (
+							<Button
+								{...option.buttonProps}
+								onMouseDown={() => {
+									option.onClick();
+									this.toggleOpen(false);
+								}}
+							/>
+						))}
+					</div>
+				)}
 			</div>
 		);
 	}

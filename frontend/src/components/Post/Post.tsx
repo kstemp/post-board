@@ -153,29 +153,32 @@ class Post extends React.Component<Props, State> {
 							//	label={'Link'}
 						/>
 						<Dropdown
-							controller={
-								<Button
-									icon={'more_horiz'}
-									toolTipEnabled={'More options'}
-								/>
-							}
-						>
-							<Button
-								icon={'edit'}
-								label={'Edit'}
-								disabled={!this.props.isLoggedIn}
-							/>
-							<Button
-								icon={'delete'}
-								label={'Delete'}
-								disabled={!this.props.isLoggedIn}
-							/>
-							<Button
-								icon={'report'}
-								label={'Report'}
-								onClick={() => console.log('hej!')}
-							/>
-						</Dropdown>
+							options={[
+								{
+									onClick: () => console.log('1'),
+									buttonProps: {
+										icon: 'edit',
+										label: 'Edit',
+										disabled: !this.props.isLoggedIn
+									}
+								},
+								{
+									onClick: () => console.log('2'),
+									buttonProps: {
+										icon: 'delete',
+										label: 'Delete',
+										disabled: !this.props.isLoggedIn
+									}
+								},
+								{
+									onClick: () => console.log('3'),
+									buttonProps: {
+										icon: 'report',
+										label: 'Report'
+									}
+								}
+							]}
+						/>
 					</div>
 				</div>
 				{this.state.showComments && (
@@ -196,5 +199,12 @@ const mapStateToProps = (state: ReducerStateType) => {
 		isLoggedIn: isLoggedIn(state)
 	};
 };
+
+/*controller={
+								<Button
+									icon={'more_horiz'}
+									toolTipEnabled={'More options'}
+								/>
+							}*/
 
 export default connect(mapStateToProps)(Post);
