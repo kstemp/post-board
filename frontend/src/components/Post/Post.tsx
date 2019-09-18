@@ -17,7 +17,6 @@ import { displayErrorNotification } from '../../util/notification';
 
 import './Post.scss';
 import DropdownWithUserOptions from '../DropdownWithUserOptions/DropdownWithUserOptions';
-import { fetchEntity } from '../../entities/entity';
 
 const baseClassName = 'post';
 
@@ -116,10 +115,10 @@ class Post extends React.Component<Props, State> {
 						#{this.state.post.entity_id}
 					</span>
 					<span className={`${baseClassName}__header-time`}>
-						{`${prettyPrintDateDifference(
+						{prettyPrintDateDifference(
 							new Date(this.state.post.created_on),
 							new Date()
-						)}`}
+						)}
 					</span>
 				</div>
 				<div className={`${baseClassName}__body`}>

@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 
 import './Comment.scss';
 import DropdownWithUserOptions from '../DropdownWithUserOptions/DropdownWithUserOptions';
+import { prettyPrintDateDifference } from '../../util/date';
 
 const baseClassName = 'comment';
 
@@ -15,6 +16,7 @@ interface OwnProps {
 
 class Comment extends React.Component<OwnProps> {
 	render() {
+		console.log(this.props.comment);
 		return (
 			<div className={baseClassName}>
 				<div className={`${baseClassName}__content`}>
@@ -32,6 +34,12 @@ class Comment extends React.Component<OwnProps> {
 						</span>
 					)}
 					{this.props.comment.text}
+					<span className={`${baseClassName}__content-created_on`}>
+						{prettyPrintDateDifference(
+							new Date(this.props.comment.created_on),
+							new Date()
+						)}
+					</span>
 				</div>
 				<DropdownWithUserOptions
 					entityType={'comment'}

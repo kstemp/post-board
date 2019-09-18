@@ -1,5 +1,5 @@
 import express from 'express';
-import { check, query } from 'express-validator';
+import { query } from 'express-validator';
 import verifyToken from '../modules/verify-token';
 import db, { PSQLERR } from '../modules/db';
 import { checkValidation } from '../modules/validator';

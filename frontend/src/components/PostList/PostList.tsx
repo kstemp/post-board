@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router';
 
 import Post from '../Post/Post';
-import { TPost, IDType } from '../../entities/types';
-import LoadingSpinner from '../../controls/LoadingSpinner/LoadingSpinner';
+import { IDType } from '../../entities/types';
 
 import { displayErrorNotification } from '../../util/notification';
 import { ReducerStateType } from '../../entities/reducer';
 import { fetchPostIDsForCommunityID } from '../../entities/posts';
+import Button from '../../controls/Button/Button';
 
 const baseClassName = 'post-list';
 
@@ -64,22 +64,11 @@ class PostList extends React.Component<Props, State> {
 							<Post key={postID} entity_id={postID} />
 					  ))
 					: 'No posts here.'}
+				<Button label={'Load more posts...'} />
 			</div>
 		);
 	}
 }
-
-/*
-{this.state.isLoadingPosts ? (
-			//		<LoadingSpinner text={'Loading posts...'} />
-				) : this.props.posts.length ? (
-					this.props.posts.map(post => (
-						
-					))
-				) : (
-					
-				)}
-*/
 
 const mapStateToProps = (state: ReducerStateType, props: RouteProps) => ({
 	posts: state.post,
