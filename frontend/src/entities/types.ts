@@ -28,4 +28,5 @@ export type TPost = TEntity & {
 	text: string;
 
 	comment_count: number;
+	reaction_count: number;
 };

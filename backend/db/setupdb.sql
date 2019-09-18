@@ -77,21 +77,6 @@ CREATE TABLE reactions (
 
 );
 
-
-PREPARE get_post_by_entity_id(INTEGER) AS 
-SELECT * FROM posts WHERE entity_id=$1;
-
---EXECUTE get_comment_count_for_entity_id(7);
-
-
-CREATE OR REPLACE FUNCTION get_comment_count_for_post_id(_entity_id INTEGER) RETURNS INTEGER AS 
-$$ 
-BEGIN
-	RETURN (SELECT COUNT(*) AS comment_count FROM comments WHERE comments.parent_post_id = _entity_id);
-END
-$$
-LANGUAGE plpgsql;
-
 CREATE OR REPLACE FUNCTION get_post_by_id(_entity_id INTEGER) RETURNS SETOF posts AS 
 $$
 BEGIN
@@ -122,13 +107,35 @@ END
 $$
 LANGUAGE plpgsql;
 
+/*
+
+	Metadata
 
 
-/*INSERT INTO persons (lastname,firstname) VALUES ('Smith', 'John') RETURNING id;
+*/
+CREATE OR REPLACE FUNCTION get_comment_count_for_post_id(_entity_id INTEGER) RETURNS INTEGER AS 
+$$ 
+BEGIN
+	RETURN (SELECT COUNT(*) AS comment_count FROM comments WHERE comments.parent_post_id = _entity_id);
+END 
+$$
+LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION get_reaction_count_for_entity_id(_entity_id INTEGER) RETURNS INTEGER AS 
+$$
+BEGIN
+	RETURN (SELECT COUNT(*) AS reaction_count FROM reactions WHERE reactions.parent_entity_id = _entity_id);
+END
+$$
+LANGUAGE plpgsql;
 
-
-
+CREATE OR REPLACE FUNCTION get_metadata_for_post_id(_entity_id INTEGER) RETURNS TABLE (comment_count INTEGER, reaction_count INTEGER) AS
+$$ 
+BEGIN
+	RETURN QUERY (SELECT get_comment_count_for_post_id(_entity_id), get_reaction_count_for_entity_id(_entity_id));
+END 
+$$
+LANGUAGE plpgsql;
 /*
 	DEPRECATED - ONLY FOR REFERENCE
 	auto-increment/decrement number of comments when a new one is created (one is removed) for a given post.

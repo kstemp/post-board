@@ -32,8 +32,6 @@ interface StateProps {
 interface State {
 	showComments: boolean;
 	liked: boolean;
-	numberOfComments: number;
-	numberOfReactions: number;
 	post?: TPost;
 }
 
@@ -45,9 +43,7 @@ class Post extends React.Component<Props, State> {
 
 		this.state = {
 			showComments: false,
-			liked: false,
-			numberOfComments: 0,
-			numberOfReactions: 0
+			liked: false
 		};
 	}
 
@@ -61,18 +57,18 @@ class Post extends React.Component<Props, State> {
 			.catch(err => displayErrorNotification(err));
 	};
 
-	fetchMetadata = () => {
+	fetchMetadata = () =>
 		fetchMetadataForPostID(this.props.entity_id)
 			.then((metadata: any) =>
 				this.setState({
 					post: {
 						...(this.state.post as any), // TODO...
-						comment_count: metadata.comment_count
+						comment_count: metadata.comment_count,
+						reaction_count: metadata.reaction_count
 					}
 				})
 			)
 			.catch(err => displayErrorNotification(err));
-	};
 
 	componentDidMount() {
 		this.fetchPost();
@@ -88,8 +84,12 @@ class Post extends React.Component<Props, State> {
 		});
 	};
 
-	toggleLiked = () => {
-		/*
+	toggleLiked = () =>
+		this.state.post &&
+		createReactionForEntityID(this.state.post.entity_id)
+			.then(() => this.fetchMetadata())
+			.catch(err => displayErrorNotification(err));
+	/*
 		createReactionForEntityID(this.state.post.entity_id)
 			.then(() => {
 				this.setState({
@@ -98,7 +98,6 @@ class Post extends React.Component<Props, State> {
 			})
 			.catch(error => displayErrorNotification(error));
 		////*/
-	};
 
 	render() {
 		return this.state.post ? (
@@ -132,7 +131,7 @@ class Post extends React.Component<Props, State> {
 							icon={`favorite${
 								this.state.liked ? '' : '_border'
 							}`}
-							label={'0'}
+							label={this.state.post.reaction_count.toString()}
 							disabled={!this.props.isLoggedIn}
 							toolTipEnabled={'React'}
 							toolTipDisabled={

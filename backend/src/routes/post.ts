@@ -18,8 +18,8 @@ router.get(
 	checkValidation,
 	(req: Request, res: Response) => {
 		const SQLquery = req.query.metadata_only
-			? 'SELECT get_comment_count_for_post_id($1) AS comment_count'
-			: 'SELECT * FROM  get_post_by_id($1) NATURAL JOIN get_comment_count_for_post_id($1) AS comment_count';
+			? 'SELECT * FROM get_metadata_for_post_id($1)'
+			: 'SELECT * FROM get_post_by_id($1), get_metadata_for_post_id($1)';
 
 		db.one(SQLquery, [req.params.postID])
 			.then(data => res.status(200).send(data))
@@ -98,43 +98,3 @@ router.delete(
 );
 
 module.exports = router;
-
-/*
-		db.one('INSERT INTO entities DEFAULT VALUES RETURNING entity_id')
-			.then(result => {
-				const [SQLquery, queryParams] = (req as any).login
-					? [
-							'INSERT INTO posts (entity_id, parent_community_id, text, login) VALUES ($1, $2, $3, $4)',
-							[
-								result.entity_id,
-								req.query.communityID,
-								req.body.text,
-								(req as any).login
-							]
-					  ]
-					: [
-							'INSERT INTO posts (entity_id, parent_community_id, text) VALUES ($1, $2, $3)',
-							[
-								result.entity_id,
-								req.query.communityID,
-								req.body.text
-							]
-					  ];
-
-				db.none(SQLquery, queryParams)
-					.then(() => res.sendStatus(200))
-					.catch(error => {
-						console.log(error);
-						// this error means that there's no community of specified ID,
-						// so hit the user with that 'Bad Request'
-						// TODO or maybe 'not found'?
-						if (error.code === PSQLERR.FOREIGN_KEY_VIOLATION) {
-							return res.sendStatus(400);
-						}
-						return res.sendStatus(500);
-					});
-			})
-			.catch(err => {
-				console.log(err);
-				res.sendStatus(500);
-			});*/

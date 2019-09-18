@@ -1,9 +1,6 @@
 import { BACKEND_URL } from '../Config';
 
-import { EntityTypeEnum, IDType } from './types';
-
 import store from './store';
-import { ACTION_SET_ENTITIES } from './actions';
 
 export const fetchEntity = (route: string) =>
 	new Promise((resolve, reject) => {
@@ -75,11 +72,7 @@ export const fetchEntityAndPlaceInStore = (
 	});
 };*/
 
-export const createEntity = (
-	route: string,
-	bodyText: string,
-	updateCallback?: (arg0: IDType) => void
-) => {
+export const createEntity = (route: string, bodyText?: string) => {
 	const headers = store.getState().accessToken
 		? new Headers({
 				'Content-Type': 'application/json',
@@ -91,11 +84,17 @@ export const createEntity = (
 
 	console.log('Headers: ', headers);
 
-	let fetchParams = {
-		method: 'POST',
-		headers: headers,
-		body: JSON.stringify({ text: bodyText })
-	};
+	// TODO figure out a better way
+	const fetchParams = bodyText
+		? {
+				method: 'POST',
+				headers: headers,
+				body: JSON.stringify({ text: bodyText })
+		  }
+		: {
+				method: 'POST',
+				headers: headers
+		  };
 
 	return new Promise((resolve, reject) => {
 		fetch(`${BACKEND_URL}${route}`, fetchParams)
