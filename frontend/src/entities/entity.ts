@@ -14,7 +14,7 @@ export const fetchEntity = (route: string) =>
 			})
 		};
 
-		console.log('PARAMS ', fetchParams);
+		//console.log('PARAMS ', fetchParams);
 
 		fetch(`${BACKEND_URL}${route}`, fetchParams)
 			.then(response => {
@@ -24,12 +24,17 @@ export const fetchEntity = (route: string) =>
 
 				throw new Error(response.status + ': ' + response.statusText);
 			})
-			.then(json => resolve(json))
+			.then(json => {
+				console.log('ENTITY: ', json);
+				return resolve(json);
+			})
 			.catch(error => {
 				console.log('ERROR ', error);
 				return reject(error.message);
 			});
 	});
+
+/*
 // TODO merge the two into one...
 export const fetchEntityAndPlaceInStore = (
 	route: string,
@@ -68,7 +73,7 @@ export const fetchEntityAndPlaceInStore = (
 				return reject(error.message);
 			});
 	});
-};
+};*/
 
 export const createEntity = (
 	route: string,

@@ -56,9 +56,9 @@ CREATE TABLE posts (
 CREATE TABLE comments (
 
 	entity_id INTEGER UNIQUE NOT NULL REFERENCES entities (entity_id),
-	parent_post_id INTEGER NOT NULL REFERENCES posts (entity_id),
-
 	PRIMARY KEY (entity_id),
+
+	parent_post_id INTEGER NOT NULL REFERENCES posts (entity_id),
 
 	login VARCHAR REFERENCES users (login),
 
@@ -78,10 +78,53 @@ CREATE TABLE reactions (
 );
 
 
---
+PREPARE get_post_by_entity_id(INTEGER) AS 
+SELECT * FROM posts WHERE entity_id=$1;
+
+--EXECUTE get_comment_count_for_entity_id(7);
+
+
+CREATE OR REPLACE FUNCTION get_comment_count_for_post_id(_entity_id INTEGER) RETURNS INTEGER AS 
+$$ 
+BEGIN
+	RETURN (SELECT COUNT(*) AS comment_count FROM comments WHERE comments.parent_post_id = _entity_id);
+END
+$$
+LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION get_post_by_id(_entity_id INTEGER) RETURNS SETOF posts AS 
+$$
+BEGIN
+	RETURN QUERY (SELECT * FROM posts WHERE posts.entity_id = _entity_id);
+END
+$$
+LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION create_post(_parent_community_id INTEGER, _text VARCHAR, _login VARCHAR DEFAULT NULL) RETURNS VOID AS 
+$$
+DECLARE
+	new_entity_id INTEGER;
+BEGIN
+	INSERT INTO entities (entity_id) VALUES (DEFAULT) RETURNING entity_id INTO new_entity_id;
+	INSERT INTO posts (entity_id, parent_community_id, text, login) VALUES (new_entity_id, _parent_community_id, _text, _login);
+END
+$$
+LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION create_comment(_parent_post_id INTEGER, _text VARCHAR, _login VARCHAR DEFAULT NULL) RETURNS VOID AS 
+$$
+DECLARE
+	new_entity_id INTEGER;
+BEGIN
+	INSERT INTO entities (entity_id) VALUES (DEFAULT) RETURNING entity_id INTO new_entity_id;
+	INSERT INTO comments (entity_id, parent_post_id, text, login) VALUES (new_entity_id, _parent_post_id, _text, _login);
+END
+$$
+LANGUAGE plpgsql;
+
+
 
 /*INSERT INTO persons (lastname,firstname) VALUES ('Smith', 'John') RETURNING id;
-
 
 
 

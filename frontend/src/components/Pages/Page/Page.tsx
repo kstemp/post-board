@@ -31,9 +31,9 @@ class Page extends React.Component<OwnProps & StateProps> {
 		return (
 			<div className={baseClassName}>
 				<header className={`${baseClassName}__header`}>
-					<Link to={'/'}>
-						<span>post-board</span>
-					</Link>
+					<NavLink to={'/'}>
+						<span>post-board v.0.01</span>
+					</NavLink>
 					<div className={`${baseClassName}__header-container`}>
 						{this.props.isLoggedIn && (
 							<>

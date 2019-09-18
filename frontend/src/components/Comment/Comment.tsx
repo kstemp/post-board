@@ -3,11 +3,9 @@ import React from 'react';
 import { TComment } from '../../entities/types';
 
 import { Link } from 'react-router-dom';
-import { prettyPrintDateDifference } from '../../util/date';
 
 import './Comment.scss';
-import Button from '../../controls/Button/Button';
-import Dropdown from '../../controls/Dropdown/Dropdown';
+import DropdownWithUserOptions from '../DropdownWithUserOptions/DropdownWithUserOptions';
 
 const baseClassName = 'comment';
 
@@ -35,30 +33,9 @@ class Comment extends React.Component<OwnProps> {
 					)}
 					{this.props.comment.text}
 				</div>
-				<Dropdown
-					options={[
-						{
-							onClick: () => console.log('1'),
-							buttonProps: {
-								icon: 'edit',
-								label: 'Edit'
-							}
-						},
-						{
-							onClick: () => console.log('2'),
-							buttonProps: {
-								icon: 'delete',
-								label: 'Delete'
-							}
-						},
-						{
-							onClick: () => console.log('3'),
-							buttonProps: {
-								icon: 'report',
-								label: 'Report'
-							}
-						}
-					]}
+				<DropdownWithUserOptions
+					entityType={'comment'}
+					entityID={this.props.comment.entity_id}
 				/>
 			</div>
 		);

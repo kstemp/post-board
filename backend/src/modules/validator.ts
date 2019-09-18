@@ -21,4 +21,4 @@ export const checkValidation = (
 	req: Request,
 	res: Response,
 	next: NextFunction
-) => (validationResult(req).isEmpty() ? next() : res.status(422));
+) => (validationResult(req).isEmpty() ? next() : res.sendStatus(422));

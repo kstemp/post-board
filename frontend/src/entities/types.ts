@@ -26,4 +26,6 @@ export type TPost = TEntity & {
 	parent_community_id?: IDType;
 
 	text: string;
+
+	comment_count: number;
 };

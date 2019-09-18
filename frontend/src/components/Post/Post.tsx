@@ -10,13 +10,14 @@ import { ReducerStateType } from '../../entities/reducer';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { isLoggedIn } from '../../entities/selectors';
-import { fetchMetadataForPostID, fetchPostByID } from '../../entities/posts';
+import { fetchPostByID, fetchMetadataForPostID } from '../../entities/posts';
 
 import { createReactionForEntityID } from '../../entities/reactions';
 import { displayErrorNotification } from '../../util/notification';
-import Dropdown from '../../controls/Dropdown/Dropdown';
 
 import './Post.scss';
+import DropdownWithUserOptions from '../DropdownWithUserOptions/DropdownWithUserOptions';
+import { fetchEntity } from '../../entities/entity';
 
 const baseClassName = 'post';
 
@@ -51,7 +52,7 @@ class Post extends React.Component<Props, State> {
 	}
 
 	fetchPost = () => {
-		console.log('fetching post... ');
+		//console.log('fetching post... ');
 		fetchPostByID(this.props.entity_id)
 			.then((post: any) => {
 				console.log('my post: ', post);
@@ -59,22 +60,22 @@ class Post extends React.Component<Props, State> {
 			})
 			.catch(err => displayErrorNotification(err));
 	};
-	//TODO types etc.
-	fetchMetadata = () => 0;
 
-	/*
-		fetchMetadataForPostID(this.state.post.entity_id)
+	fetchMetadata = () => {
+		fetchMetadataForPostID(this.props.entity_id)
 			.then((metadata: any) =>
 				this.setState({
-					numberOfComments: (metadata as any).commentCount,
-					numberOfReactions: (metadata as any).reactionCount
+					post: {
+						...(this.state.post as any), // TODO...
+						comment_count: metadata.comment_count
+					}
 				})
 			)
-			.catch(err => console.log(err));*/
+			.catch(err => displayErrorNotification(err));
+	};
 
 	componentDidMount() {
 		this.fetchPost();
-		//	this.updateCommentList();
 	}
 
 	updateCommentList = () => {
@@ -141,7 +142,7 @@ class Post extends React.Component<Props, State> {
 						/>
 						<Button
 							icon={'chat_bubble_outline'}
-							label={this.state.numberOfComments.toString()}
+							label={this.state.post.comment_count.toString()}
 							toolTipEnabled={'Comment'}
 							onClick={this.toggleShowComments}
 						/>
@@ -152,32 +153,9 @@ class Post extends React.Component<Props, State> {
 							toolTipEnabled={'Tag'}
 							//	label={'Link'}
 						/>
-						<Dropdown
-							options={[
-								{
-									onClick: () => console.log('1'),
-									buttonProps: {
-										icon: 'edit',
-										label: 'Edit',
-										disabled: !this.props.isLoggedIn
-									}
-								},
-								{
-									onClick: () => console.log('2'),
-									buttonProps: {
-										icon: 'delete',
-										label: 'Delete',
-										disabled: !this.props.isLoggedIn
-									}
-								},
-								{
-									onClick: () => console.log('3'),
-									buttonProps: {
-										icon: 'report',
-										label: 'Report'
-									}
-								}
-							]}
+						<DropdownWithUserOptions
+							entityType={'post'}
+							entityID={this.state.post.entity_id}
 						/>
 					</div>
 				</div>
@@ -189,7 +167,7 @@ class Post extends React.Component<Props, State> {
 				)}
 			</div>
 		) : (
-			<span>What to put here, when loading comment?</span> // TODO
+			<p>Loading... TODO </p> // TODO
 		);
 	}
 }
@@ -201,9 +179,9 @@ const mapStateToProps = (state: ReducerStateType) => {
 };
 
 /*controller={
-								<Button
-									icon={'more_horiz'}
-									toolTipEnabled={'More options'}
+	<Button
+			icon={'more_horiz'}
+		toolTipEnabled={'More options'}
 								/>
 							}*/
 

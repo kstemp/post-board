@@ -2,7 +2,6 @@ import React from 'react';
 
 import './Dropdown.scss';
 import Button, { IButtonProps } from '../Button/Button';
-import { TClassNames } from '../../util/class-names';
 const baseClassName = 'dropdown';
 
 interface IDropdownOptions {
@@ -10,26 +9,32 @@ interface IDropdownOptions {
 	buttonProps?: IButtonProps;
 }
 
-interface OwnProps {
-	controllerClassNames?: TClassNames;
+interface State {
+	isOpen: boolean;
 	options: IDropdownOptions[];
 }
 
-interface State {
-	isOpen: boolean;
-}
-
-class Dropdown extends React.Component<OwnProps, State> {
-	constructor(props: OwnProps) {
+class Dropdown<T> extends React.Component<T, State> {
+	constructor(props: T) {
 		super(props);
 
-		this.state = { isOpen: false };
+		this.state = { isOpen: false, options: [] };
+	}
+
+	componentDidMount() {
+		this.populateDropdownOptions();
 	}
 
 	toggleOpen = (isOpen: boolean) =>
 		this.setState({
 			isOpen: isOpen
 		});
+
+	populateDropdownOptions = () => {
+		this.setState({
+			options: []
+		});
+	};
 
 	render() {
 		return (
@@ -39,7 +44,6 @@ class Dropdown extends React.Component<OwnProps, State> {
 			>
 				<Button
 					onClick={() => this.toggleOpen(true)}
-					classNames={this.props.controllerClassNames}
 					icon={'more_horiz'}
 				/>
 				{this.state.isOpen && (
@@ -48,7 +52,7 @@ class Dropdown extends React.Component<OwnProps, State> {
 						tabIndex={1}
 						onBlur={() => this.toggleOpen(false)}
 					>
-						{this.props.options.map(option => (
+						{this.state.options.map(option => (
 							<Button
 								{...option.buttonProps}
 								onMouseDown={() => {
