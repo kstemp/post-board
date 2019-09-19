@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { RouteComponentProps, withRouter } from 'react-router';
+//import { RouteComponentProps, withRouter } from 'react-router';
 
 import Button from '../../controls/Button/Button';
 
@@ -14,19 +14,23 @@ import Switch from '../../controls/Switch/Switch';
 
 const baseClassName = 'post-creator';
 
+interface OwnProps {
+	communityID: number;
+}
+
 interface State {
 	isInCreationMode: boolean;
 	isValid: boolean;
 }
 
-type RouteProps = RouteComponentProps<{ communityID: string }>;
+//type RouteProps = RouteComponentProps<{ communityID: string }>;
 
-type Props = RouteProps;
+//type Props = RouteProps;
 
-class PostCreator extends React.Component<Props, State> {
+class PostCreator extends React.Component<OwnProps, State> {
 	private postTextField: React.RefObject<TextArea>;
 
-	constructor(props: Props) {
+	constructor(props: OwnProps) {
 		super(props);
 
 		this.postTextField = React.createRef();
@@ -39,7 +43,7 @@ class PostCreator extends React.Component<Props, State> {
 	createPost = () => {
 		createPost(
 			(this.postTextField as any).current.value,
-			parseInt(this.props.match.params.communityID)
+			this.props.communityID
 		)
 			.then(
 				() => 0
@@ -82,4 +86,4 @@ class PostCreator extends React.Component<Props, State> {
 	}
 }
 
-export default withRouter(PostCreator);
+export default PostCreator;

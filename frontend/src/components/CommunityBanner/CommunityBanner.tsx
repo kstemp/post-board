@@ -7,7 +7,7 @@ class CommunityBanner extends React.Component {
 		return (
 			<div className={baseClassName}>
 				<span className={`${baseClassName}__name`}>
-					{`#ERROR: Failed to parse community name. `}
+					#ERROR: Failed to load community name
 				</span>
 			</div>
 		);

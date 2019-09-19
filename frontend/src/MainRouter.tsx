@@ -24,8 +24,13 @@ const CommunityRouter = ({ match }: RouteComponentProps<MatchParams>) => (
 	<Page location={match.url}>
 		<CommunityBanner />
 		<CommunityBar />
-		<PostCreator />
 		<PostList />
+	</Page>
+);
+// TODO community ID must be a string
+const CommunityPostRouter = ({ match }: RouteComponentProps<MatchParams>) => (
+	<Page location={match.url}>
+		<PostCreator communityID={parseInt(match.params.communityID)} />
 	</Page>
 );
 
@@ -72,10 +77,17 @@ class MainRouter extends React.Component {
 						)}
 					/>
 					<Route
+						exact
 						path='/community/:communityID'
 						component={CommunityRouter}
 					/>
 					<Route
+						exact
+						path='/community/:communityID/post'
+						component={CommunityPostRouter}
+					/>
+					<Route
+						exact
 						path='/user/:userID'
 						render={() => (
 							<Page>
