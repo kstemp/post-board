@@ -1,8 +1,10 @@
 import { createEntity, fetchEntity } from './entity';
 import { IDType } from './types';
 
-export const fetchPostIDsForCommunityID = (communityID: IDType) =>
-	fetchEntity(`/community/${communityID}`);
+export const fetchPostIDsForCommunityID = (
+	communityID: IDType,
+	offset: number
+) => fetchEntity(`/community/${communityID}?offset=${offset}`);
 
 export const fetchPostByID = (postID: IDType) => fetchEntity(`/post/${postID}`);
 

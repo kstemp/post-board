@@ -7,7 +7,7 @@ const toastOptions = {
 	autoClose: 3000,
 	hideProgressBar: true,
 	closeButton: false,
-	position: toast.POSITION.BOTTOM_CENTER
+	position: toast.POSITION.TOP_CENTER
 };
 
 export const displayErrorNotification = (message: string) =>

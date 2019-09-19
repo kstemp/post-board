@@ -12,6 +12,8 @@ import Page from './components/Pages/Page/Page';
 import HomePage from './components/Pages/HomePage/HomePage';
 import RegisterPage from './components/Pages/RegisterPage/RegisterPage';
 import UserPage from './components/Pages/UserPage/UserPage';
+import CommunityBanner from './components/CommunityBanner/CommunityBanner';
+import CommunityBar from './components/CommunityBar/CommunityBar';
 
 interface MatchParams {
 	communityID: string;
@@ -20,6 +22,8 @@ interface MatchParams {
 // TODO just pass the CommunityID as prop ffs, we don't need this withRouter extravaganza
 const CommunityRouter = ({ match }: RouteComponentProps<MatchParams>) => (
 	<Page location={match.url}>
+		<CommunityBanner />
+		<CommunityBar />
 		<PostCreator />
 		<PostList />
 	</Page>

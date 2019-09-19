@@ -2,8 +2,8 @@
 
 ## NOTES
 
+-   align stuff vertically to cewnter on the community bar
 -   don't check whether post ID exists, and then insert. Just catch the DB exception and handle it appropriately.
-
 -   use status(400).send({message: 'blabla'}) and then get message from response in frontend
 
 ## BACKEND

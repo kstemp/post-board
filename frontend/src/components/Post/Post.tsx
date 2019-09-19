@@ -127,6 +127,7 @@ class Post extends React.Component<Props, State> {
 				<div className={`${baseClassName}__buttons`}>
 					<div className={`${baseClassName}__buttons-left`}>
 						<Button
+							size={'nice-rectangle'}
 							icon={`favorite${
 								this.state.liked ? '' : '_border'
 							}`}
@@ -139,6 +140,7 @@ class Post extends React.Component<Props, State> {
 							onClick={this.toggleLiked}
 						/>
 						<Button
+							size={'nice-rectangle'}
 							icon={'chat_bubble_outline'}
 							label={this.state.post.comment_count.toString()}
 							toolTipEnabled={'Comment'}
@@ -147,6 +149,7 @@ class Post extends React.Component<Props, State> {
 					</div>
 					<div className={`${baseClassName}__buttons-right`}>
 						<Button
+							size={'square'}
 							icon={'link'}
 							toolTipEnabled={'Tag'}
 							//	label={'Link'}

@@ -52,8 +52,9 @@ class LoginPage extends React.Component<Props> {
 	};
 
 	render() {
+		console.log(this.props.redirectTo);
 		return this.props.isLoggedIn ? (
-			<Redirect to={'/'} />
+			<Redirect to={this.props.redirectTo} />
 		) : (
 			<div className={baseClassName}>
 				<FormPage

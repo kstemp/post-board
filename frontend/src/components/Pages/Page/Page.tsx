@@ -3,7 +3,7 @@ import Button from '../../../controls/Button/Button';
 
 import { connect } from 'react-redux';
 
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 import { Dispatch } from 'redux';
 import { ReducerStateType } from '../../../entities/reducer';
@@ -24,10 +24,8 @@ interface StateProps {
 }
 
 class Page extends React.Component<OwnProps & StateProps> {
-	redirectToProfile = () => {
-		console.log('redirect here');
-	};
 	render() {
+		console.log('this.props.loc = ', this.props.location);
 		return (
 			<div className={baseClassName}>
 				<header className={`${baseClassName}__header`}>
@@ -60,7 +58,7 @@ class Page extends React.Component<OwnProps & StateProps> {
 								<NavLink
 									to={
 										this.props.location
-											? `/login?redirectTo="${this.props.location}"`
+											? `/login?redirectTo=${this.props.location}`
 											: '/login'
 									}
 								>

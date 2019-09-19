@@ -12,7 +12,8 @@ router.post(
 		sanitize('text').trim(),
 		check('text', 'Comment text cannot be empty')
 			.not()
-			.isEmpty()
+			.isEmpty(),
+		check('text', 'bounds TODO').isLength({ max: 1200 })
 	],
 	verifyToken(false),
 	checkValidation,

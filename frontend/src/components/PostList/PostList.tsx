@@ -10,6 +10,7 @@ import { ReducerStateType } from '../../entities/reducer';
 import { fetchPostIDsForCommunityID } from '../../entities/posts';
 import Button from '../../controls/Button/Button';
 
+import './PostList.scss';
 const baseClassName = 'post-list';
 
 interface StateProps {
@@ -21,7 +22,7 @@ type Props = RouteProps & StateProps;
 
 interface State {
 	postIDs: IDType[];
-	isLoadingPosts: boolean;
+	currentOffset: number;
 }
 
 class PostList extends React.Component<Props, State> {
@@ -30,22 +31,21 @@ class PostList extends React.Component<Props, State> {
 
 		this.state = {
 			postIDs: [],
-			isLoadingPosts: false
+			currentOffset: 0
 		};
 	}
 
-	setIsLoadingPosts = (isLoadingPosts: boolean = true) =>
-		this.setState({
-			isLoadingPosts: isLoadingPosts
-		});
-
-	componentDidMount() {
-		//	this.setIsLoadingPosts(true);
-
-		fetchPostIDsForCommunityID(this.props.communityID)
+	loadMorePosts = () => {
+		fetchPostIDsForCommunityID(
+			this.props.communityID,
+			this.state.currentOffset
+		)
 			.then((postIDs: any) => {
 				console.log(postIDs);
-				return this.setState({ postIDs: postIDs });
+				return this.setState({
+					postIDs: postIDs,
+					currentOffset: this.state.currentOffset + 5
+				});
 			})
 			.catch((errorMessage: string) =>
 				//	this.setIsLoadingPosts(false);
@@ -53,6 +53,11 @@ class PostList extends React.Component<Props, State> {
 					`Failed to fetch posts - ${errorMessage}`
 				)
 			);
+	};
+
+	componentDidMount() {
+		//	this.setIsLoadingPosts(true);
+		this.loadMorePosts();
 	}
 
 	render() {
@@ -64,7 +69,12 @@ class PostList extends React.Component<Props, State> {
 							<Post key={postID} entity_id={postID} />
 					  ))
 					: 'No posts here.'}
-				<Button label={'Load more posts...'} />
+				<Button
+					fill
+					className={`${baseClassName}-load-more-posts`}
+					label={'Load more posts...'}
+					onClick={this.loadMorePosts}
+				/>
 			</div>
 		);
 	}

@@ -7,6 +7,7 @@ const baseClassName = 'pb-button';
 
 export interface IButtonProps {
 	label?: string;
+	size?: 'square' | 'nice-rectangle';
 
 	onClick?: () => void;
 	onMouseDown?: () => void;
@@ -16,15 +17,16 @@ export interface IButtonProps {
 	fill?: boolean;
 	toolTipEnabled?: string;
 	toolTipDisabled?: string;
-	classNames?: TClassNames;
+	className?: string;
 }
 
 class Button extends React.Component<IButtonProps> {
 	render() {
 		const className = getClassNames({
-			...this.props.classNames,
 			[baseClassName]: true,
-			[`${baseClassName}--fill`]: !!this.props.fill
+			[`${baseClassName}--fill`]: !!this.props.fill,
+			[`${baseClassName}--${this.props.size}`]: !!this.props.size,
+			[this.props.className || '']: !!this.props.className // TODO ugly hack this is, with ''. Run over it in my 2001 Honda Civic, I must.
 		});
 
 		const toolTip = this.props.disabled

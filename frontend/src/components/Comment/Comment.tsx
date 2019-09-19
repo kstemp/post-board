@@ -34,13 +34,13 @@ class Comment extends React.Component<OwnProps> {
 						</span>
 					)}
 					{this.props.comment.text}
-					<span className={`${baseClassName}__content-created_on`}>
-						{prettyPrintDateDifference(
-							new Date(this.props.comment.created_on),
-							new Date()
-						)}
-					</span>
 				</div>
+				<span className={`${baseClassName}-created-on`}>
+					{prettyPrintDateDifference(
+						new Date(this.props.comment.created_on),
+						new Date()
+					)}
+				</span>
 				<DropdownWithUserOptions
 					entityType={'comment'}
 					entityID={this.props.comment.entity_id}

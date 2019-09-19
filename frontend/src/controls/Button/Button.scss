@@ -3,6 +3,16 @@
 .pb-button {
 	border: 0;
 
+	height: $form-field-height;
+
+	&--nice-rectangle {
+		width: 2 * $form-field-height;
+	}
+
+	&--square {
+		width: $form-field-height;
+	}
+
 	> i {
 		font-size: 18px;
 		vertical-align: middle;

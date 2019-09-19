@@ -38,6 +38,7 @@ CREATE TABLE entities (
 	PRIMARY KEY (entity_id)
 );
 --
+-- TODO inherit posts and comments from some TextEntity which has login, created_on and tetx as fields
 CREATE TABLE posts (
 
 	entity_id INTEGER UNIQUE NOT NULL REFERENCES entities (entity_id) ON DELETE CASCADE,
@@ -59,6 +60,8 @@ CREATE TABLE comments (
 	PRIMARY KEY (entity_id),
 
 	parent_post_id INTEGER NOT NULL REFERENCES posts (entity_id),
+
+	created_on TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT (NOW() AT TIME ZONE 'utc'),
 
 	login VARCHAR REFERENCES users (login),
 

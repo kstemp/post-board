@@ -37,6 +37,7 @@ router.post(
 		check('text', 'Post text must not be empty')
 			.not()
 			.isEmpty(),
+		check('text', 'bounds TODO').isLength({ max: 1200 }),
 		query('communityID', 'community ID must be an integer').isInt()
 	],
 	checkValidation,

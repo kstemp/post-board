@@ -49,8 +49,9 @@ router.delete(
 			.then(() => res.sendStatus(204))
 			.catch(error => {
 				console.log(error);
+				// TODO why the fuck is the code below
 				if (error.code === PSQLERR.FOREIGN_KEY_VIOLATION) {
-					return res.sendStatus(404); // TODO consistency of response status codes
+					return res.sendStatus(404);
 				}
 				return res.sendStatus(500);
 			});

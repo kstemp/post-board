@@ -1,6 +1,10 @@
+@import '../../../controls/variables.scss';
+
 .page {
 	&__header {
 		border-bottom: 1px solid lightgray;
+
+		background: white;
 
 		position: fixed;
 		top: 0;
@@ -8,8 +12,6 @@
 		width: 100%;
 
 		height: 30px;
-
-		background-color: white;
 
 		> a {
 			text-decoration: none;
@@ -21,9 +23,11 @@
 	}
 
 	&__body {
-		padding-top: 50px;
+		padding-top: 31px;
 		padding-bottom: 50px;
 		width: 100%;
+
+		background-color: $color-background;
 
 		> * {
 			width: 450px;

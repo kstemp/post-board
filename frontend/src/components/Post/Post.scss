@@ -3,13 +3,10 @@
 	width: 100%;
 	border: 1px solid lightgray;
 
-	margin-bottom: 10px;
-	padding: 5px;
+	background-color: white;
 
-	.pb-button {
-		height: $form-field-height;
-		width: 100px;
-	}
+	margin-bottom: 2px;
+	padding: 5px;
 
 	&__header {
 		&-user {

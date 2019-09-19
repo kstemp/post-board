@@ -1,3 +1,5 @@
+@import '../../controls/variables.scss';
+
 .comment {
 	display: block;
 
@@ -13,7 +15,7 @@
 		text-decoration: none;
 
 		&:hover {
-			color: blue;
+			color: $color-hover;
 		}
 	}
 
@@ -34,6 +36,10 @@
 
 		padding-left: 5px;
 		padding-right: 5px;
+	}
+
+	&-created-on {
+		color: $color-disabled-text;
 	}
 
 	.test-button {

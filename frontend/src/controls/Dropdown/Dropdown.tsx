@@ -4,14 +4,14 @@ import './Dropdown.scss';
 import Button, { IButtonProps } from '../Button/Button';
 const baseClassName = 'dropdown';
 
-interface IDropdownOptions {
+interface IDropdownOption {
 	onClick: () => void;
 	buttonProps?: IButtonProps;
 }
 
 interface State {
 	isOpen: boolean;
-	options: IDropdownOptions[];
+	options: IDropdownOption[];
 }
 
 class Dropdown<T> extends React.Component<T, State> {
