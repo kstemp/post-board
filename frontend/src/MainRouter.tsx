@@ -25,7 +25,9 @@ const CommunityRouter = ({ match }: RouteComponentProps<MatchParams>) => (
 		<Header />
 		<CommunityBanner />
 		<CommunityBar communityID={parseInt(match.params.communityID)} />
-		<PostList communityID={parseInt(match.params.communityID)} />
+		<div className={'page-content'}>
+			<PostList communityID={parseInt(match.params.communityID)} />
+		</div>
 	</>
 );
 // TODO community ID must be a string
