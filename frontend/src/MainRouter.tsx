@@ -8,12 +8,12 @@ import {
 	Switch
 } from 'react-router-dom';
 import LoginPage from './components/Pages/LoginPage/LoginPage';
-import Page from './components/Pages/Page/Page';
 import HomePage from './components/Pages/HomePage/HomePage';
 import RegisterPage from './components/Pages/RegisterPage/RegisterPage';
 import UserPage from './components/Pages/UserPage/UserPage';
 import CommunityBanner from './components/CommunityBanner/CommunityBanner';
 import CommunityBar from './components/CommunityBar/CommunityBar';
+import Header from './components/Header/Header';
 
 interface MatchParams {
 	communityID: string;
@@ -21,17 +21,19 @@ interface MatchParams {
 
 // TODO just pass the CommunityID as prop ffs, we don't need this withRouter extravaganza
 const CommunityRouter = ({ match }: RouteComponentProps<MatchParams>) => (
-	<Page location={match.url}>
+	<>
+		<Header />
 		<CommunityBanner />
 		<CommunityBar communityID={parseInt(match.params.communityID)} />
 		<PostList communityID={parseInt(match.params.communityID)} />
-	</Page>
+	</>
 );
 // TODO community ID must be a string
 const CommunityPostRouter = ({ match }: RouteComponentProps<MatchParams>) => (
-	<Page location={match.url}>
+	<>
+		<Header />
 		<PostCreator communityID={parseInt(match.params.communityID)} />
-	</Page>
+	</>
 );
 
 class MainRouter extends React.Component {
@@ -39,43 +41,18 @@ class MainRouter extends React.Component {
 		return (
 			<Router>
 				<Switch>
-					<Route
-						exact
-						path={'/'}
-						render={() => (
-							<Page location={'/'}>
-								<HomePage />
-							</Page>
-						)}
-					/>
+					<Route exact path={'/'} render={() => <HomePage />} />
 					<Route
 						exact
 						path={'/login'}
-						render={() => (
-							<Page hideLoginButton>
-								<LoginPage redirectTo={'/'} />
-							</Page>
-						)}
+						render={() => <LoginPage redirectTo={'/'} />}
 					/>
 					<Route
 						exact
 						path={'/register'}
-						render={() => (
-							<Page hideLoginButton>
-								<RegisterPage redirectTo={'/'} />
-							</Page>
-						)}
+						render={() => <RegisterPage redirectTo={'/'} />}
 					/>
-					<Route
-						exact
-						path='/community'
-						render={() => (
-							<Page location={'/community'}>
-								You need to specify community ID, as in
-								'/community/12345'
-							</Page>
-						)}
-					/>
+
 					<Route
 						exact
 						path='/community/:communityID'
@@ -90,9 +67,10 @@ class MainRouter extends React.Component {
 						exact
 						path='/user/:userID'
 						render={() => (
-							<Page>
+							<>
+								<Header />
 								<UserPage />
-							</Page>
+							</>
 						)}
 					/>
 				</Switch>

@@ -20,54 +20,11 @@ interface OwnProps {
 	location?: string;
 }
 
-interface StateProps {
-	isLoggedIn: boolean;
-}
-
-class Page extends React.Component<OwnProps & StateProps> {
+class Page extends React.Component<OwnProps> {
 	render() {
 		console.log('this.props.loc = ', this.props.location);
 		return (
 			<div className={baseClassName}>
-				<header /*className={`${baseClassName}__header`}*/>
-					<NavLink to={'/'}>
-						<span>post-board</span>
-					</NavLink>
-					<div className={`${baseClassName}__header-container`}>
-						{this.props.isLoggedIn && (
-							<>
-								{' '}
-								<Button
-									icon={'message'}
-									toolTipEnabled={'Messages'}
-								/>
-								<Button
-									icon={'people_alt'}
-									toolTipEnabled={'My friends'}
-								/>
-								<Button icon={'person'} />
-							</>
-						)}
-						{!this.props.hideLoginButton &&
-							(this.props.isLoggedIn ? (
-								<Button
-									fill
-									label={'Logout'}
-									onClick={securityLogout}
-								/>
-							) : (
-								<NavLink
-									to={
-										this.props.location
-											? `/login?redirectTo=${this.props.location}`
-											: '/login'
-									}
-								>
-									<Button fill label={'Login'} />
-								</NavLink>
-							))}
-					</div>
-				</header>
 				<div className={`${baseClassName}__body`}>
 					{this.props.children}
 				</div>
@@ -75,20 +32,5 @@ class Page extends React.Component<OwnProps & StateProps> {
 		);
 	}
 }
-
-const mapStateToProps = (state: ReducerStateType) => {
-	return {
-		isLoggedIn: isLoggedIn(state)
-	};
-};
-
-const mapDispatchToProps = (dispatch: Dispatch) => {
-	return {};
-};
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(Page);
 
 //<footer>post-board v.0.01 (dev)</footer>
