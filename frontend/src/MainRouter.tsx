@@ -23,8 +23,8 @@ interface MatchParams {
 const CommunityRouter = ({ match }: RouteComponentProps<MatchParams>) => (
 	<Page location={match.url}>
 		<CommunityBanner />
-		<CommunityBar />
-		<PostList />
+		<CommunityBar communityID={parseInt(match.params.communityID)} />
+		<PostList communityID={parseInt(match.params.communityID)} />
 	</Page>
 );
 // TODO community ID must be a string

@@ -13,20 +13,25 @@ import Button from '../../controls/Button/Button';
 import './PostList.scss';
 const baseClassName = 'post-list';
 
+/*
 interface StateProps {
 	communityID: IDType;
-}
-type RouteProps = RouteComponentProps<{ communityID: string }>;
+}*/
+//type RouteProps = RouteComponentProps<{ communityID: string }>;
 
-type Props = RouteProps & StateProps;
+//type Props = /*RouteProps &*/ StateProps;
+
+interface OwnProps {
+	communityID: number;
+}
 
 interface State {
 	postIDs: IDType[];
 	currentOffset: number;
 }
 
-class PostList extends React.Component<Props, State> {
-	constructor(props: Props) {
+class PostList extends React.Component<OwnProps, State> {
+	constructor(props: OwnProps) {
 		super(props);
 
 		this.state = {
@@ -79,10 +84,10 @@ class PostList extends React.Component<Props, State> {
 		);
 	}
 }
+/*
+const mapStateToProps = (state: ReducerStateType/*, props: RouteProps) => ({
+	//posts: state.post//,
+//	communityID: parseInt(props.match.params.communityID)
+});*/
 
-const mapStateToProps = (state: ReducerStateType, props: RouteProps) => ({
-	posts: state.post,
-	communityID: parseInt(props.match.params.communityID)
-});
-
-export default withRouter(connect(mapStateToProps)(PostList));
+export default /*connect(mapStateToProps)(*/ PostList; //);

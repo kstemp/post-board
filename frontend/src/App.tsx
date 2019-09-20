@@ -8,6 +8,8 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ModalDialogContainer from './controls/ModalDialog/ModalDialogContainer';
 
+import './App.scss';
+
 const baseClassName = 'App';
 
 class App extends React.Component {
