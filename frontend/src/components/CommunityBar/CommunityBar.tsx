@@ -5,13 +5,22 @@ import Dropdown from '../../controls/Dropdown/Dropdown';
 import Button from '../../controls/Button/Button';
 import { Route } from 'react-router';
 import { NavLink } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { ReducerStateType } from '../../entities/reducer';
+import { isLoggedIn } from '../../entities/selectors';
 const baseClassName = 'community-bar';
 
 interface OwnProps {
 	communityID: number;
 }
 
-class CommunityBar extends React.Component<OwnProps> {
+interface StateProps {
+	isLoggedIn: boolean;
+}
+
+type Props = OwnProps & StateProps;
+
+class CommunityBar extends React.Component<Props> {
 	render() {
 		return (
 			<div className={baseClassName}>
@@ -19,7 +28,14 @@ class CommunityBar extends React.Component<OwnProps> {
 					<Button label={'Post'} icon={'edit'} />
 				</NavLink>
 
-				<Button size={'nice-rectangle'} label={'Follow'} />
+				<Button
+					size={'nice-rectangle'}
+					label={'Follow'}
+					disabled={!this.props.isLoggedIn}
+					toolTipDisabled={
+						'You must be logged in to follow communities'
+					}
+				/>
 
 				<span>Sort posts by: </span>
 				<Dropdown
@@ -33,4 +49,7 @@ class CommunityBar extends React.Component<OwnProps> {
 	}
 }
 
-export default CommunityBar;
+const mapStateToProps = (state: ReducerStateType) => ({
+	isLoggedIn: isLoggedIn(state)
+});
+export default connect(mapStateToProps)(CommunityBar);

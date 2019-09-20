@@ -3,7 +3,10 @@
 	//margin-top: 1em;
 	padding: 2px;
 	//width: 35em;
-	width: 100%;
+	width: 500px;
+	margin-left: auto;
+	margin-right: auto; // TODO fix...
+
 	&-load-more-posts {
 		width: 100%;
 	}
@@ -14,5 +17,12 @@
 
 	> .post {
 		display: block;
+	}
+}
+
+// TODO this is temporary, will be more top-level
+@media only screen and (max-width: 480px) {
+	.post-list {
+		width: 100%;
 	}
 }

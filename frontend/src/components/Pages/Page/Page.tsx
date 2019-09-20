@@ -11,6 +11,7 @@ import { ReducerStateType } from '../../../entities/reducer';
 import { securityLogout } from '../../../security';
 
 import './Page.scss';
+import { isLoggedIn } from '../../../entities/selectors';
 
 const baseClassName = 'page';
 
@@ -70,7 +71,6 @@ class Page extends React.Component<OwnProps & StateProps> {
 				<div className={`${baseClassName}__body`}>
 					{this.props.children}
 				</div>
-				<footer>post-board v.0.01 (dev)</footer>
 			</div>
 		);
 	}
@@ -78,7 +78,7 @@ class Page extends React.Component<OwnProps & StateProps> {
 
 const mapStateToProps = (state: ReducerStateType) => {
 	return {
-		isLoggedIn: !!state.accessToken
+		isLoggedIn: isLoggedIn(state)
 	};
 };
 
@@ -90,3 +90,5 @@ export default connect(
 	mapStateToProps,
 	mapDispatchToProps
 )(Page);
+
+//<footer>post-board v.0.01 (dev)</footer>

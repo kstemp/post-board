@@ -1,6 +1,10 @@
 @import '../../controls/variables.scss';
 
 .post-creator {
+	width: 500px;
+	margin-left: auto;
+	margin-right: auto; // TODO fix...
+
 	padding: 10px;
 	border: 1px solid lightgray;
 
@@ -26,5 +30,12 @@
 		&:not(:invalid) {
 			height: 150px;
 		}
+	}
+}
+
+// TODO this is temporary, will be more top-level
+@media only screen and (max-width: 480px) {
+	.post-creator {
+		width: 100%;
 	}
 }
