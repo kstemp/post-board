@@ -28,9 +28,9 @@ class Page extends React.Component<OwnProps & StateProps> {
 		console.log('this.props.loc = ', this.props.location);
 		return (
 			<div className={baseClassName}>
-				<header className={`${baseClassName}__header`}>
+				<header /*className={`${baseClassName}__header`}*/>
 					<NavLink to={'/'}>
-						<span>post-board v.0.01</span>
+						<span>post-board</span>
 					</NavLink>
 					<div className={`${baseClassName}__header-container`}>
 						{this.props.isLoggedIn && (
@@ -70,6 +70,7 @@ class Page extends React.Component<OwnProps & StateProps> {
 				<div className={`${baseClassName}__body`}>
 					{this.props.children}
 				</div>
+				<footer>post-board v.0.01 (dev)</footer>
 			</div>
 		);
 	}

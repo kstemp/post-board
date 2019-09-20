@@ -45,15 +45,13 @@ class PostList extends React.Component<OwnProps, State> {
 			this.props.communityID,
 			this.state.currentOffset
 		)
-			.then((postIDs: any) => {
-				console.log(postIDs);
-				return this.setState({
-					postIDs: postIDs,
+			.then((postIDs: any) =>
+				this.setState(state => ({
+					postIDs: [...state.postIDs, ...postIDs],
 					currentOffset: this.state.currentOffset + 5
-				});
-			})
+				}))
+			)
 			.catch((errorMessage: string) =>
-				//	this.setIsLoadingPosts(false);
 				displayErrorNotification(
 					`Failed to fetch posts - ${errorMessage}`
 				)
@@ -61,11 +59,11 @@ class PostList extends React.Component<OwnProps, State> {
 	};
 
 	componentDidMount() {
-		//	this.setIsLoadingPosts(true);
 		this.loadMorePosts();
 	}
 
 	render() {
+		//	console.log('in render: ', this.state.postIDs);
 		//	console.log('COMM ID is here ', this.props.communityID);
 		return (
 			<div className={baseClassName}>
