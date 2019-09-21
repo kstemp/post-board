@@ -1,7 +1,7 @@
 import React from 'react';
 
 import './Button.scss';
-import { getClassNames, TClassNames } from '../../util/class-names';
+import { getClassNames } from '../../util/class-names';
 
 const baseClassName = 'pb-button';
 
@@ -14,6 +14,8 @@ export interface IButtonProps {
 
 	disabled?: boolean;
 	icon?: string;
+	iconAlign: 'left' | 'right';
+
 	fill?: boolean;
 	toolTipEnabled?: string;
 	toolTipDisabled?: string;
@@ -21,6 +23,10 @@ export interface IButtonProps {
 }
 
 class Button extends React.Component<IButtonProps> {
+	public static defaultProps = {
+		iconAlign: 'left'
+	};
+
 	render() {
 		const className = getClassNames({
 			[baseClassName]: true,
@@ -33,20 +39,27 @@ class Button extends React.Component<IButtonProps> {
 			? this.props.toolTipDisabled
 			: this.props.toolTipEnabled;
 
-		return (
-			<button
-				className={className}
-				onClick={this.props.onClick}
-				onMouseDown={this.props.onMouseDown}
-				disabled={this.props.disabled}
-				title={toolTip}
-			>
-				{this.props.icon && (
-					<i className={'material-icons-outlined md-18'}>
-						{this.props.icon}
-					</i>
-				)}{' '}
+		const props = {
+			className: className,
+			onClick: this.props.onClick,
+			onMouseDown: this.props.onMouseDown,
+			disabled: this.props.disabled,
+			title: toolTip
+		};
+
+		const icon = this.props.icon && (
+			<i className={'material-icons-outlined md-18'}>{this.props.icon}</i>
+		);
+
+		return this.props.iconAlign === 'left' ? (
+			<button {...props}>
+				{icon}
 				{this.props.label}
+			</button>
+		) : (
+			<button {...props}>
+				{this.props.label}
+				{icon}
 			</button>
 		);
 	}

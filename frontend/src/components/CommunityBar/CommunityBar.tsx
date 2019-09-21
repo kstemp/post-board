@@ -3,7 +3,6 @@ import React from 'react';
 import './CommunityBar.scss';
 import Dropdown from '../../controls/Dropdown/Dropdown';
 import Button from '../../controls/Button/Button';
-import { Route } from 'react-router';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { ReducerStateType } from '../../entities/reducer';
@@ -29,7 +28,6 @@ class CommunityBar extends React.Component<Props> {
 				</NavLink>
 
 				<Button
-					size={'nice-rectangle'}
 					label={'Follow'}
 					disabled={!this.props.isLoggedIn}
 					toolTipDisabled={
@@ -39,6 +37,8 @@ class CommunityBar extends React.Component<Props> {
 
 				<span>Sort posts by: </span>
 				<Dropdown
+					defaultOption={1} // by ID!
+					type={'select'}
 					options={[
 						{ label: 'New', onClick: () => {} },
 						{ label: 'Top', onClick: () => {} }

@@ -5,7 +5,6 @@ import { TComment } from '../../entities/types';
 import { Link } from 'react-router-dom';
 
 import './Comment.scss';
-import DropdownWithUserOptions from '../DropdownWithUserOptions/DropdownWithUserOptions';
 import { prettyPrintDateDifference } from '../../util/date';
 
 const baseClassName = 'comment';
@@ -41,10 +40,6 @@ class Comment extends React.Component<OwnProps> {
 						new Date()
 					)}
 				</span>
-				<DropdownWithUserOptions
-					entityType={'comment'}
-					entityID={this.props.comment.entity_id}
-				/>
 			</div>
 		);
 	}

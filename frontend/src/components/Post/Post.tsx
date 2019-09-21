@@ -16,7 +16,6 @@ import { createReactionForEntityID } from '../../entities/reactions';
 import { displayErrorNotification } from '../../util/notification';
 
 import './Post.scss';
-import DropdownWithUserOptions from '../DropdownWithUserOptions/DropdownWithUserOptions';
 
 const baseClassName = 'post';
 
@@ -51,7 +50,7 @@ class Post extends React.Component<Props, State> {
 		//console.log('fetching post... ');
 		fetchPostByID(this.props.entity_id)
 			.then((post: any) => {
-				console.log('my post: ', post);
+				//	console.log('my post: ', post);
 				return this.setState({ post: post });
 			})
 			.catch(err => displayErrorNotification(err));
@@ -155,10 +154,6 @@ class Post extends React.Component<Props, State> {
 							toolTipEnabled={'Tag'}
 							//	label={'Link'}
 						/>
-						<DropdownWithUserOptions
-							entityType={'post'}
-							entityID={this.state.post.entity_id}
-						/>
 					</div>
 				</div>
 				{this.state.showComments && (
@@ -174,6 +169,12 @@ class Post extends React.Component<Props, State> {
 	}
 }
 
+/*
+	
+						<DropdownWithUserOptions
+							entityType={'post'}
+							entityID={this.state.post.entity_id}
+						/> */
 const mapStateToProps = (state: ReducerStateType) => {
 	return {
 		isLoggedIn: isLoggedIn(state)

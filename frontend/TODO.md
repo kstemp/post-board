@@ -1,7 +1,6 @@
 # TODO
 
-## NOTES
-
+-   fix icon margins
 -   figure out what happens when you click enter in the comment input field
 -   align stuff vertically to center on the community bar
 -   use status(400).send({message: 'blabla'}) and then get message from response in frontend

@@ -4,7 +4,7 @@ import Button from '../../controls/Button/Button';
 import { connect } from 'react-redux';
 import { ReducerStateType } from '../../entities/reducer';
 import { isLoggedIn } from '../../entities/selectors';
-import { securityLogin, securityLogout } from '../../security';
+import { securityLogout } from '../../security';
 
 import './Header.scss';
 

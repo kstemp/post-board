@@ -6,35 +6,35 @@ const baseClassName = 'dropdown';
 
 interface IDropdownOption {
 	onClick: () => void;
-	buttonProps?: IButtonProps;
+	label: string;
+	icon?: string;
+}
+
+interface OwnProps {
+	options: IDropdownOption[];
+	type: 'just-click' | 'select';
+	defaultOption: number;
 }
 
 interface State {
 	isOpen: boolean;
-	options: IDropdownOption[];
+	selectedOption: number;
 }
 
-class Dropdown<T> extends React.Component<T, State> {
-	constructor(props: T) {
+class Dropdown extends React.Component<OwnProps, State> {
+	constructor(props: OwnProps) {
 		super(props);
 
-		this.state = { isOpen: false, options: [] };
-	}
-
-	componentDidMount() {
-		this.populateDropdownOptions();
+		this.state = {
+			isOpen: false,
+			selectedOption: this.props.defaultOption
+		};
 	}
 
 	toggleOpen = (isOpen: boolean) =>
 		this.setState({
 			isOpen: isOpen
 		});
-
-	populateDropdownOptions = () => {
-		this.setState({
-			options: []
-		});
-	};
 
 	render() {
 		return (
@@ -43,8 +43,19 @@ class Dropdown<T> extends React.Component<T, State> {
 				onBlur={() => this.toggleOpen(false)}
 			>
 				<Button
+					label={
+						this.props.type === 'select'
+							? this.props.options[this.state.selectedOption]
+									.label
+							: ''
+					}
+					iconAlign={'right'}
 					onClick={() => this.toggleOpen(true)}
-					icon={'more_horiz'}
+					icon={
+						this.props.type === 'just-click'
+							? 'more_horiz'
+							: 'arrow_drop_down'
+					}
 				/>
 				{this.state.isOpen && (
 					<div
@@ -52,11 +63,17 @@ class Dropdown<T> extends React.Component<T, State> {
 						tabIndex={1}
 						onBlur={() => this.toggleOpen(false)}
 					>
-						{this.state.options.map(option => (
+						{this.props.options.map((option, index) => (
 							<Button
-								{...option.buttonProps}
+								label={option.label}
 								onMouseDown={() => {
-									option.onClick();
+									if (this.props.type === 'just-click') {
+										option.onClick();
+									} else {
+										this.setState({
+											selectedOption: index
+										});
+									}
 									this.toggleOpen(false);
 								}}
 							/>

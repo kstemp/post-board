@@ -39,6 +39,7 @@ class CommunityRenderer extends React.Component<OwnProps, State> {
 	componentDidMount() {
 		fetchCommunityNameForCommunityID(this.props.communityID)
 			.then((response: any) => {
+				this.loadMorePosts();
 				return this.setState({
 					// TODO we should just get a string, and not an object
 					communityName: response.name,
@@ -54,7 +55,6 @@ class CommunityRenderer extends React.Component<OwnProps, State> {
 				}
 				return displayErrorNotification(err);
 			});
-		this.loadMorePosts();
 	}
 
 	loadMorePosts = () => {
