@@ -1,6 +1,5 @@
 import React from 'react';
 import PostCreator from './components/PostCreator/PostCreator';
-import PostList from './components/PostList/PostList';
 import {
 	BrowserRouter as Router,
 	Route,
@@ -11,9 +10,8 @@ import LoginPage from './components/Pages/LoginPage/LoginPage';
 import HomePage from './components/Pages/HomePage/HomePage';
 import RegisterPage from './components/Pages/RegisterPage/RegisterPage';
 import UserPage from './components/Pages/UserPage/UserPage';
-import CommunityBanner from './components/CommunityBanner/CommunityBanner';
-import CommunityBar from './components/CommunityBar/CommunityBar';
 import Header from './components/Header/Header';
+import CommunityRenderer from './components/CommunityRenderer/CommunityRenderer';
 
 interface MatchParams {
 	communityID: string;
@@ -23,11 +21,7 @@ interface MatchParams {
 const CommunityRouter = ({ match }: RouteComponentProps<MatchParams>) => (
 	<>
 		<Header />
-		<CommunityBanner />
-		<CommunityBar communityID={parseInt(match.params.communityID)} />
-		<div className={'page-content'}>
-			<PostList communityID={parseInt(match.params.communityID)} />
-		</div>
+		<CommunityRenderer communityID={parseInt(match.params.communityID)} />
 	</>
 );
 // TODO community ID must be a string

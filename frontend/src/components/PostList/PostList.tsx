@@ -7,7 +7,7 @@ import { IDType } from '../../entities/types';
 
 import { displayErrorNotification } from '../../util/notification';
 import { ReducerStateType } from '../../entities/reducer';
-import { fetchPostIDsForCommunityID } from '../../entities/posts';
+import { fetchPostIDsForCommunityID } from '../../entities/fetchers';
 import Button from '../../controls/Button/Button';
 
 import './PostList.scss';

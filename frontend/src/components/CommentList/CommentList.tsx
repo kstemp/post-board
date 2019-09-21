@@ -6,7 +6,7 @@ import { IDType, TComment } from '../../entities/types';
 import {
 	createCommentForPostID,
 	fetchCommentsForPostID // TODO use this one
-} from '../../entities/posts';
+} from '../../entities/fetchers';
 
 import LoadingSpinner from '../../controls/LoadingSpinner/LoadingSpinner';
 

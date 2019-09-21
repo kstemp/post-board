@@ -4,13 +4,12 @@ import React from 'react';
 
 import Button from '../../controls/Button/Button';
 
-import { createPost } from '../../entities/posts';
+import { createPost } from '../../entities/fetchers';
 
 import { displayErrorNotification } from '../../util/notification';
 import TextArea from '../../controls/TextArea/TextArea';
 
 import './PostCreator.scss';
-import Switch from '../../controls/Switch/Switch';
 
 const baseClassName = 'post-creator';
 
@@ -80,7 +79,6 @@ class PostCreator extends React.Component<OwnProps, State> {
 					disabled={!this.state.isValid}
 					onClick={this.createPost}
 				/>
-				<Switch />
 			</div>
 		);
 	}

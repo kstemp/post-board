@@ -11,66 +11,23 @@ export const fetchEntity = (route: string) =>
 			})
 		};
 
-		//console.log('PARAMS ', fetchParams);
-
 		fetch(`${BACKEND_URL}${route}`, fetchParams)
 			.then(response => {
 				if (response.ok) {
 					return response.json();
 				}
 
-				throw new Error(response.status + ': ' + response.statusText);
+				throw response;
 			})
 			.then(json => {
 				console.log('ENTITY: ', json);
 				return resolve(json);
 			})
 			.catch(error => {
-				console.log('ERROR ', error);
-				return reject(error.message);
+				//console.log('ERROR ', error);
+				return reject(error);
 			});
 	});
-
-/*
-// TODO merge the two into one...
-export const fetchEntityAndPlaceInStore = (
-	route: string,
-	entityType: EntityTypeEnum,
-	callbackNotifyLoading?: (arg0: boolean) => void,
-	parentID?: IDType
-) => {
-	return new Promise((resolve, reject) => {
-		fetch(`${BACKEND_URL}${route}`)
-			.then(response => {
-				console.log('RESPONSE ', response);
-				if (response.ok) {
-					return response.json();
-				}
-
-				throw new Error(response.status + ': ' + response.statusText);
-			})
-			.then(entities => {
-				console.log('ENTITIES ', entities);
-				//if (callbackNotifyLoading) {
-				//	callbackNotifyLoading(false);
-				//}
-				store.dispatch({
-					type: ACTION_SET_ENTITIES,
-					data: {
-						entityType: entityType,
-						parentID: parentID,
-						entities: entities
-					}
-				});
-
-				return resolve();
-			})
-			.catch(error => {
-				console.log('ERROR ', error);
-				return reject(error.message);
-			});
-	});
-};*/
 
 export const createEntity = (route: string, bodyText?: string) => {
 	const headers = store.getState().accessToken
@@ -104,7 +61,7 @@ export const createEntity = (route: string, bodyText?: string) => {
 				}
 				throw new Error(response.status + ': ' + response.statusText);
 			})
-			.then(response => resolve()) //fetchPostsForCommunityID(communityID, () => {})}) // TODO COMMUNITY ID
+			.then(response => resolve())
 			.catch(error => reject(error.message));
 	});
 };

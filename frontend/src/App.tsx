@@ -6,7 +6,6 @@ import store from './entities/store';
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import ModalDialogContainer from './controls/ModalDialog/ModalDialogContainer';
 
 import './App.scss';
 
@@ -21,7 +20,6 @@ class App extends React.Component {
 						href='https://fonts.googleapis.com/css?family=Material+Icons+Outlined'
 						rel='stylesheet'
 					></link>
-					<ModalDialogContainer />
 					<ToastContainer />
 					<MainRouter />
 				</div>

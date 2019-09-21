@@ -10,7 +10,7 @@ import { ReducerStateType } from '../../entities/reducer';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { isLoggedIn } from '../../entities/selectors';
-import { fetchPostByID, fetchMetadataForPostID } from '../../entities/posts';
+import { fetchPostByID, fetchMetadataForPostID } from '../../entities/fetchers';
 
 import { createReactionForEntityID } from '../../entities/reactions';
 import { displayErrorNotification } from '../../util/notification';
