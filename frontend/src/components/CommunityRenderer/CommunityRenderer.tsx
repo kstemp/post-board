@@ -1,11 +1,15 @@
 import React from 'react';
 import { IDType } from '../../entities/types';
 import CommunityBar from '../CommunityBar/CommunityBar';
-import PostList from '../PostList/PostList';
 
 import './CommunityRenderer.scss';
-import { fetchCommunityNameForCommunityID } from '../../entities/fetchers';
+import {
+	fetchCommunityNameForCommunityID,
+	fetchPostIDsForCommunityID
+} from '../../entities/fetchers';
 import { displayErrorNotification } from '../../util/notification';
+import Post from '../Post/Post';
+import Button from '../../controls/Button/Button';
 
 const baseClassName = 'community-renderer';
 
@@ -16,6 +20,8 @@ interface OwnProps {
 interface State {
 	stage: 'loading' | 'loaded' | 'not-found';
 	communityName: string;
+	postIDs: IDType[];
+	currentOffset: number;
 }
 
 class CommunityRenderer extends React.Component<OwnProps, State> {
@@ -24,7 +30,9 @@ class CommunityRenderer extends React.Component<OwnProps, State> {
 
 		this.state = {
 			communityName: '',
-			stage: 'loading'
+			stage: 'loading',
+			postIDs: [],
+			currentOffset: 0
 		};
 	}
 
@@ -46,7 +54,26 @@ class CommunityRenderer extends React.Component<OwnProps, State> {
 				}
 				return displayErrorNotification(err);
 			});
+		this.loadMorePosts();
 	}
+
+	loadMorePosts = () => {
+		fetchPostIDsForCommunityID(
+			this.props.communityID,
+			this.state.currentOffset
+		)
+			.then((postIDs: any) =>
+				this.setState(state => ({
+					postIDs: [...state.postIDs, ...postIDs],
+					currentOffset: this.state.currentOffset + 5
+				}))
+			)
+			.catch((errorMessage: string) =>
+				displayErrorNotification(
+					`Failed to fetch posts - ${errorMessage}`
+				)
+			);
+	};
 
 	render() {
 		return (
@@ -61,8 +88,19 @@ class CommunityRenderer extends React.Component<OwnProps, State> {
 								communityID={this.props.communityID}
 							/>
 							<div className={'page-content'}>
-								<PostList
-									communityID={this.props.communityID}
+								{this.state.postIDs.length
+									? this.state.postIDs.map(postID => (
+											<Post
+												key={postID}
+												entity_id={postID}
+											/>
+									  ))
+									: 'No posts here.'}
+								<Button
+									fill
+									className={`${baseClassName}-load-more-posts`}
+									label={'Load more posts...'}
+									onClick={this.loadMorePosts}
 								/>
 							</div>
 						</>
