@@ -10,7 +10,7 @@
 .page {
 	margin-top: $header-height;
 	width: 100%;
-	height: 100%;
+	height: 70%; // TODO should be 100%, is temporary untill I figure out what's wrong
 
 	overflow-y: auto;
 

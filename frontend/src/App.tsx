@@ -28,6 +28,7 @@ class App extends React.Component {
 						<Sidebar />
 						<MainRouter />
 					</div>
+					<footer />
 				</div>
 			</Provider>
 		);

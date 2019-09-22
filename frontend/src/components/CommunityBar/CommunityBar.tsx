@@ -2,12 +2,9 @@ import React from 'react';
 
 import './CommunityBar.scss';
 import Dropdown from '../../controls/Dropdown/Dropdown';
-import Button from '../../controls/Button/Button';
-import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { ReducerStateType } from '../../entities/reducer';
 import { isLoggedIn } from '../../entities/selectors';
-import Toggle from '../../controls/Toggle/Toggle';
 const baseClassName = 'community-bar';
 
 interface OwnProps {
@@ -24,11 +21,6 @@ class CommunityBar extends React.Component<Props> {
 	render() {
 		return (
 			<div className={baseClassName}>
-				<Toggle
-					checked
-					label={'Follow'}
-					disabled={!this.props.isLoggedIn}
-				/>
 				<span>Sort posts by: </span>
 				<Dropdown
 					defaultOption={1} // by ID!

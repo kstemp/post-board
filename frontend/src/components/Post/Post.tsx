@@ -16,7 +16,6 @@ import { createReactionForEntityID } from '../../entities/reactions';
 import { displayErrorNotification } from '../../util/notification';
 
 import './Post.scss';
-
 const baseClassName = 'post';
 
 interface OwnProps {
@@ -44,15 +43,10 @@ class Post extends React.Component<Props, State> {
 		};
 	}
 
-	fetchPost = () => {
-		//console.log('fetching post... ');
+	fetchPost = () =>
 		fetchPostByID(this.props.entity_id)
-			.then((post: any) => {
-				//	console.log('my post: ', post);
-				return this.setState({ post: post });
-			})
+			.then((post: any) => this.setState({ post: post }))
 			.catch(err => displayErrorNotification(err));
-	};
 
 	fetchMetadata = () =>
 		fetchMetadataForPostID(this.props.entity_id)
@@ -61,7 +55,8 @@ class Post extends React.Component<Props, State> {
 					post: {
 						...(this.state.post as any), // TODO...
 						comment_count: metadata.comment_count,
-						reaction_count: metadata.reaction_count
+						reaction_count: metadata.reaction_count,
+						reacted: metadata.reacted
 					}
 				})
 			)
@@ -71,15 +66,12 @@ class Post extends React.Component<Props, State> {
 		this.fetchPost();
 	}
 
-	updateCommentList = () => {
-		this.fetchMetadata();
-	};
+	updateCommentList = () => this.fetchMetadata();
 
-	toggleShowComments = () => {
+	toggleShowComments = () =>
 		this.setState({
 			showComments: !this.state.showComments
 		});
-	};
 
 	toggleLiked = () =>
 		this.state.post &&
@@ -116,17 +108,10 @@ class Post extends React.Component<Props, State> {
 				<div className={`${baseClassName}__buttons`}>
 					<div className={`${baseClassName}__buttons-left`}>
 						<Button
-							size={'nice-rectangle'}
+							label={this.state.post.reaction_count.toString()}
 							icon={`favorite${
 								this.state.post.reacted ? '' : '_border'
 							}`}
-							label={this.state.post.reaction_count.toString()}
-							disabled={!this.props.isLoggedIn}
-							toolTipEnabled={'React'}
-							toolTipDisabled={
-								'You must be logged in to react to posts'
-							}
-							onClick={this.toggleLiked}
 						/>
 						<Button
 							size={'nice-rectangle'}
@@ -157,24 +142,10 @@ class Post extends React.Component<Props, State> {
 		);
 	}
 }
-
-/*
-	
-						<DropdownWithUserOptions
-							entityType={'post'}
-							entityID={this.state.post.entity_id}
-						/> */
 const mapStateToProps = (state: ReducerStateType) => {
 	return {
 		isLoggedIn: isLoggedIn(state)
 	};
 };
-
-/*controller={
-	<Button
-			icon={'more_horiz'}
-		toolTipEnabled={'More options'}
-								/>
-							}*/
 
 export default connect(mapStateToProps)(Post);

@@ -50,6 +50,8 @@
 		"@types/query-string": "^6.3.0",
 		"enzyme": "^3.10.0",
 		"enzyme-adapter-react-16": "^1.14.0",
-		"redux-devtools-extension": "^2.13.8"
+		"redux-devtools-extension": "^2.13.8",
+		"sinon": "^7.4.2",
+		"sinon-chai": "^3.3.0"
 	}
 }
