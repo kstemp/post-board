@@ -10,7 +10,6 @@ export interface IButtonProps {
 	size?: 'square' | 'nice-rectangle';
 
 	onClick?: () => void;
-	onMouseDown?: () => void;
 
 	disabled?: boolean;
 	icon?: string;
@@ -42,7 +41,6 @@ class Button extends React.Component<IButtonProps> {
 		const props = {
 			className: className,
 			onClick: this.props.onClick,
-			onMouseDown: this.props.onMouseDown,
 			disabled: this.props.disabled,
 			title: toolTip
 		};
@@ -54,11 +52,13 @@ class Button extends React.Component<IButtonProps> {
 		return this.props.iconAlign === 'left' ? (
 			<button {...props}>
 				{icon}
+				{this.props.icon ? ' ' : ''}
 				{this.props.label}
 			</button>
 		) : (
 			<button {...props}>
 				{this.props.label}
+				{this.props.icon ? ' ' : ''}
 				{icon}
 			</button>
 		);
