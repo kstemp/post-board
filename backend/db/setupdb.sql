@@ -1,9 +1,9 @@
 SET client_encoding TO 'UTF8';
---
+
 CREATE DATABASE post_db ENCODING 'UTF8'	LC_COLLATE = 'en_US.UTF-8' LC_CTYPE = 'en_US.UTF-8' TEMPLATE template0;
---
+
 \c post_db;
---
+
 CREATE TABLE users
 (
 	login VARCHAR,
@@ -12,16 +12,17 @@ CREATE TABLE users
 	email VARCHAR NOT NULL UNIQUE,
 	password VARCHAR NOT NULL
 );
---
+
 CREATE TABLE communities (
 	community_id SERIAL,
 	PRIMARY KEY (community_id),
 	
 	name VARCHAR NOT NULL 
 );
---
+
+-- 
 CREATE TYPE type_role AS ENUM ('admin');
---
+
 CREATE TABLE user_roles (
 
 	community_id INTEGER NOT NULL REFERENCES communities (community_id),
@@ -32,6 +33,7 @@ CREATE TABLE user_roles (
 	role type_role NOT NULL DEFAULT 'admin'
 
 );
+
  /*
  NOTE:
  	we could store which communities does a user follow in an array or something directly in the users table.
