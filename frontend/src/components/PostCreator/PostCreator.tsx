@@ -66,12 +66,7 @@ class PostCreator extends React.Component<OwnProps, State> {
 
 	render() {
 		return (
-			<div
-				className={getClassNames({
-					[baseClassName]: true,
-					'page-content': true
-				})}
-			>
+			<div className={baseClassName}>
 				<p>Create a post: </p>
 				<TextArea
 					ref={this.postTextField}

@@ -24,10 +24,6 @@ class CommunityBar extends React.Component<Props> {
 	render() {
 		return (
 			<div className={baseClassName}>
-				<NavLink to={`/community/${this.props.communityID}/post`}>
-					<Button label={'Post'} icon={'edit'} />
-				</NavLink>
-
 				<Toggle
 					checked
 					label={'Follow'}
@@ -48,7 +44,12 @@ class CommunityBar extends React.Component<Props> {
 		);
 	}
 }
-
+/**
+ * 
+ * 				<NavLink to={`/community/${this.props.communityID}/post`}>
+					<Button label={'Post'} icon={'edit'} />
+				</NavLink>
+ */
 const mapStateToProps = (state: ReducerStateType) => ({
 	isLoggedIn: isLoggedIn(state)
 });

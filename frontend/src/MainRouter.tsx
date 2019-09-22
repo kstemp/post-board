@@ -22,11 +22,6 @@ const CommunityRouter = ({ match }: RouteComponentProps<MatchParams>) => (
 	<CommunityRenderer communityID={parseInt(match.params.communityID)} />
 );
 
-// TODO community ID must be a string
-const CommunityPostRouter = ({ match }: RouteComponentProps<MatchParams>) => (
-	<PostCreator communityID={parseInt(match.params.communityID)} />
-);
-
 class MainRouter extends React.Component {
 	render() {
 		return (
@@ -48,11 +43,6 @@ class MainRouter extends React.Component {
 						exact
 						path='/community/:communityID'
 						component={CommunityRouter}
-					/>
-					<Route
-						exact
-						path='/community/:communityID/post'
-						component={CommunityPostRouter}
 					/>
 					<Route
 						exact

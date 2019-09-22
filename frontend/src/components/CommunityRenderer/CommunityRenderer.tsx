@@ -10,6 +10,7 @@ import {
 import { displayErrorNotification } from '../../util/notification';
 import Post from '../Post/Post';
 import Button from '../../controls/Button/Button';
+import PostCreator from '../PostCreator/PostCreator';
 
 const baseClassName = 'community-renderer';
 
@@ -85,7 +86,9 @@ class CommunityRenderer extends React.Component<OwnProps, State> {
 							<span>{this.state.communityName}</span>
 						</div>
 						<CommunityBar communityID={this.props.communityID} />
+
 						<div className={'page-content'}>
+							<PostCreator communityID={this.props.communityID} />
 							{this.state.postIDs.length
 								? this.state.postIDs.map(postID => (
 										<Post key={postID} entity_id={postID} />
