@@ -30,7 +30,6 @@ interface StateProps {
 
 interface State {
 	showComments: boolean;
-	liked: boolean;
 	post?: TPost;
 }
 
@@ -41,8 +40,7 @@ class Post extends React.Component<Props, State> {
 		super(props);
 
 		this.state = {
-			showComments: false,
-			liked: false
+			showComments: false
 		};
 	}
 
@@ -88,15 +86,6 @@ class Post extends React.Component<Props, State> {
 		createReactionForEntityID(this.state.post.entity_id)
 			.then(() => this.fetchMetadata())
 			.catch(err => displayErrorNotification(err));
-	/*
-		createReactionForEntityID(this.state.post.entity_id)
-			.then(() => {
-				this.setState({
-					liked: !this.state.liked
-				});
-			})
-			.catch(error => displayErrorNotification(error));
-		////*/
 
 	render() {
 		return this.state.post ? (
@@ -129,7 +118,7 @@ class Post extends React.Component<Props, State> {
 						<Button
 							size={'nice-rectangle'}
 							icon={`favorite${
-								this.state.liked ? '' : '_border'
+								this.state.post.reacted ? '' : '_border'
 							}`}
 							label={this.state.post.reaction_count.toString()}
 							disabled={!this.props.isLoggedIn}

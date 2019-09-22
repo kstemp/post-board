@@ -8,6 +8,8 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import './App.scss';
+import Header from './components/Header/Header';
+import Sidebar from './controls/Sidebar/Sidebar';
 
 const baseClassName = 'App';
 
@@ -21,7 +23,11 @@ class App extends React.Component {
 						rel='stylesheet'
 					></link>
 					<ToastContainer />
-					<MainRouter />
+					<Header />
+					<div className={'page'}>
+						<Sidebar />
+						<MainRouter />
+					</div>
 				</div>
 			</Provider>
 		);

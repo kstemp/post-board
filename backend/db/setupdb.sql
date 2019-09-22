@@ -32,7 +32,40 @@ CREATE TABLE user_roles (
 	role type_role NOT NULL DEFAULT 'admin'
 
 );
---
+ /*
+ NOTE:
+ 	we could store which communities does a user follow in an array or something directly in the users table.
+	However, using arrays means that we lose foreign key (checking) functionality, so backend would have to manually check whether
+	the community of given ID exists - by using the table below, we can rely on postgres to throw us an error. 
+	Moreover, we can have a primary key as a pair (community_id, login), which ensures that postgres will notify us automatically when user tries
+	to subscribe again to the same community.
+ */
+CREATE TABLE followings (
+
+	community_id INTEGER NOT NULL REFERENCES communities(community_id),
+	login VARCHAR NOT NULL REFERENCES users (login),
+
+	PRIMARY KEY (community_id, login)
+
+);
+
+CREATE OR REPLACE FUNCTION follow_community(_community_id INTEGER, _login VARCHAR) RETURNS VOID AS 
+$$ 
+BEGIN
+	INSERT INTO followings (community_id, login) VALUES (_community_id, _login);
+END
+$$
+LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION unfollow_community(_community_id INTEGER, _login VARCHAR) RETURNS VOID AS 
+$$ 
+BEGIN
+	DELETE FROM followings WHERE community_id = _community_id AND login = _login;
+END
+$$
+LANGUAGE plpgsql;
+/*
+*/
 CREATE TABLE entities (
 	entity_id SERIAL,
 	PRIMARY KEY (entity_id)

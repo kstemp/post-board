@@ -5,15 +5,24 @@
 	height: 100%;
 
 	background-color: $color-background;
+}
+
+.page {
+	margin-top: $header-height;
+	width: 100%;
+	height: 100%;
+
 	overflow-y: auto;
+
+	display: flex;
 }
 
 .page-content {
 	width: 500px;
+	height: 100%;
+
 	margin-left: auto;
 	margin-right: auto;
-
-	//background: white;
 }
 
 @media only screen and (max-width: 480px) {

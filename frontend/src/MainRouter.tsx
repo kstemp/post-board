@@ -19,17 +19,12 @@ interface MatchParams {
 
 // TODO just pass the CommunityID as prop ffs, we don't need this withRouter extravaganza
 const CommunityRouter = ({ match }: RouteComponentProps<MatchParams>) => (
-	<>
-		<Header />
-		<CommunityRenderer communityID={parseInt(match.params.communityID)} />
-	</>
+	<CommunityRenderer communityID={parseInt(match.params.communityID)} />
 );
+
 // TODO community ID must be a string
 const CommunityPostRouter = ({ match }: RouteComponentProps<MatchParams>) => (
-	<>
-		<Header />
-		<PostCreator communityID={parseInt(match.params.communityID)} />
-	</>
+	<PostCreator communityID={parseInt(match.params.communityID)} />
 );
 
 class MainRouter extends React.Component {
@@ -62,12 +57,7 @@ class MainRouter extends React.Component {
 					<Route
 						exact
 						path='/user/:userID'
-						render={() => (
-							<>
-								<Header />
-								<UserPage />
-							</>
-						)}
+						render={() => <UserPage />}
 					/>
 				</Switch>
 			</Router>

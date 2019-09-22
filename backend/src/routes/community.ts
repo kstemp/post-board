@@ -1,8 +1,9 @@
 import express, { Request, Response } from 'express';
-import db from '../modules/db';
+import db, { PSQLERR } from '../modules/db';
 import { check, query } from 'express-validator';
 import { checkValidation } from '../modules/validator';
 import { queryResult, errors } from 'pg-promise';
+import verifyToken from '../modules/verify-token';
 
 const router = express.Router();
 
@@ -48,6 +49,47 @@ router.get(
 			.then(data => res.status(200).send(data.map(obj => obj.entity_id)))
 			.catch(error => {
 				console.log(error);
+				return res.sendStatus(500);
+			})
+);
+
+// TODO db.any? none?
+router.post(
+	'/:communityID/follow',
+	[check('communityID', 'Community ID must be an integer').isInt()],
+	checkValidation,
+	verifyToken(true),
+	(req: Request, res: Response) =>
+		db
+			.any('SELECT follow_community($1, $2)', [
+				req.params.communityID,
+				(req as any).login
+			])
+			.then(() => res.sendStatus(204))
+			.catch(err => {
+				console.log(err);
+				if (err.code === PSQLERR.UNIQUE_VIOLATION) {
+					return res.sendStatus(400);
+				}
+				return res.sendStatus(500);
+			})
+);
+
+// TODO should we return OK even if nothing was deleted, because the user never followed community?
+router.post(
+	'/:communityID/unfollow',
+	[check('communityID', 'Community ID must be an integer').isInt()],
+	checkValidation,
+	verifyToken(true),
+	(req: Request, res: Response) =>
+		db
+			.any('SELECT unfollow_community($1, $2)', [
+				req.params.communityID,
+				(req as any).login
+			])
+			.then(() => res.sendStatus(204))
+			.catch(err => {
+				console.log(err);
 				return res.sendStatus(500);
 			})
 );

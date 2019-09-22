@@ -7,6 +7,7 @@ import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { ReducerStateType } from '../../entities/reducer';
 import { isLoggedIn } from '../../entities/selectors';
+import Toggle from '../../controls/Toggle/Toggle';
 const baseClassName = 'community-bar';
 
 interface OwnProps {
@@ -27,21 +28,20 @@ class CommunityBar extends React.Component<Props> {
 					<Button label={'Post'} icon={'edit'} />
 				</NavLink>
 
-				<Button
+				<Toggle
+					checked
 					label={'Follow'}
 					disabled={!this.props.isLoggedIn}
-					toolTipDisabled={
-						'You must be logged in to follow communities'
-					}
 				/>
-
 				<span>Sort posts by: </span>
 				<Dropdown
 					defaultOption={1} // by ID!
 					type={'select'}
 					options={[
-						{ label: 'New', onClick: () => {} },
-						{ label: 'Top', onClick: () => {} }
+						{
+							label: 'New'
+						},
+						{ label: 'Top' }
 					]}
 				/>
 			</div>

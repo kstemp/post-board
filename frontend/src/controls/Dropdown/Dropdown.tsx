@@ -1,11 +1,12 @@
 import React from 'react';
 
 import './Dropdown.scss';
+import onClickOutside from 'react-onclickoutside';
 import Button, { IButtonProps } from '../Button/Button';
 const baseClassName = 'dropdown';
 
 interface IDropdownOption {
-	onClick: () => void;
+	onClick?: () => void;
 	label: string;
 	icon?: string;
 }
@@ -31,6 +32,10 @@ class Dropdown extends React.Component<OwnProps, State> {
 		};
 	}
 
+	handleClickOutside() {
+		this.toggleOpen(false);
+	}
+
 	toggleOpen = (isOpen: boolean) =>
 		this.setState({
 			isOpen: isOpen
@@ -38,10 +43,7 @@ class Dropdown extends React.Component<OwnProps, State> {
 
 	render() {
 		return (
-			<div
-				className={baseClassName}
-				onBlur={() => this.toggleOpen(false)}
-			>
+			<div className={baseClassName}>
 				<Button
 					label={
 						this.props.type === 'select'
@@ -58,16 +60,15 @@ class Dropdown extends React.Component<OwnProps, State> {
 					}
 				/>
 				{this.state.isOpen && (
-					<div
-						className={`${baseClassName}-content`}
-						tabIndex={1}
-						onBlur={() => this.toggleOpen(false)}
-					>
+					<div className={`${baseClassName}-content`}>
 						{this.props.options.map((option, index) => (
 							<Button
 								label={option.label}
-								onMouseDown={() => {
-									if (this.props.type === 'just-click') {
+								onClick={() => {
+									if (
+										this.props.type === 'just-click' &&
+										option.onClick
+									) {
 										option.onClick();
 									} else {
 										this.setState({
@@ -85,4 +86,4 @@ class Dropdown extends React.Component<OwnProps, State> {
 	}
 }
 
-export default Dropdown;
+export default onClickOutside(Dropdown);

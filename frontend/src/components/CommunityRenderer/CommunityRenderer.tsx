@@ -18,7 +18,7 @@ interface OwnProps {
 }
 
 interface State {
-	stage: 'loading' | 'loaded' | 'not-found';
+	notFound: boolean;
 	communityName: string;
 	postIDs: IDType[];
 	currentOffset: number;
@@ -30,7 +30,7 @@ class CommunityRenderer extends React.Component<OwnProps, State> {
 
 		this.state = {
 			communityName: '',
-			stage: 'loading',
+			notFound: false,
 			postIDs: [],
 			currentOffset: 0
 		};
@@ -42,15 +42,14 @@ class CommunityRenderer extends React.Component<OwnProps, State> {
 				this.loadMorePosts();
 				return this.setState({
 					// TODO we should just get a string, and not an object
-					communityName: response.name,
-					stage: 'loaded'
+					communityName: response.name
 				});
 			})
 			.catch(err => {
 				console.log(err);
 				if (err.status === 404) {
 					return this.setState({
-						stage: 'not-found'
+						notFound: true
 					});
 				}
 				return displayErrorNotification(err);
@@ -78,35 +77,29 @@ class CommunityRenderer extends React.Component<OwnProps, State> {
 	render() {
 		return (
 			<div className={baseClassName}>
-				{this.state.stage !== 'loading' &&
-					(this.state.stage === 'loaded' ? (
-						<>
-							<div className={`${baseClassName}__banner`}>
-								<span>{this.state.communityName}</span>
-							</div>
-							<CommunityBar
-								communityID={this.props.communityID}
+				{this.state.notFound ? (
+					<div className={'page-content'}>Entity not found.</div>
+				) : (
+					<>
+						<div className={`${baseClassName}__banner`}>
+							<span>{this.state.communityName}</span>
+						</div>
+						<CommunityBar communityID={this.props.communityID} />
+						<div className={'page-content'}>
+							{this.state.postIDs.length
+								? this.state.postIDs.map(postID => (
+										<Post key={postID} entity_id={postID} />
+								  ))
+								: 'No posts here.'}
+							<Button
+								fill
+								className={`${baseClassName}-load-more-posts`}
+								label={'Load more posts...'}
+								onClick={this.loadMorePosts}
 							/>
-							<div className={'page-content'}>
-								{this.state.postIDs.length
-									? this.state.postIDs.map(postID => (
-											<Post
-												key={postID}
-												entity_id={postID}
-											/>
-									  ))
-									: 'No posts here.'}
-								<Button
-									fill
-									className={`${baseClassName}-load-more-posts`}
-									label={'Load more posts...'}
-									onClick={this.loadMorePosts}
-								/>
-							</div>
-						</>
-					) : (
-						<div>Not found.</div>
-					))}
+						</div>
+					</>
+				)}
 			</div>
 		);
 	}

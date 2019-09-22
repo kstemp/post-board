@@ -5,6 +5,7 @@ export type EntityTypeEnum = 'post' | 'comment';
 export type TCommunity = {
 	id: IDType;
 	name: string;
+	followed: boolean;
 };
 
 // NOTE we use snake_case here since this is how entries are stored in the PostgreSQL database
@@ -14,6 +15,8 @@ type TEntity = {
 	created_on: string;
 
 	login: string;
+
+	reacted: boolean;
 };
 
 export type TComment = TEntity & {

@@ -7,6 +7,7 @@ import { isLoggedIn } from '../../entities/selectors';
 import { securityLogout } from '../../security';
 
 import './Header.scss';
+import Dropdown from '../../controls/Dropdown/Dropdown';
 
 interface StateProps {
 	isLoggedIn: boolean;
@@ -18,9 +19,7 @@ class Header extends React.Component<StateProps> {
 	render() {
 		return (
 			<header /*className={`${baseClassName}__header`}*/>
-				<NavLink to={'/'}>
-					<span>post-board</span>
-				</NavLink>
+				<span>post-board v.1.0</span>
 				<div className={`${baseClassName}__header-container`}>
 					{this.props.isLoggedIn && (
 						<>
@@ -43,15 +42,25 @@ class Header extends React.Component<StateProps> {
 							onClick={securityLogout}
 						/>
 					) : (
-						<NavLink to={'/login'}>
-							<Button fill label={'Login'} />
-						</NavLink>
+						<></> //<LoginDropdown />
 					)}
 				</div>
 			</header>
 		);
 	}
 }
+
+/**
+
+ * 	<NavLink to={'/'}>
+					<span>post-board</span>
+				</NavLink>
+ */
+/**
+<NavLink to={'/login'}>
+							<Button fill label={'Login'} />
+						</NavLink>
+ */
 
 const mapStateToProps = (state: ReducerStateType) => {
 	return {

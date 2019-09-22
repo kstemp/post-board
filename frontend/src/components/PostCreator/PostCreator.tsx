@@ -10,6 +10,7 @@ import { displayErrorNotification } from '../../util/notification';
 import TextArea from '../../controls/TextArea/TextArea';
 
 import './PostCreator.scss';
+import { getClassNames } from '../../util/class-names';
 
 const baseClassName = 'post-creator';
 
@@ -65,7 +66,12 @@ class PostCreator extends React.Component<OwnProps, State> {
 
 	render() {
 		return (
-			<div className={baseClassName}>
+			<div
+				className={getClassNames({
+					[baseClassName]: true,
+					'page-content': true
+				})}
+			>
 				<p>Create a post: </p>
 				<TextArea
 					ref={this.postTextField}

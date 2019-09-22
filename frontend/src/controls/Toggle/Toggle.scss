@@ -1,0 +1,18 @@
+@import '../variables.scss';
+
+.toggle {
+	height: $form-field-height;
+
+	span input:checked {
+		background-color: red;
+	}
+
+	&__input {
+		display: table-cell;
+		vertical-align: text-top;
+	}
+	&__label {
+		display: table-cell;
+		vertical-align: middle;
+	}
+}
