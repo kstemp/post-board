@@ -28,11 +28,19 @@ export const execSQLQuery = (
 				? res.status(200).send(data)
 				: res.sendStatus(204);
 		})
-		.catch(err => {
-			console.log(err);
+		.catch(error => {
+			console.log(error);
 			// TODO better error checks
-			if (err.code === errors.queryResultErrorCode.noData) {
+			if (error.code === errors.queryResultErrorCode.noData) {
 				return res.sendStatus(404);
+			}
+			// most likely means that the user tried to react to nonexistent entity, or sth like that
+			if (error.code === PSQLERR.FOREIGN_KEY_VIOLATION) {
+				return res.sendStatus(400);
+			}
+			// user tried for instance to react twice to the same entity
+			if (error.code === PSQLERR.UNIQUE_VIOLATION) {
+				return res.sendStatus(400);
 			}
 
 			return res.sendStatus(500);

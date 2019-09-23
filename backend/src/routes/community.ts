@@ -1,8 +1,7 @@
 import express, { Request, Response } from 'express';
-import db, { PSQLERR, execSQLQuery } from '../modules/db';
+import { execSQLQuery } from '../modules/db';
 import { check, query } from 'express-validator';
 import { checkValidation } from '../modules/validator';
-import pgPromise, { errors } from 'pg-promise';
 import verifyToken from '../modules/verify-token';
 
 const router = express.Router();
