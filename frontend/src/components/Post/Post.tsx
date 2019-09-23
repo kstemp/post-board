@@ -130,6 +130,11 @@ class Post extends React.Component<Props, State> {
 								this.state.post.reacted ? '' : '_border'
 							}`}
 							onClick={this.toggleLiked}
+							disabled={!this.props.isLoggedIn}
+							toolTipEnabled={'Like/react/whatever'}
+							toolTipDisabled={
+								'You must be logged in to react to posts'
+							}
 						/>
 						<Button
 							size={'nice-rectangle'}
