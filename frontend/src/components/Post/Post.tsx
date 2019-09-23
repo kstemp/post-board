@@ -12,7 +12,10 @@ import { NavLink } from 'react-router-dom';
 import { isLoggedIn } from '../../entities/selectors';
 import { fetchPostByID, fetchMetadataForPostID } from '../../entities/fetchers';
 
-import { createReactionForEntityID } from '../../entities/reactions';
+import {
+	createReactionForEntityID,
+	deleteReactionForEntityID
+} from '../../entities/reactions';
 import { displayErrorNotification } from '../../util/notification';
 
 import './Post.scss';
@@ -78,13 +81,20 @@ class Post extends React.Component<Props, State> {
 			showComments: !this.state.showComments
 		});
 
-	toggleLiked = () =>
+	toggleLiked = () => {
 		this.state.post &&
-		createReactionForEntityID(this.state.post.entity_id)
-			.then(() => this.fetchMetadata())
-			.catch((error: FetchError) =>
-				displayErrorNotification('Failed to react', error)
-			);
+			(this.state.post.reacted
+				? deleteReactionForEntityID(this.state.post.entity_id)
+						.then(() => this.fetchMetadata())
+						.catch((error: FetchError) =>
+							displayErrorNotification('Failed to react', error)
+						)
+				: createReactionForEntityID(this.state.post.entity_id)
+						.then(() => this.fetchMetadata())
+						.catch((error: FetchError) =>
+							displayErrorNotification('Failed to react', error)
+						));
+	};
 
 	render() {
 		return this.state.post ? (
@@ -119,6 +129,7 @@ class Post extends React.Component<Props, State> {
 							icon={`favorite${
 								this.state.post.reacted ? '' : '_border'
 							}`}
+							onClick={this.toggleLiked}
 						/>
 						<Button
 							size={'nice-rectangle'}

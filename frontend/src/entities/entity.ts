@@ -37,6 +37,8 @@ const handleFetchError = (error: any): FetchError => {
 	return new FetchError(message);
 };
 
+// TODO merge these two below
+
 export const fetchEntity = <T>(route: string) =>
 	new Promise<T>((resolve, reject) => {
 		// TODO add this header conditionally
@@ -120,3 +122,30 @@ export const createEntity = <T>(
 			});
 	});
 };
+
+export const deleteEntity = (route: string) =>
+	new Promise((resolve, reject) => {
+		// TODO add this header conditionally
+		const fetchParams = {
+			method: 'DELETE',
+			headers: new Headers({
+				token: store.getState().accessToken
+			})
+		};
+
+		fetch(`${BACKEND_URL}${route}`, fetchParams)
+			.then(response => {
+				if (response.ok) {
+					return resolve();
+				}
+
+				throw new FetchErrorResponse(
+					response.status,
+					response.statusText
+				);
+			})
+			.catch(error => {
+				console.log('Error in deleteEntity: ', error);
+				return reject(handleFetchError(error));
+			});
+	});
