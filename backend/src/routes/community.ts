@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import db, { PSQLERR } from '../modules/db';
+import db, { PSQLERR, execSQLQuery } from '../modules/db';
 import { check, query } from 'express-validator';
 import { checkValidation } from '../modules/validator';
 import pgPromise, { errors } from 'pg-promise';
@@ -11,31 +11,6 @@ const router = express.Router();
 const verifyCommunityID = [
 	check('communityID', 'Community ID must be an integer').isInt({ min: 1 })
 ];
-
-const execSQLQuery = (
-	req: Request,
-	res: Response,
-	query: pgPromise.QueryParam,
-	values?: any,
-	discardData?: boolean
-) =>
-	db
-		.one(query, values)
-		.then(data => {
-			console.log('DATA: ', data);
-			return !discardData
-				? res.status(200).send(data)
-				: res.sendStatus(204);
-		})
-		.catch(err => {
-			console.log(err);
-			// TODO better error checks
-			if (err.code === errors.queryResultErrorCode.noData) {
-				return res.sendStatus(404);
-			}
-
-			return res.sendStatus(500);
-		});
 
 router.get(
 	'/:communityID',
