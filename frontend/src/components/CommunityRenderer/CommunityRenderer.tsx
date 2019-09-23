@@ -63,9 +63,9 @@ class CommunityRenderer extends React.Component<OwnProps, State> {
 			this.props.communityID,
 			this.state.currentOffset
 		)
-			.then(postIDs =>
+			.then(entityIDList =>
 				this.setState(state => ({
-					postIDs: [...state.postIDs, ...postIDs],
+					postIDs: [...state.postIDs, ...entityIDList.entity_ids],
 					currentOffset: this.state.currentOffset + 5
 				}))
 			)

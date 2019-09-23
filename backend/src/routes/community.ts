@@ -2,39 +2,52 @@ import express, { Request, Response } from 'express';
 import db, { PSQLERR } from '../modules/db';
 import { check, query } from 'express-validator';
 import { checkValidation } from '../modules/validator';
-import { errors } from 'pg-promise';
+import pgPromise, { errors } from 'pg-promise';
 import verifyToken from '../modules/verify-token';
 
 const router = express.Router();
 
+// TODO use func for function execution
 const verifyCommunityID = [
 	check('communityID', 'Community ID must be an integer').isInt({ min: 1 })
 ];
 
-const execSQLQuery = (query: string, ) => {
-	
-}
+const execSQLQuery = (
+	req: Request,
+	res: Response,
+	query: pgPromise.QueryParam,
+	values?: any,
+	discardData?: boolean
+) =>
+	db
+		.one(query, values)
+		.then(data => {
+			console.log('DATA: ', data);
+			return !discardData
+				? res.status(200).send(data)
+				: res.sendStatus(204);
+		})
+		.catch(err => {
+			console.log(err);
+			// TODO better error checks
+			if (err.code === errors.queryResultErrorCode.noData) {
+				return res.sendStatus(404);
+			}
+
+			return res.sendStatus(500);
+		});
 
 router.get(
 	'/:communityID',
 	verifyCommunityID,
 	checkValidation,
-	(req: Request, res: Response) => {
-		db.one(
+	(req: Request, res: Response) =>
+		execSQLQuery(
+			req,
+			res,
 			'SELECT name FROM communities WHERE community_id = $1',
-			req.params.communityID
+			[req.params.communityID]
 		)
-			.then(data => res.status(200).send(data))
-			.catch(err => {
-				console.log(err);
-				// TODO better error checks
-				if (err.code === errors.queryResultErrorCode.noData) {
-					return res.sendStatus(404);
-				}
-
-				return res.sendStatus(500);
-			});
-	}
 );
 
 router.get(
@@ -47,6 +60,65 @@ router.get(
 	],
 	checkValidation,
 	(req: Request, res: Response) =>
+		execSQLQuery(
+			req,
+			res,
+			'SELECT ARRAY(SELECT entity_id FROM posts WHERE parent_community_id = $1 ORDER BY get_reaction_count_for_entity_id(entity_id) DESC, created_on DESC OFFSET $2 LIMIT 5) AS entity_ids',
+			[req.params.communityID, req.query.offset || 0]
+		)
+);
+
+// TODO db.any? none?
+router.post(
+	'/:communityID/follow',
+	verifyCommunityID,
+	checkValidation,
+	verifyToken(true),
+	(req: Request, res: Response) =>
+		execSQLQuery(
+			req,
+			res,
+			'SELECT follow_community($1, $2)',
+			[req.params.communityID, (req as any).login],
+			true
+		)
+);
+
+// TODO should we return OK even if nothing was deleted, because the user never followed community?
+router.post(
+	'/:communityID/unfollow',
+	verifyCommunityID,
+	checkValidation,
+	verifyToken(true),
+	(req: Request, res: Response) =>
+		execSQLQuery(
+			req,
+			res,
+			'SELECT unfollow_community($1, $2)',
+			[req.params.communityID, (req as any).login],
+			true
+		)
+);
+
+module.exports = router;
+
+/* 
+db.one('SELECT name FROM communities WHERE community_id = $1', [
+			req.params.communityID
+		])
+			.then(data => res.status(200).send(data))
+			.catch(err => {
+				console.log(err);
+				// TODO better error checks
+				if (err.code === errors.queryResultErrorCode.noData) {
+					return res.sendStatus(404);
+				}
+
+				return res.sendStatus(500);
+			});
+			*/
+
+/*
 		db
 			.any(
 				'SELECT entity_id FROM posts WHERE parent_community_id = $1 ORDER BY get_reaction_count_for_entity_id(entity_id) DESC, created_on DESC OFFSET $2 LIMIT 5',
@@ -58,14 +130,9 @@ router.get(
 				return res.sendStatus(500);
 			})
 );
+*/
 
-// TODO db.any? none?
-router.post(
-	'/:communityID/follow',
-	verifyCommunityID,
-	checkValidation,
-	verifyToken(true),
-	(req: Request, res: Response) =>
+/*
 		db
 			.any('SELECT follow_community($1, $2)', [
 				req.params.communityID,
@@ -80,14 +147,9 @@ router.post(
 				return res.sendStatus(500);
 			})
 );
+*/
 
-// TODO should we return OK even if nothing was deleted, because the user never followed community?
-router.post(
-	'/:communityID/unfollow',
-	verifyCommunityID,
-	checkValidation,
-	verifyToken(true),
-	(req: Request, res: Response) =>
+/*
 		db
 			.any('SELECT unfollow_community($1, $2)', [
 				req.params.communityID,
@@ -98,6 +160,4 @@ router.post(
 				console.log(err);
 				return res.sendStatus(500);
 			})
-);
-
-module.exports = router;
+);*/

@@ -12,6 +12,10 @@ export interface ICommunity {
 	followed: boolean;
 }
 
+export interface IEntityIDs {
+	entity_ids: IDType[];
+}
+
 // NOTE we use snake_case here since this is how entries are stored in the PostgreSQL database
 type TEntity = {
 	entity_id: IDType;

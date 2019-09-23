@@ -1,5 +1,12 @@
 import { createEntity, fetchEntity } from './entity';
-import { IDType, ICommunity, TComment, TPost, TPostMetadata } from './types';
+import {
+	IDType,
+	ICommunity,
+	TComment,
+	TPost,
+	TPostMetadata,
+	IEntityIDs
+} from './types';
 
 export const fetchCommunityMetadataForCommunityID = (communityID: IDType) =>
 	fetchEntity<ICommunity>(`/community/${communityID}`);
@@ -7,7 +14,7 @@ export const fetchCommunityMetadataForCommunityID = (communityID: IDType) =>
 export const fetchPostIDsForCommunityID = (
 	communityID: IDType,
 	offset: number
-) => fetchEntity<IDType[]>(`/community/${communityID}/top?offset=${offset}`);
+) => fetchEntity<IEntityIDs>(`/community/${communityID}/top?offset=${offset}`);
 
 export const fetchPostByID = (postID: IDType) =>
 	fetchEntity<TPost>(`/post/${postID}`);
