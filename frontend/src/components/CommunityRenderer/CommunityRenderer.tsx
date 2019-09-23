@@ -11,7 +11,7 @@ import { displayErrorNotification } from '../../util/notification';
 import Post from '../Post/Post';
 import Button from '../../controls/Button/Button';
 import PostCreator from '../PostCreator/PostCreator';
-import { FetchErrorResponse } from '../../entities/entity';
+import { FetchError } from '../../entities/entity';
 
 const baseClassName = 'community-renderer';
 
@@ -47,15 +47,13 @@ class CommunityRenderer extends React.Component<OwnProps, State> {
 					communityName: response.name
 				});
 			})
-			.catch((errorResponse: FetchErrorResponse) => {
-				if (errorResponse.statusCode === 404) {
-					this.setState({
-						notFound: true
-					});
-				}
+			.catch((error: FetchError) => {
+				this.setState({
+					notFound: true
+				});
 				return displayErrorNotification(
 					'Failed to fetch community metadata',
-					errorResponse
+					error
 				);
 			});
 	}
@@ -71,8 +69,8 @@ class CommunityRenderer extends React.Component<OwnProps, State> {
 					currentOffset: this.state.currentOffset + 5
 				}))
 			)
-			.catch((errorResponse: FetchErrorResponse) =>
-				displayErrorNotification('Failed to fetch posts', errorResponse)
+			.catch((error: FetchError) =>
+				displayErrorNotification('Failed to fetch posts', error)
 			);
 	};
 

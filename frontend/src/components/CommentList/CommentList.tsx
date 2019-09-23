@@ -15,7 +15,7 @@ import Input from '../../controls/Input/Input';
 import { displayErrorNotification } from '../../util/notification';
 
 import './CommentList.scss';
-import { FetchErrorResponse } from '../../entities/entity';
+import { FetchError } from '../../entities/entity';
 
 const baseClassName = 'comment-list';
 
@@ -47,11 +47,8 @@ class CommentList extends React.Component<Props, State> {
 	fetchComments = () =>
 		fetchCommentsForPostID(this.props.postID)
 			.then((comments: any) => this.setState({ comments: comments }))
-			.catch((errorResponse: FetchErrorResponse) =>
-				displayErrorNotification(
-					'Failed to fetch comments',
-					errorResponse
-				)
+			.catch((error: FetchError) =>
+				displayErrorNotification('Failed to fetch comments', error)
 			);
 
 	componentDidMount() {
@@ -72,11 +69,8 @@ class CommentList extends React.Component<Props, State> {
 				this.props.onUpdate();
 				this.fetchComments();
 			})
-			.catch((errorResponse: FetchErrorResponse) =>
-				displayErrorNotification(
-					'Failed to create comment',
-					errorResponse
-				)
+			.catch((error: FetchError) =>
+				displayErrorNotification('Failed to create comment', error)
 			);
 
 	render() {

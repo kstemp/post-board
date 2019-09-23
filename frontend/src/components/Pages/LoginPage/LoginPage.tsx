@@ -1,15 +1,14 @@
 import React from 'react';
 import { Dispatch } from 'redux';
 import { securityLogin } from '../../../security';
-import {
-	displayErrorNotification,
-	formatResponse
-} from '../../../util/notification';
+import { displayErrorNotification } from '../../../util/notification';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import FormPage from '../FormPage/FormPage';
 import { ReducerStateType } from '../../../entities/reducer';
 import { isLoggedIn } from '../../../entities/selectors';
+import { FetchError } from '../../../entities/entity';
+import { ITokenPayload } from '../../../entities/types';
 
 const baseClassName = 'login-page';
 
@@ -42,17 +41,16 @@ class LoginPage extends React.Component<Props> {
 		console.log('login: ', login, ' password: ', password);
 
 		securityLogin(login, password)
-			.then(token => {
-				console.log(token);
-				return this.props.setAccessToken(token);
+			.then(tokenPayload => {
+				console.log(tokenPayload);
+				return this.props.setAccessToken(tokenPayload.token);
 			})
-			.catch((error: Response) =>
-				displayErrorNotification(formatResponse(error))
+			.catch((error: FetchError) =>
+				displayErrorNotification('Failed to log in', error)
 			);
 	};
 
 	render() {
-		console.log(this.props.redirectTo);
 		return this.props.isLoggedIn ? (
 			<Redirect to={this.props.redirectTo} />
 		) : (

@@ -1,9 +1,10 @@
 import { BACKEND_URL } from '../Config';
 
 import store from './store';
+import { formatErrorResponse } from '../util/notification';
+import { resolveSoa } from 'dns';
 
-// placeholder. Basically, we always assume we get FetchErrorResponse class when calling fetchEntity etc.
-export class FetchErrorResponse {
+class FetchErrorResponse {
 	public statusCode: number;
 	public statusText: string;
 
@@ -13,8 +14,32 @@ export class FetchErrorResponse {
 	}
 }
 
+export class FetchError {
+	public message: string;
+
+	constructor(message: string) {
+		this.message = message;
+	}
+}
+
+const handleFetchError = (error: any): FetchError => {
+	let message = 'unknown';
+
+	if (error instanceof TypeError) {
+		message = 'Failed to fetch';
+	}
+	if (error instanceof FetchErrorResponse) {
+		message = formatErrorResponse(error.statusCode, error.statusText);
+	}
+	if (error instanceof SyntaxError) {
+		message = `Failed to parse JSON (${error.message})`;
+	}
+
+	return new FetchError(message);
+};
+
 export const fetchEntity = (route: string) =>
-	new Promise((resolve, reject) => {
+	new Promise((resolve, reject: (reason?: FetchError) => void) => {
 		// TODO add this header conditionally
 		const fetchParams = {
 			headers: new Headers({
@@ -37,13 +62,17 @@ export const fetchEntity = (route: string) =>
 				console.log('fetchEntity fetched: ', json);
 				return resolve(json);
 			})
-			.catch((errorResponse: FetchErrorResponse) => {
-				console.log('Error in fetchEntity: ', errorResponse);
-				return reject(errorResponse);
+			.catch(error => {
+				console.log('Error in fetchEntity: ', error);
+				return reject(handleFetchError(error));
 			});
 	});
 
-export const createEntity = (route: string, bodyText?: string) => {
+export const createEntity = <T>(
+	route: string,
+	body?: string,
+	expectJSONPayload?: boolean
+) => {
 	const headers = store.getState().accessToken
 		? new Headers({
 				'Content-Type': 'application/json',
@@ -56,29 +85,39 @@ export const createEntity = (route: string, bodyText?: string) => {
 	console.log('Headers: ', headers);
 
 	// TODO figure out a better way
-	const fetchParams = bodyText
+	const fetchParams = body
 		? {
 				method: 'POST',
 				headers: headers,
-				body: JSON.stringify({ text: bodyText })
+				body: body
 		  }
 		: {
 				method: 'POST',
 				headers: headers
 		  };
 
-	return new Promise((resolve, reject) => {
+	return new Promise<T>((resolve, reject) => {
 		fetch(`${BACKEND_URL}${route}`, fetchParams)
 			.then(response => {
+				console.log(response);
 				if (response.ok) {
-					return response;
+					if (expectJSONPayload) {
+						return response.json();
+					}
+					return;
 				}
-				throw [response.status, response.statusText];
+				throw new FetchErrorResponse(
+					response.status,
+					response.statusText
+				);
 			})
-			.then(response => resolve())
-			.catch((errorResponse: FetchErrorResponse) => {
-				console.log('Error in createEntity: ', errorResponse);
-				return reject(errorResponse);
+			.then(result => {
+				console.log('createEntity received: ', result);
+				result ? resolve(result) : resolve();
+			})
+			.catch(error => {
+				console.log('Error in createEntity: ', error);
+				return reject(handleFetchError(error));
 			});
 	});
 };

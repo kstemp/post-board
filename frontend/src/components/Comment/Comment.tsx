@@ -15,7 +15,7 @@ interface OwnProps {
 
 class Comment extends React.Component<OwnProps> {
 	render() {
-		console.log(this.props.comment);
+		//console.log(this.props.comment);
 		return (
 			<div className={baseClassName}>
 				<div className={`${baseClassName}__content`}>
@@ -44,12 +44,5 @@ class Comment extends React.Component<OwnProps> {
 		);
 	}
 }
-
-/*controller={
-						<Button
-							classNames={{ 'test-button': true }}
-							label={'...'}
-						/>
-					}*/
 
 export default Comment;

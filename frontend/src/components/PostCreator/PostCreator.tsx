@@ -8,7 +8,7 @@ import { displayErrorNotification } from '../../util/notification';
 import TextArea from '../../controls/TextArea/TextArea';
 
 import './PostCreator.scss';
-import { FetchErrorResponse } from '../../entities/entity';
+import { FetchError } from '../../entities/entity';
 
 const baseClassName = 'post-creator';
 
@@ -45,8 +45,8 @@ class PostCreator extends React.Component<OwnProps, State> {
 				//	parseInt(this.props.match.params.communityID)
 				//)
 			)
-			.catch((errorResponse: FetchErrorResponse) =>
-				displayErrorNotification('Failed to create post', errorResponse)
+			.catch((error: FetchError) =>
+				displayErrorNotification('Failed to create post', error)
 			);
 	};
 

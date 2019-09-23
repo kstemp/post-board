@@ -2,6 +2,10 @@ export type IDType = number;
 
 export type EntityTypeEnum = 'post' | 'comment';
 
+export interface ITokenPayload {
+	token: string;
+}
+
 export type TCommunity = {
 	id: IDType;
 	name: string;

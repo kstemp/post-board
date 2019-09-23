@@ -16,7 +16,7 @@ import { createReactionForEntityID } from '../../entities/reactions';
 import { displayErrorNotification } from '../../util/notification';
 
 import './Post.scss';
-import { FetchErrorResponse } from '../../entities/entity';
+import { FetchError } from '../../entities/entity';
 const baseClassName = 'post';
 
 interface OwnProps {
@@ -47,8 +47,8 @@ class Post extends React.Component<Props, State> {
 	fetchPost = () =>
 		fetchPostByID(this.props.entity_id)
 			.then((post: any) => this.setState({ post: post }))
-			.catch((errorResponse: FetchErrorResponse) =>
-				displayErrorNotification('Failed to load post', errorResponse)
+			.catch((error: FetchError) =>
+				displayErrorNotification('Failed to load post', error)
 			);
 
 	fetchMetadata = () =>
@@ -63,11 +63,8 @@ class Post extends React.Component<Props, State> {
 					}
 				})
 			)
-			.catch((errorResponse: FetchErrorResponse) =>
-				displayErrorNotification(
-					'Failed to load post metadata',
-					errorResponse
-				)
+			.catch((error: FetchError) =>
+				displayErrorNotification('Failed to load post metadata', error)
 			);
 
 	componentDidMount() {
@@ -85,8 +82,8 @@ class Post extends React.Component<Props, State> {
 		this.state.post &&
 		createReactionForEntityID(this.state.post.entity_id)
 			.then(() => this.fetchMetadata())
-			.catch((errorResponse: FetchErrorResponse) =>
-				displayErrorNotification('Failed to react', errorResponse)
+			.catch((error: FetchError) =>
+				displayErrorNotification('Failed to react', error)
 			);
 
 	render() {

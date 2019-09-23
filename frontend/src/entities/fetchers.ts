@@ -18,7 +18,13 @@ export const fetchCommentsForPostID = (postID: IDType) =>
 	fetchEntity(`/post/${postID}/comments`);
 
 export const createPost = (postText: string, communityID: IDType) =>
-	createEntity(`/post?communityID=${communityID}`, postText);
+	createEntity(
+		`/post?communityID=${communityID}`,
+		JSON.stringify({ text: postText })
+	);
 
 export const createCommentForPostID = (postID: IDType, commentText: string) =>
-	createEntity(`/post/${postID}/comments`, commentText);
+	createEntity(
+		`/post/${postID}/comments`,
+		JSON.stringify({ text: commentText })
+	);
