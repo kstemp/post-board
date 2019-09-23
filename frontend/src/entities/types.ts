@@ -6,11 +6,11 @@ export interface ITokenPayload {
 	token: string;
 }
 
-export type TCommunity = {
+export interface ICommunity {
 	id: IDType;
 	name: string;
 	followed: boolean;
-};
+}
 
 // NOTE we use snake_case here since this is how entries are stored in the PostgreSQL database
 type TEntity = {
@@ -19,8 +19,6 @@ type TEntity = {
 	created_on: string;
 
 	login: string;
-
-	reacted: boolean;
 };
 
 export type TComment = TEntity & {
@@ -29,11 +27,16 @@ export type TComment = TEntity & {
 	text: string;
 };
 
-export type TPost = TEntity & {
+export type TPostBase = {
 	parent_community_id?: IDType;
 
 	text: string;
+};
 
+export type TPostMetadata = {
 	comment_count: number;
 	reaction_count: number;
+	reacted: boolean;
 };
+
+export type TPost = TEntity & TPostBase & TPostMetadata;

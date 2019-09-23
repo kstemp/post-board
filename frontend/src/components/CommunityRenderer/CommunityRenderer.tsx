@@ -4,8 +4,8 @@ import CommunityBar from '../CommunityBar/CommunityBar';
 
 import './CommunityRenderer.scss';
 import {
-	fetchCommunityNameForCommunityID,
-	fetchPostIDsForCommunityID
+	fetchPostIDsForCommunityID,
+	fetchCommunityMetadataForCommunityID
 } from '../../entities/fetchers';
 import { displayErrorNotification } from '../../util/notification';
 import Post from '../Post/Post';
@@ -39,12 +39,12 @@ class CommunityRenderer extends React.Component<OwnProps, State> {
 	}
 
 	componentDidMount() {
-		fetchCommunityNameForCommunityID(this.props.communityID)
-			.then((response: any) => {
+		fetchCommunityMetadataForCommunityID(this.props.communityID)
+			.then(data => {
 				this.loadMorePosts();
 				return this.setState({
 					// TODO we should just get a string, and not an object
-					communityName: response.name
+					communityName: data.name
 				});
 			})
 			.catch((error: FetchError) => {
@@ -63,7 +63,7 @@ class CommunityRenderer extends React.Component<OwnProps, State> {
 			this.props.communityID,
 			this.state.currentOffset
 		)
-			.then((postIDs: any) =>
+			.then(postIDs =>
 				this.setState(state => ({
 					postIDs: [...state.postIDs, ...postIDs],
 					currentOffset: this.state.currentOffset + 5

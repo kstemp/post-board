@@ -2,7 +2,6 @@ import { BACKEND_URL } from '../Config';
 
 import store from './store';
 import { formatErrorResponse } from '../util/notification';
-import { resolveSoa } from 'dns';
 
 class FetchErrorResponse {
 	public statusCode: number;
@@ -38,8 +37,8 @@ const handleFetchError = (error: any): FetchError => {
 	return new FetchError(message);
 };
 
-export const fetchEntity = (route: string) =>
-	new Promise((resolve, reject: (reason?: FetchError) => void) => {
+export const fetchEntity = <T>(route: string) =>
+	new Promise<T>((resolve, reject) => {
 		// TODO add this header conditionally
 		const fetchParams = {
 			headers: new Headers({

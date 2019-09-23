@@ -2,16 +2,22 @@ import express, { Request, Response } from 'express';
 import db, { PSQLERR } from '../modules/db';
 import { check, query } from 'express-validator';
 import { checkValidation } from '../modules/validator';
-import { queryResult, errors } from 'pg-promise';
+import { errors } from 'pg-promise';
 import verifyToken from '../modules/verify-token';
 
 const router = express.Router();
 
-//router.use('/:communityID', )
+const verifyCommunityID = [
+	check('communityID', 'Community ID must be an integer').isInt({ min: 1 })
+];
+
+const execSQLQuery = (query: string, ) => {
+	
+}
 
 router.get(
 	'/:communityID',
-	[check('communityID', 'Community ID must be an integer').isInt({ min: 0 })], // TODO add min 0 to other checks, or bring the check to one place
+	verifyCommunityID,
 	checkValidation,
 	(req: Request, res: Response) => {
 		db.one(
@@ -34,7 +40,7 @@ router.get(
 router.get(
 	'/:communityID/top',
 	[
-		check('communityID', 'Community ID must be an integer').isInt(),
+		...verifyCommunityID,
 		query('offset')
 			.optional()
 			.isInt({ min: 0 })
@@ -56,7 +62,7 @@ router.get(
 // TODO db.any? none?
 router.post(
 	'/:communityID/follow',
-	[check('communityID', 'Community ID must be an integer').isInt()],
+	verifyCommunityID,
 	checkValidation,
 	verifyToken(true),
 	(req: Request, res: Response) =>
@@ -78,7 +84,7 @@ router.post(
 // TODO should we return OK even if nothing was deleted, because the user never followed community?
 router.post(
 	'/:communityID/unfollow',
-	[check('communityID', 'Community ID must be an integer').isInt()],
+	verifyCommunityID,
 	checkValidation,
 	verifyToken(true),
 	(req: Request, res: Response) =>

@@ -1,5 +1,4 @@
 import './Config';
-import { BACKEND_URL } from './Config';
 import store from './entities/store';
 import { createEntity } from './entities/entity';
 import { ITokenPayload } from './entities/types';

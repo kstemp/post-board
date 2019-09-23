@@ -46,14 +46,14 @@ class Post extends React.Component<Props, State> {
 
 	fetchPost = () =>
 		fetchPostByID(this.props.entity_id)
-			.then((post: any) => this.setState({ post: post }))
+			.then(post => this.setState({ post: post }))
 			.catch((error: FetchError) =>
 				displayErrorNotification('Failed to load post', error)
 			);
 
 	fetchMetadata = () =>
 		fetchMetadataForPostID(this.props.entity_id)
-			.then((metadata: any) =>
+			.then(metadata =>
 				this.setState({
 					post: {
 						...(this.state.post as any), // TODO...

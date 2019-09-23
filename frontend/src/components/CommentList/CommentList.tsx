@@ -46,7 +46,7 @@ class CommentList extends React.Component<Props, State> {
 
 	fetchComments = () =>
 		fetchCommentsForPostID(this.props.postID)
-			.then((comments: any) => this.setState({ comments: comments }))
+			.then(comments => this.setState({ comments: comments }))
 			.catch((error: FetchError) =>
 				displayErrorNotification('Failed to fetch comments', error)
 			);
