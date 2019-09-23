@@ -12,10 +12,14 @@ import { NavLink } from 'react-router-dom';
 import { isLoggedIn } from '../../entities/selectors';
 import { fetchPostByID, fetchMetadataForPostID } from '../../entities/fetchers';
 
-import { createReactionForEntityID } from '../../entities/reactions';
+import {
+	createReactionForEntityID,
+	deleteReactionForEntityID
+} from '../../entities/reactions';
 import { displayErrorNotification } from '../../util/notification';
 
 import './Post.scss';
+import { FetchError } from '../../entities/entity';
 const baseClassName = 'post';
 
 interface OwnProps {
@@ -45,12 +49,14 @@ class Post extends React.Component<Props, State> {
 
 	fetchPost = () =>
 		fetchPostByID(this.props.entity_id)
-			.then((post: any) => this.setState({ post: post }))
-			.catch(err => displayErrorNotification(err));
+			.then(post => this.setState({ post: post }))
+			.catch((error: FetchError) =>
+				displayErrorNotification('Failed to load post', error)
+			);
 
 	fetchMetadata = () =>
 		fetchMetadataForPostID(this.props.entity_id)
-			.then((metadata: any) =>
+			.then(metadata =>
 				this.setState({
 					post: {
 						...(this.state.post as any), // TODO...
@@ -60,7 +66,9 @@ class Post extends React.Component<Props, State> {
 					}
 				})
 			)
-			.catch(err => displayErrorNotification(err));
+			.catch((error: FetchError) =>
+				displayErrorNotification('Failed to load post metadata', error)
+			);
 
 	componentDidMount() {
 		this.fetchPost();
@@ -73,11 +81,20 @@ class Post extends React.Component<Props, State> {
 			showComments: !this.state.showComments
 		});
 
-	toggleLiked = () =>
+	toggleLiked = () => {
 		this.state.post &&
-		createReactionForEntityID(this.state.post.entity_id)
-			.then(() => this.fetchMetadata())
-			.catch(err => displayErrorNotification(err));
+			(this.state.post.reacted
+				? deleteReactionForEntityID(this.state.post.entity_id)
+						.then(() => this.fetchMetadata())
+						.catch((error: FetchError) =>
+							displayErrorNotification('Failed to react', error)
+						)
+				: createReactionForEntityID(this.state.post.entity_id)
+						.then(() => this.fetchMetadata())
+						.catch((error: FetchError) =>
+							displayErrorNotification('Failed to react', error)
+						));
+	};
 
 	render() {
 		return this.state.post ? (
@@ -112,6 +129,12 @@ class Post extends React.Component<Props, State> {
 							icon={`favorite${
 								this.state.post.reacted ? '' : '_border'
 							}`}
+							onClick={this.toggleLiked}
+							disabled={!this.props.isLoggedIn}
+							toolTipEnabled={'Like/react/whatever'}
+							toolTipDisabled={
+								'You must be logged in to react to posts'
+							}
 						/>
 						<Button
 							size={'nice-rectangle'}

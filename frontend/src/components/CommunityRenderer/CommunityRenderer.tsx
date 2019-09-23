@@ -4,13 +4,14 @@ import CommunityBar from '../CommunityBar/CommunityBar';
 
 import './CommunityRenderer.scss';
 import {
-	fetchCommunityNameForCommunityID,
-	fetchPostIDsForCommunityID
+	fetchPostIDsForCommunityID,
+	fetchCommunityMetadataForCommunityID
 } from '../../entities/fetchers';
 import { displayErrorNotification } from '../../util/notification';
 import Post from '../Post/Post';
 import Button from '../../controls/Button/Button';
 import PostCreator from '../PostCreator/PostCreator';
+import { FetchError } from '../../entities/entity';
 
 const baseClassName = 'community-renderer';
 
@@ -19,7 +20,7 @@ interface OwnProps {
 }
 
 interface State {
-	notFound: boolean;
+	failedToLoadMetadata: boolean;
 	communityName: string;
 	postIDs: IDType[];
 	currentOffset: number;
@@ -31,29 +32,29 @@ class CommunityRenderer extends React.Component<OwnProps, State> {
 
 		this.state = {
 			communityName: '',
-			notFound: false,
+			failedToLoadMetadata: false,
 			postIDs: [],
 			currentOffset: 0
 		};
 	}
 
 	componentDidMount() {
-		fetchCommunityNameForCommunityID(this.props.communityID)
-			.then((response: any) => {
+		fetchCommunityMetadataForCommunityID(this.props.communityID)
+			.then(data => {
 				this.loadMorePosts();
 				return this.setState({
 					// TODO we should just get a string, and not an object
-					communityName: response.name
+					communityName: data.name
 				});
 			})
-			.catch(err => {
-				console.log(err);
-				if (err.status === 404) {
-					return this.setState({
-						notFound: true
-					});
-				}
-				return displayErrorNotification(err);
+			.catch((error: FetchError) => {
+				this.setState({
+					failedToLoadMetadata: true
+				});
+				return displayErrorNotification(
+					'Failed to fetch community metadata',
+					error
+				);
 			});
 	}
 
@@ -62,24 +63,24 @@ class CommunityRenderer extends React.Component<OwnProps, State> {
 			this.props.communityID,
 			this.state.currentOffset
 		)
-			.then((postIDs: any) =>
+			.then(entityIDList =>
 				this.setState(state => ({
-					postIDs: [...state.postIDs, ...postIDs],
+					postIDs: [...state.postIDs, ...entityIDList.entity_ids],
 					currentOffset: this.state.currentOffset + 5
 				}))
 			)
-			.catch((errorMessage: string) =>
-				displayErrorNotification(
-					`Failed to fetch posts - ${errorMessage}`
-				)
+			.catch((error: FetchError) =>
+				displayErrorNotification('Failed to fetch posts', error)
 			);
 	};
 
 	render() {
 		return (
 			<div className={baseClassName}>
-				{this.state.notFound ? (
-					<div className={'page-content'}>Entity not found.</div>
+				{this.state.failedToLoadMetadata ? (
+					<div className={'page-content'}>
+						Failed to load community. Check its URL, maybe?
+					</div>
 				) : (
 					<>
 						<div className={`${baseClassName}__banner`}>

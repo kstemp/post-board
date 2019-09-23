@@ -1,6 +1,8 @@
 @import '../../controls/variables.scss';
 
 header {
+	z-index: 1;
+
 	border-bottom: 1px solid lightgray;
 
 	box-sizing: border-box;

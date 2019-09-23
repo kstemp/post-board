@@ -27,7 +27,7 @@ router.post(
 			.catch(error => {
 				console.log(error);
 				if (error.code === PSQLERR.FOREIGN_KEY_VIOLATION) {
-					return res.sendStatus(400);
+					return res.sendStatus(404);
 				}
 				return res.sendStatus(500);
 			});

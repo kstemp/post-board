@@ -11,7 +11,7 @@ html {
 body {
 	height: 100%;
 	width: 100%;
-	position: fixed;
+	position: fixed; // fixes size issues on mobile, apparently
 
 	margin: 0;
 	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',

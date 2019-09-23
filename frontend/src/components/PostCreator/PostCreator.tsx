@@ -1,7 +1,5 @@
 import React from 'react';
 
-//import { RouteComponentProps, withRouter } from 'react-router';
-
 import Button from '../../controls/Button/Button';
 
 import { createPost } from '../../entities/fetchers';
@@ -10,7 +8,7 @@ import { displayErrorNotification } from '../../util/notification';
 import TextArea from '../../controls/TextArea/TextArea';
 
 import './PostCreator.scss';
-import { getClassNames } from '../../util/class-names';
+import { FetchError } from '../../entities/entity';
 
 const baseClassName = 'post-creator';
 
@@ -22,10 +20,6 @@ interface State {
 	isInCreationMode: boolean;
 	isValid: boolean;
 }
-
-//type RouteProps = RouteComponentProps<{ communityID: string }>;
-
-//type Props = RouteProps;
 
 class PostCreator extends React.Component<OwnProps, State> {
 	private postTextField: React.RefObject<TextArea>;
@@ -42,7 +36,7 @@ class PostCreator extends React.Component<OwnProps, State> {
 	}
 	createPost = () => {
 		createPost(
-			(this.postTextField as any).current.value,
+			(this.postTextField as any).current.value, // TOOD get rid of any
 			this.props.communityID
 		)
 			.then(
@@ -51,11 +45,9 @@ class PostCreator extends React.Component<OwnProps, State> {
 				//	parseInt(this.props.match.params.communityID)
 				//)
 			)
-			.catch(err =>
-				displayErrorNotification(
-					'Failed to create post TODO err message'
-				)
-			); // TODO get rid of 'as any'
+			.catch((error: FetchError) =>
+				displayErrorNotification('Failed to create post', error)
+			);
 	};
 
 	fieldChanged = (event: React.ChangeEvent<HTMLTextAreaElement>) => {

@@ -50,18 +50,6 @@ class Header extends React.Component<StateProps> {
 	}
 }
 
-/**
-
- * 	<NavLink to={'/'}>
-					<span>post-board</span>
-				</NavLink>
- */
-/**
-<NavLink to={'/login'}>
-							<Button fill label={'Login'} />
-						</NavLink>
- */
-
 const mapStateToProps = (state: ReducerStateType) => {
 	return {
 		isLoggedIn: isLoggedIn(state)

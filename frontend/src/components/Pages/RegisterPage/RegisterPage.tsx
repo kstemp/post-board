@@ -1,13 +1,11 @@
 import React from 'react';
 
-import {
-	displayErrorNotification,
-	formatResponse
-} from '../../../util/notification';
+import { displayErrorNotification } from '../../../util/notification';
 import FormPage from '../FormPage/FormPage';
 
 import { register } from '../../../security';
 import { Link, Redirect } from 'react-router-dom';
+import { FetchError } from '../../../entities/entity';
 
 const baseClassName = 'register-page';
 
@@ -49,8 +47,8 @@ class RegisterPage extends React.Component<Props, State> {
 					redirect: true
 				});
 			})
-			.catch((error: Response) =>
-				displayErrorNotification(formatResponse(error))
+			.catch((error: FetchError) =>
+				displayErrorNotification('Failed to register', error)
 			);
 	};
 
