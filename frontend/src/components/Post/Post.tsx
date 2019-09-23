@@ -59,10 +59,8 @@ class Post extends React.Component<Props, State> {
 			.then(metadata =>
 				this.setState({
 					post: {
-						...(this.state.post as any), // TODO...
-						comment_count: metadata.comment_count,
-						reaction_count: metadata.reaction_count,
-						reacted: metadata.reacted
+						...(this.state.post as any), // TOOD get rid of any
+						...metadata
 					}
 				})
 			)
