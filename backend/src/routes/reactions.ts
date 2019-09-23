@@ -25,9 +25,7 @@ router.post(
 					return res.sendStatus(404); // TODO consistency of response status codes
 				}
 				if (error.code === PSQLERR.UNIQUE_VIOLATION) {
-					return res
-						.status(400)
-						.json({ message: 'Already reacted to this entity' });
+					return res.sendStatus(400);
 				}
 				return res.sendStatus(500);
 			});

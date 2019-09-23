@@ -2,6 +2,17 @@ import { BACKEND_URL } from '../Config';
 
 import store from './store';
 
+// placeholder. Basically, we always assume we get FetchErrorResponse class when calling fetchEntity etc.
+export class FetchErrorResponse {
+	public statusCode: number;
+	public statusText: string;
+
+	constructor(statusCode: number, statusText: string) {
+		this.statusCode = statusCode;
+		this.statusText = statusText;
+	}
+}
+
 export const fetchEntity = (route: string) =>
 	new Promise((resolve, reject) => {
 		// TODO add this header conditionally
@@ -17,15 +28,18 @@ export const fetchEntity = (route: string) =>
 					return response.json();
 				}
 
-				throw response;
+				throw new FetchErrorResponse(
+					response.status,
+					response.statusText
+				);
 			})
 			.then(json => {
-				console.log('ENTITY: ', json);
+				console.log('fetchEntity fetched: ', json);
 				return resolve(json);
 			})
-			.catch(error => {
-				//console.log('ERROR ', error);
-				return reject(error);
+			.catch((errorResponse: FetchErrorResponse) => {
+				console.log('Error in fetchEntity: ', errorResponse);
+				return reject(errorResponse);
 			});
 	});
 
@@ -59,9 +73,12 @@ export const createEntity = (route: string, bodyText?: string) => {
 				if (response.ok) {
 					return response;
 				}
-				throw new Error(response.status + ': ' + response.statusText);
+				throw [response.status, response.statusText];
 			})
 			.then(response => resolve())
-			.catch(error => reject(error.message));
+			.catch((errorResponse: FetchErrorResponse) => {
+				console.log('Error in createEntity: ', errorResponse);
+				return reject(errorResponse);
+			});
 	});
 };

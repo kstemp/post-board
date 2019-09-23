@@ -95,7 +95,7 @@ router.post(
 						});
 					})
 					.catch(err => {
-						return console.log(err);
+						return console.log(err); // TODO can bcrypt fail here?
 					});
 			})
 			.catch(error => {
@@ -116,12 +116,12 @@ router.get('/verifyToken', (req, res) => {
 		SECRET,
 		(err: jwt.VerifyErrors, decoded: object | string) => {
 			if (err) {
-				res.sendStatus(403);
+				return res.sendStatus(403);
 			}
 
 			console.log(decoded);
 
-			res.sendStatus(204);
+			return res.sendStatus(204);
 		}
 	);
 });
