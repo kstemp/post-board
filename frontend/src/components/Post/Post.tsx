@@ -125,6 +125,7 @@ class Post extends React.Component<Props, State> {
 				<div className={`${baseClassName}__buttons`}>
 					<div className={`${baseClassName}__buttons-left`}>
 						<Button
+							size={'nice-rectangle'}
 							label={this.state.post.reaction_count.toString()}
 							icon={`favorite${
 								this.state.post.reacted ? '' : '_border'
