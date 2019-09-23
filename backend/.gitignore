@@ -2,6 +2,8 @@
 
 package-lock.json
 
+old/
+
 # dependencies
 /node_modules
 /.pnp
