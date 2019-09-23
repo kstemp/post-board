@@ -20,7 +20,7 @@ interface OwnProps {
 }
 
 interface State {
-	notFound: boolean;
+	failedToLoadMetadata: boolean;
 	communityName: string;
 	postIDs: IDType[];
 	currentOffset: number;
@@ -32,7 +32,7 @@ class CommunityRenderer extends React.Component<OwnProps, State> {
 
 		this.state = {
 			communityName: '',
-			notFound: false,
+			failedToLoadMetadata: false,
 			postIDs: [],
 			currentOffset: 0
 		};
@@ -49,7 +49,7 @@ class CommunityRenderer extends React.Component<OwnProps, State> {
 			})
 			.catch((error: FetchError) => {
 				this.setState({
-					notFound: true
+					failedToLoadMetadata: true
 				});
 				return displayErrorNotification(
 					'Failed to fetch community metadata',
@@ -77,8 +77,10 @@ class CommunityRenderer extends React.Component<OwnProps, State> {
 	render() {
 		return (
 			<div className={baseClassName}>
-				{this.state.notFound ? (
-					<div className={'page-content'}>Entity not found.</div>
+				{this.state.failedToLoadMetadata ? (
+					<div className={'page-content'}>
+						Failed to load community. Check its URL, maybe?
+					</div>
 				) : (
 					<>
 						<div className={`${baseClassName}__banner`}>
