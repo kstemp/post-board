@@ -167,10 +167,24 @@ END
 $$
 LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION get_metadata_for_post_id(_entity_id INTEGER) RETURNS TABLE (comment_count INTEGER, reaction_count INTEGER) AS
+CREATE OR REPLACE FUNCTION did_user_react_to_entity_id(_entity_id INTEGER, _login VARCHAR DEFAULT NULL) RETURNS boolean AS 
 $$ 
 BEGIN
-	RETURN QUERY (SELECT get_comment_count_for_post_id(_entity_id), get_reaction_count_for_entity_id(_entity_id));
+
+	IF _login IS NULL THEN
+		RETURN FALSE;
+	END IF;
+
+	RETURN EXISTS (SELECT * FROM reactions WHERE parent_entity_id =_entity_id AND login = _login);
+
+END
+$$
+LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION get_metadata_for_post_id(_entity_id INTEGER, _login VARCHAR DEFAULT NULL) RETURNS TABLE (comment_count INTEGER, reaction_count INTEGER, reacted boolean) AS
+$$ 
+BEGIN
+	RETURN QUERY (SELECT get_comment_count_for_post_id(_entity_id), get_reaction_count_for_entity_id(_entity_id), did_user_react_to_entity_id(_entity_id, _login));
 END 
 $$
 LANGUAGE plpgsql;
