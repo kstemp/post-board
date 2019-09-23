@@ -28,7 +28,7 @@ class App extends React.Component {
 						<Sidebar />
 						<MainRouter />
 					</div>
-					<footer />
+					<footer>post-board v.0.1 (C) by kstemp</footer>
 				</div>
 			</Provider>
 		);

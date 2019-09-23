@@ -5,19 +5,31 @@
 	height: 100%;
 
 	background-color: $color-background;
-}
 
-.page {
-	position: absolute;
-
-	top: $header-height;
-	bottom: 0;
-	width: 100%;
-	height: auto;
-
+	position: fixed;
 	overflow-y: auto;
 
-	display: flex;
+	> footer {
+		position: relative;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height: $header-height;
+
+		text-align: center;
+	}
+
+	.page {
+		position: relative;
+
+		top: $header-height;
+		margin-bottom: $header-height; // to accommodate the footer
+
+		width: 100%;
+		height: auto;
+
+		display: flex;
+	}
 }
 
 .page-content {
