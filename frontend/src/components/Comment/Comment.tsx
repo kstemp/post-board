@@ -77,12 +77,20 @@ class Comment extends React.Component<OwnProps, State> {
 					{this.props.comment.text}
 				</span>
 				<div className={`${baseClassName}__buttons`}>
-					<Button label={'123'} icon={'favorite'} />
+					<Button
+						label={(
+							this.props.comment.reaction_count || 0
+						).toString()}
+						icon={'favorite'}
+					/>
 					<Button
 						icon={'chat_bubble_outline'}
-						label={'143'}
+						label={(
+							this.props.comment.comment_count || 0
+						).toString()}
 						onClick={this.openInputFieldAndLoadComments}
 					/>
+					<Button icon={'report'} label={'Report'} />
 				</div>
 				{this.state.openReplyInputField && (
 					<Input
