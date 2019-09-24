@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 
 import './Comment.scss';
 import { prettyPrintDateDifference } from '../../util/date';
+import Button from '../../controls/Button/Button';
 
 const baseClassName = 'comment';
 
@@ -31,6 +32,10 @@ class Comment extends React.Component<OwnProps> {
 				<span className={`${baseClassName}__content`}>
 					{this.props.comment.text}
 				</span>
+				<div className={`${baseClassName}__buttons`}>
+					<Button label={'123'} icon={'favorite'} />
+					<Button label={'Reply'} />
+				</div>
 			</div>
 		);
 	}
