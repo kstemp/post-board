@@ -15,30 +15,21 @@ interface OwnProps {
 
 class Comment extends React.Component<OwnProps> {
 	render() {
-		//console.log(this.props.comment);
 		return (
 			<div className={baseClassName}>
-				<div className={`${baseClassName}__content`}>
-					{this.props.comment.login ? (
-						<Link to={`/user/${this.props.comment.login}`}>
-							<span
-								className={`${baseClassName}__content-user-name`}
-							>
-								{this.props.comment.login}
-							</span>
-						</Link>
-					) : (
-						<span className={`${baseClassName}__content-user-name`}>
-							Anonymous
-						</span>
-					)}
-					{this.props.comment.text}
+				<div className={`${baseClassName}__header`}>
+					<span className={`${baseClassName}__header-login`}>
+						{this.props.comment.login || 'Anonymous'}
+					</span>
+					<span className={`${baseClassName}__header-created-on`}>
+						{prettyPrintDateDifference(
+							new Date(this.props.comment.created_on),
+							new Date()
+						)}
+					</span>
 				</div>
-				<span className={`${baseClassName}-created-on`}>
-					{prettyPrintDateDifference(
-						new Date(this.props.comment.created_on),
-						new Date()
-					)}
+				<span className={`${baseClassName}__content`}>
+					{this.props.comment.text}
 				</span>
 			</div>
 		);

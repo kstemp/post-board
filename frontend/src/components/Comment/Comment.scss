@@ -1,52 +1,30 @@
 @import '../../controls/variables.scss';
 
 .comment {
-	display: block;
+	//	display: flex;
 
-	width: 90%;
+	width: 100%;
 
-	padding-left: 5px;
-	padding-right: 5px;
+	margin-top: $standard-spacing;
+	margin-bottom: $standard-spacing;
 
-	margin-top: 5px;
-	margin-bottom: 5px;
+	&__header {
+		display: flex;
+		font-size: $smaller-font-size;
 
-	a {
-		text-decoration: none;
-
-		&:hover {
-			color: $color-hover;
+		&-login {
+			font-weight: bold;
+		}
+		&-created-on {
+			color: $color-disabled-text;
+			margin-left: $standard-spacing;
 		}
 	}
 
 	&__content {
 		display: inline-block;
-		&-user-name {
-			font-weight: 500;
-			margin-right: 5px;
-		}
-
-		width: fit-content;
-		max-width: 90%;
-
 		word-break: break-word;
 		text-align: justify;
-
-		background: #f0f0f0;
-
-		padding-left: 5px;
-		padding-right: 5px;
-	}
-
-	&-created-on {
-		color: $color-disabled-text;
-	}
-
-	.test-button {
-		display: none;
-	}
-
-	&:hover .test-button {
-		display: inline-block;
+		margin-left: 2 * $standard-spacing;
 	}
 }
