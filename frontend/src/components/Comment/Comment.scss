@@ -1,5 +1,7 @@
 @import '../../controls/variables.scss';
 
+$margin-left: 4 * $standard-spacing;
+
 .comment {
 	//	display: flex;
 
@@ -7,6 +9,8 @@
 
 	margin-top: $standard-spacing;
 	margin-bottom: $standard-spacing;
+
+	position: relative;
 
 	&__header {
 		display: flex;
@@ -25,22 +29,33 @@
 		display: inline-block;
 		word-break: break-word;
 		text-align: justify;
-		margin-left: 2 * $standard-spacing;
+		margin-left: $margin-left;
 	}
 
 	&__buttons {
-		margin-left: 2 * $standard-spacing;
+		margin-left: $margin-left;
 	}
 
 	&__child-comments {
-		width: fit-content;
-		height: fit-content;
-
-		margin-left: 2 * $standard-spacing;
+		margin-left: $margin-left;
 	}
 
-	> input {
-		margin-left: 2 * $standard-spacing;
+	&__thread-line {
+		position: absolute;
+		left: 0.1em;
+		top: 1em;
+		width: 0.2em;
+		bottom: 0;
+		background-color: $color-disabled;
+
+		&:hover {
+			background-color: $color-hover;
+			cursor: pointer;
+		}
+	}
+
+	input {
+		margin-left: $margin-left;
 		margin-right: 2 * $standard-spacing;
 		margin-top: 2 * $standard-spacing;
 

@@ -72,6 +72,7 @@ class Comment extends React.Component<OwnProps, State> {
 						)}
 					</span>
 				</div>
+				<div className={`${baseClassName}__thread-line`} />
 				<span className={`${baseClassName}__content`}>
 					{this.props.comment.text}
 				</span>
