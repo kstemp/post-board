@@ -5,7 +5,7 @@ import verifyToken from '../modules/verify-token';
 import { checkValidation } from '../modules/validator';
 const router = express.Router();
 
-router.use('/:postID/comments', require('./comments'));
+router.use('/:post_id/comments', require('./comments')); // TODO verification of post_id
 
 router.get(
 	'/:postID/',

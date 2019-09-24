@@ -6,6 +6,9 @@ import './Comment.scss';
 import { prettyPrintDateDifference } from '../../util/date';
 import Button from '../../controls/Button/Button';
 import Input from '../../controls/Input/Input';
+import { fetchCommentsForPostIDAndParentCommentID } from '../../entities/fetchers';
+import { FetchError } from '../../entities/entity';
+import { displayErrorNotification } from '../../util/notification';
 
 const baseClassName = 'comment';
 
@@ -14,6 +17,7 @@ interface OwnProps {
 }
 
 interface State {
+	comments?: TComment[];
 	openReplyInputField: boolean;
 }
 
@@ -25,6 +29,23 @@ class Comment extends React.Component<OwnProps, State> {
 			openReplyInputField: false
 		};
 	}
+
+	openInputFieldAndLoadComments = () => {
+		this.setState({
+			openReplyInputField: true
+		});
+		fetchCommentsForPostIDAndParentCommentID(
+			this.props.comment.parent_post_id,
+			this.props.comment.entity_id
+		)
+			.then(comments => console.log(comments))
+			.catch((error: FetchError) =>
+				displayErrorNotification(
+					'Failed to fetch child comments',
+					error
+				)
+			);
+	};
 
 	render() {
 		return (
@@ -46,16 +67,13 @@ class Comment extends React.Component<OwnProps, State> {
 				<div className={`${baseClassName}__buttons`}>
 					<Button label={'123'} icon={'favorite'} />
 					<Button
-						label={'Reply'}
-						onClick={() => {
-							this.setState({
-								openReplyInputField: true
-							});
-						}}
+						icon={'chat_bubble_outline'}
+						label={'143'}
+						onClick={this.openInputFieldAndLoadComments}
 					/>
 				</div>
 				{this.state.openReplyInputField && (
-					<Input placeholder={'Comment text goes here'} />
+					<Input placeholder={'Comment text goes here'} required />
 				)}
 			</div>
 		);

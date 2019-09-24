@@ -22,8 +22,15 @@ export const fetchPostByID = (postID: IDType) =>
 export const fetchMetadataForPostID = (postID: IDType) =>
 	fetchEntity<IEntityMetadata>(`/post/${postID}?metadata_only=true`);
 
-export const fetchCommentsForPostID = (postID: IDType) =>
-	fetchEntity<TComment[]>(`/post/${postID}/comments`);
+export const fetchCommentsForPostIDAndParentCommentID = (
+	postID: IDType,
+	parent_comment_id?: IDType
+) =>
+	fetchEntity<TComment[]>(
+		`/post/${postID}/comments${
+			parent_comment_id ? `?parent_comment_id=${parent_comment_id}` : ''
+		}`
+	);
 
 export const createPost = (postText: string, communityID: IDType) =>
 	createEntity(

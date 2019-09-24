@@ -21,7 +21,7 @@ export const execSQLQuery = (
 	discardData?: boolean
 ) =>
 	db
-		.one(query, values)
+		.oneOrNone(query, values)
 		.then(data => {
 			console.log('DATA: ', data);
 			return !discardData
@@ -45,6 +45,29 @@ export const execSQLQuery = (
 
 			return res.sendStatus(500);
 		});
+
+/*
+export const handleSQLError = (
+	req: Express.Request,
+	res: Express.Response,
+	error: any
+) => {
+	console.log(error);
+	// TODO better error checks
+	if (error.code === errors.queryResultErrorCode.noData) {
+		return res.sendStatus(404);
+	}
+	// most likely means that the user tried to react to nonexistent entity, or sth like that
+	if (error.code === PSQLERR.FOREIGN_KEY_VIOLATION) {
+		return res.sendStatus(400);
+	}
+	// user tried for instance to react twice to the same entity
+	if (error.code === PSQLERR.UNIQUE_VIOLATION) {
+		return res.sendStatus(400);
+	}
+
+	return res.sendStatus(500);
+};*/
 
 const postgresURL = `postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}`;
 

@@ -5,7 +5,7 @@ import { IDType, TComment } from '../../entities/types';
 
 import {
 	createCommentForPostID,
-	fetchCommentsForPostID // TODO use this one
+	fetchCommentsForPostIDAndParentCommentID
 } from '../../entities/fetchers';
 
 import LoadingSpinner from '../../controls/LoadingSpinner/LoadingSpinner';
@@ -45,7 +45,7 @@ class CommentList extends React.Component<Props, State> {
 	}
 
 	fetchComments = () =>
-		fetchCommentsForPostID(this.props.postID)
+		fetchCommentsForPostIDAndParentCommentID(this.props.postID)
 			.then(comments => this.setState({ comments: comments }))
 			.catch((error: FetchError) =>
 				displayErrorNotification('Failed to fetch comments', error)
