@@ -2,11 +2,10 @@ import React from 'react';
 
 import { TComment } from '../../entities/types';
 
-import { Link } from 'react-router-dom';
-
 import './Comment.scss';
 import { prettyPrintDateDifference } from '../../util/date';
 import Button from '../../controls/Button/Button';
+import Input from '../../controls/Input/Input';
 
 const baseClassName = 'comment';
 
@@ -14,7 +13,19 @@ interface OwnProps {
 	comment: TComment;
 }
 
-class Comment extends React.Component<OwnProps> {
+interface State {
+	openReplyInputField: boolean;
+}
+
+class Comment extends React.Component<OwnProps, State> {
+	constructor(props: OwnProps) {
+		super(props);
+
+		this.state = {
+			openReplyInputField: false
+		};
+	}
+
 	render() {
 		return (
 			<div className={baseClassName}>
@@ -34,8 +45,18 @@ class Comment extends React.Component<OwnProps> {
 				</span>
 				<div className={`${baseClassName}__buttons`}>
 					<Button label={'123'} icon={'favorite'} />
-					<Button label={'Reply'} />
+					<Button
+						label={'Reply'}
+						onClick={() => {
+							this.setState({
+								openReplyInputField: true
+							});
+						}}
+					/>
 				</div>
+				{this.state.openReplyInputField && (
+					<Input placeholder={'Comment text goes here'} />
+				)}
 			</div>
 		);
 	}

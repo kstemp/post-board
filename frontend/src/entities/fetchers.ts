@@ -4,7 +4,7 @@ import {
 	ICommunity,
 	TComment,
 	TPost,
-	TPostMetadata,
+	IEntityMetadata,
 	IEntityIDs
 } from './types';
 
@@ -20,7 +20,7 @@ export const fetchPostByID = (postID: IDType) =>
 	fetchEntity<TPost>(`/post/${postID}`);
 
 export const fetchMetadataForPostID = (postID: IDType) =>
-	fetchEntity<TPostMetadata>(`/post/${postID}?metadata_only=true`);
+	fetchEntity<IEntityMetadata>(`/post/${postID}?metadata_only=true`);
 
 export const fetchCommentsForPostID = (postID: IDType) =>
 	fetchEntity<TComment[]>(`/post/${postID}/comments`);

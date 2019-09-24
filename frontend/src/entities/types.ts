@@ -25,7 +25,7 @@ type TEntity = {
 	login: string;
 };
 
-export type TComment = TEntity & {
+export type TCommentBase = TEntity & {
 	parent_post_id: IDType;
 
 	text: string;
@@ -37,10 +37,12 @@ export type TPostBase = {
 	text: string;
 };
 
-export type TPostMetadata = {
+export interface IEntityMetadata {
 	comment_count: number;
 	reaction_count: number;
 	reacted: boolean;
-};
+}
 
-export type TPost = TEntity & TPostBase & TPostMetadata;
+export type TPost = TEntity & TPostBase & IEntityMetadata;
+
+export type TComment = TEntity & TCommentBase & IEntityMetadata;

@@ -32,11 +32,20 @@
 		margin-left: 2 * $standard-spacing;
 	}
 
+	> input {
+		margin-left: 2 * $standard-spacing;
+		margin-right: 2 * $standard-spacing;
+		margin-top: 2 * $standard-spacing;
+
+		width: 100%;
+	}
+
 	.pb-button {
 		margin-right: 4 * $standard-spacing;
 
 		padding: 0;
 
+		font-size: 0.75rem;
 		font-weight: bold;
 
 		color: #878a8c;
