@@ -16,15 +16,23 @@
 		width: 100%;
 	}
 
-	> .pb-textarea {
-		height: 50px;
-		box-sizing: border-box;
+	&__container {
+		display: flex;
 
-		&:focus {
-			height: 150px;
+		> .pb-button {
+			height: 100%;
 		}
-		&:not(:invalid) {
-			height: 150px;
+
+		> .pb-textarea {
+			height: 50px;
+			box-sizing: border-box;
+
+			&:focus {
+				height: 150px;
+			}
+			&:not(:invalid) {
+				height: 150px;
+			}
 		}
 	}
 }

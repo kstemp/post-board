@@ -60,12 +60,16 @@ class PostCreator extends React.Component<OwnProps, State> {
 		return (
 			<div className={baseClassName}>
 				<p>Create a post: </p>
-				<TextArea
-					ref={this.postTextField}
-					placeholder={'Post text goes here'}
-					onChange={this.fieldChanged}
-					required
-				/>
+				<div className={`${baseClassName}__container`}>
+					<TextArea
+						ref={this.postTextField}
+						placeholder={'Post text goes here'}
+						onChange={this.fieldChanged}
+						required
+					/>
+					<Button className={'preview'} fill label={'>'} />
+				</div>
+
 				<Button
 					fill
 					label={'Post'}
