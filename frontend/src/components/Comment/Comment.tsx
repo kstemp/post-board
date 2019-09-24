@@ -6,9 +6,13 @@ import './Comment.scss';
 import { prettyPrintDateDifference } from '../../util/date';
 import Button from '../../controls/Button/Button';
 import Input from '../../controls/Input/Input';
-import { fetchCommentsForPostIDAndParentCommentID } from '../../entities/fetchers';
+import {
+	fetchCommentsForPostIDAndParentCommentID,
+	createCommentForPostIDAndParentCommentID
+} from '../../entities/fetchers';
 import { FetchError } from '../../entities/entity';
 import { displayErrorNotification } from '../../util/notification';
+import { tsExpressionWithTypeArguments } from '@babel/types';
 
 const baseClassName = 'comment';
 
@@ -30,6 +34,13 @@ class Comment extends React.Component<OwnProps, State> {
 		};
 	}
 
+	createComment = (text: string) =>
+		createCommentForPostIDAndParentCommentID(
+			this.props.comment.parent_post_id,
+			this.props.comment.entity_id,
+			text
+		);
+
 	openInputFieldAndLoadComments = () => {
 		this.setState({
 			openReplyInputField: true
@@ -38,7 +49,7 @@ class Comment extends React.Component<OwnProps, State> {
 			this.props.comment.parent_post_id,
 			this.props.comment.entity_id
 		)
-			.then(comments => console.log(comments))
+			.then(comments => this.setState({ comments: comments }))
 			.catch((error: FetchError) =>
 				displayErrorNotification(
 					'Failed to fetch child comments',
@@ -73,7 +84,18 @@ class Comment extends React.Component<OwnProps, State> {
 					/>
 				</div>
 				{this.state.openReplyInputField && (
-					<Input placeholder={'Comment text goes here'} required />
+					<Input
+						placeholder={'Comment text goes here'}
+						required
+						onSubmit={this.createComment}
+					/>
+				)}
+				{this.state.comments && (
+					<div className={`${baseClassName}__child-comments`}>
+						{this.state.comments.map(comment => (
+							<Comment comment={comment} />
+						))}
+					</div>
 				)}
 			</div>
 		);

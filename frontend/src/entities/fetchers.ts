@@ -43,3 +43,13 @@ export const createCommentForPostID = (postID: IDType, commentText: string) =>
 		`/post/${postID}/comments`,
 		JSON.stringify({ text: commentText })
 	);
+
+export const createCommentForPostIDAndParentCommentID = (
+	postID: IDType,
+	parent_comment_id: IDType,
+	commentText: string
+) =>
+	createEntity(
+		`/post/${postID}/comments?parent_comment_id=${parent_comment_id}`,
+		JSON.stringify({ text: commentText })
+	);

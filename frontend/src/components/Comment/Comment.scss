@@ -32,6 +32,13 @@
 		margin-left: 2 * $standard-spacing;
 	}
 
+	&__child-comments {
+		width: fit-content;
+		height: fit-content;
+
+		margin-left: 2 * $standard-spacing;
+	}
+
 	> input {
 		margin-left: 2 * $standard-spacing;
 		margin-right: 2 * $standard-spacing;

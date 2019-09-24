@@ -10,7 +10,7 @@ interface OwnProps {
 	placeholder?: string;
 	type?: 'text' | 'password';
 	onChange?: (arg0: React.ChangeEvent<HTMLInputElement>) => void;
-	onSubmit?: () => void;
+	onSubmit?: (value: string) => void;
 }
 
 class Input extends React.Component<OwnProps> {
@@ -38,7 +38,7 @@ class Input extends React.Component<OwnProps> {
 		if (event.key === 'Enter') {
 			if (this.valid) {
 				if (this.props.onSubmit) {
-					this.props.onSubmit();
+					this.props.onSubmit(this.value);
 				}
 			}
 		}
