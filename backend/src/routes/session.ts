@@ -109,7 +109,7 @@ router.post(
 router.get('/verifyToken', (req, res) => {
 	'Bearer ';
 	const token = (req.headers.authorization as any).slice(7);
-	console.log(token);
+	//console.log(token);
 
 	jwt.verify(
 		token,
@@ -119,7 +119,7 @@ router.get('/verifyToken', (req, res) => {
 				return res.sendStatus(403);
 			}
 
-			console.log(decoded);
+			//	console.log(decoded);
 
 			return res.sendStatus(204);
 		}

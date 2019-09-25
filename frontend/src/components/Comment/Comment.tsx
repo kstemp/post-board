@@ -13,6 +13,13 @@ import {
 import { FetchError } from '../../entities/entity';
 import { displayErrorNotification } from '../../util/notification';
 import { tsExpressionWithTypeArguments } from '@babel/types';
+import { connect } from 'react-redux';
+import { ReducerStateType } from '../../entities/reducer';
+import { isLoggedIn } from '../../entities/selectors';
+import {
+	deleteReactionForEntityID,
+	createReactionForEntityID
+} from '../../entities/reactions';
 
 const baseClassName = 'comment';
 
@@ -20,13 +27,19 @@ interface OwnProps {
 	comment: TComment;
 }
 
+interface StateProps {
+	isLoggedIn: boolean;
+}
+
+type Props = OwnProps & StateProps;
+
 interface State {
 	comments?: TComment[];
 	displayChildComments: boolean;
 }
 
-class Comment extends React.Component<OwnProps, State> {
-	constructor(props: OwnProps) {
+class Comment extends React.Component<Props, State> {
+	constructor(props: Props) {
 		super(props);
 
 		this.state = {
@@ -58,6 +71,19 @@ class Comment extends React.Component<OwnProps, State> {
 			);
 	};
 
+	toggleLiked = () =>
+		this.props.comment.reacted
+			? deleteReactionForEntityID(this.props.comment.entity_id)
+					.then(() => {})
+					.catch((error: FetchError) =>
+						displayErrorNotification('Failed to react', error)
+					)
+			: createReactionForEntityID(this.props.comment.entity_id)
+					.then(() => {})
+					.catch((error: FetchError) =>
+						displayErrorNotification('Failed to react', error)
+					);
+
 	closeChildComments = () => this.setState({ displayChildComments: false });
 
 	render() {
@@ -86,7 +112,15 @@ class Comment extends React.Component<OwnProps, State> {
 						label={(
 							this.props.comment.reaction_count || 0
 						).toString()}
-						icon={'favorite'}
+						icon={`favorite${
+							this.props.comment.reacted ? '' : '_border'
+						}`}
+						onClick={this.toggleLiked}
+						disabled={!this.props.isLoggedIn}
+						toolTipEnabled={'Like'}
+						toolTipDisabled={
+							'You must be logged in to react to comments'
+						}
 					/>
 					<Button
 						icon={'chat_bubble_outline'}
@@ -109,7 +143,10 @@ class Comment extends React.Component<OwnProps, State> {
 				{this.state.displayChildComments && this.state.comments && (
 					<div className={`${baseClassName}__child-comments`}>
 						{this.state.comments.map(comment => (
-							<Comment comment={comment} />
+							<Comment
+								isLoggedIn={this.props.isLoggedIn}
+								comment={comment}
+							/> // TODO figure out a better workaround around Redux not liking recursive components
 						))}
 					</div>
 				)}
@@ -118,4 +155,8 @@ class Comment extends React.Component<OwnProps, State> {
 	}
 }
 
-export default Comment;
+const mapStateToProps = (state: ReducerStateType) => ({
+	isLoggedIn: isLoggedIn(state)
+});
+
+export default connect(mapStateToProps)(Comment);

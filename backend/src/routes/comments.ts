@@ -51,10 +51,14 @@ router.get(
 	(req: express.Request, res: express.Response) =>
 		db
 			.manyOrNone(
-				`SELECT * FROM comments, get_metadata_for_entity_id(comments.entity_id) WHERE parent_post_id = $1 AND parent_comment_id ${
+				`SELECT * FROM comments, get_metadata_for_entity_id(comments.entity_id, $3) WHERE parent_post_id = $1 AND parent_comment_id ${
 					req.query['parent_comment_id'] ? ' = $2' : 'IS NULL'
 				}`,
-				[req.params['post_id'], req.query['parent_comment_id']]
+				[
+					req.params['post_id'],
+					req.query['parent_comment_id'],
+					(req as any).login
+				]
 			)
 			.then(comments => res.status(200).send(comments))
 			.catch(err => console.log(err))
