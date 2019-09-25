@@ -9,6 +9,7 @@ import TextArea from '../../controls/TextArea/TextArea';
 
 import './PostCreator.scss';
 import { FetchError } from '../../entities/entity';
+import TabControl from '../../controls/TabControl/TabControl';
 
 const baseClassName = 'post-creator';
 
@@ -60,16 +61,14 @@ class PostCreator extends React.Component<OwnProps, State> {
 		return (
 			<div className={baseClassName}>
 				<p>Create a post: </p>
-				<div className={`${baseClassName}__container`}>
+				<TabControl defaultTab={0} tabs={[{ label: 'Text post' }]}>
 					<TextArea
 						ref={this.postTextField}
 						placeholder={'Post text goes here'}
 						onChange={this.fieldChanged}
 						required
 					/>
-					<Button className={'preview'} fill label={'>'} />
-				</div>
-
+				</TabControl>
 				<Button
 					fill
 					label={'Post'}

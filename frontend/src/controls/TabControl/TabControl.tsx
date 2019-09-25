@@ -4,7 +4,6 @@ import Button from '../Button/Button';
 const baseClassName = 'tab-control';
 
 interface TabItem {
-	element: React.ElementType;
 	label: string;
 	icon?: string;
 }
@@ -30,25 +29,24 @@ class TabControl extends React.Component<OwnProps, State> {
 	render() {
 		return (
 			<div className={baseClassName}>
+				{React.Children.toArray(this.props.children).filter(
+					(child, index) => index === this.state.selectedIndex
+				)}
 				{this.props.tabs.map((tab, index) => (
-					<React.Fragment>
-						{index === this.state.selectedIndex && tab.element}
-						<Button
-							key={index}
-							className={`${baseClassName}__button`}
-							label={tab.label}
-							icon={tab.icon}
-							onClick={() =>
-								this.setState({
-									selectedIndex: index
-								})
-							}
-						/>
-					</React.Fragment>
+					<Button
+						key={index}
+						className={`${baseClassName}__button`}
+						label={tab.label}
+						icon={tab.icon}
+						onClick={() =>
+							this.setState({
+								selectedIndex: index
+							})
+						}
+					/>
 				))}
 			</div>
 		);
 	}
 }
-
 export default TabControl;

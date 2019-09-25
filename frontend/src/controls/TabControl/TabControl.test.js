@@ -12,22 +12,23 @@ describe('The Tab Control component', () => {
 	beforeEach(() => {
 		test.component = test.component = Enzyme.shallow(
 			<TabControl
+				defaultTab={0}
 				tabs={[
 					{
-						element: <div className={'div-1'}></div>,
 						label: 'Label 1'
 					},
 					{
-						element: <div className={'div-2'}></div>,
 						label: 'Label 2'
 					},
 					{
-						element: <div className={'div-3'}></div>,
 						label: 'Label 3'
 					}
 				]}
-				defaultTab={0}
-			/>
+			>
+				<div className={'div-1'}></div>
+				<div className={'div-2'}></div>
+				<div className={'div-3'}></div>
+			</TabControl>
 		);
 	});
 
