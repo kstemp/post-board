@@ -61,13 +61,17 @@ class PostCreator extends React.Component<OwnProps, State> {
 		return (
 			<div className={baseClassName}>
 				<p>Create a post: </p>
-				<TabControl defaultTab={0} tabs={[{ label: 'Text post' }]}>
+				<TabControl
+					defaultTab={0}
+					tabs={[{ label: 'Text post' }, { label: 'Image post' }]}
+				>
 					<TextArea
 						ref={this.postTextField}
 						placeholder={'Post text goes here'}
 						onChange={this.fieldChanged}
 						required
 					/>
+					<div>Test test</div>
 				</TabControl>
 				<Button
 					fill

@@ -1,7 +1,7 @@
 @import '../../controls/variables.scss';
 
 .post-creator {
-	padding: 10px;
+	padding: $standard-spacing;
 	border: 1px solid lightgray;
 
 	background-color: white;
@@ -16,23 +16,19 @@
 		width: 100%;
 	}
 
-	&__container {
-		display: flex;
+	> .pb-button {
+		height: 100%;
+	}
 
-		> .pb-button {
-			height: 100%;
+	.tab-control .pb-textarea {
+		height: 50px;
+		box-sizing: border-box;
+
+		&:focus {
+			height: 150px;
 		}
-
-		> .pb-textarea {
-			height: 50px;
-			box-sizing: border-box;
-
-			&:focus {
-				height: 150px;
-			}
-			&:not(:invalid) {
-				height: 150px;
-			}
+		&:not(:invalid) {
+			height: 150px;
 		}
 	}
 }
