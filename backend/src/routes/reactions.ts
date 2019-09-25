@@ -1,7 +1,7 @@
 import express from 'express';
 import { query } from 'express-validator';
 import verifyToken from '../modules/verify-token';
-import db, { PSQLERR, execSQLQuery } from '../modules/db';
+import { execSQLQuery } from '../modules/db';
 import { checkValidation } from '../modules/validator';
 
 const router = express.Router();

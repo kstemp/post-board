@@ -12,7 +12,6 @@ import {
 } from '../../entities/fetchers';
 import { FetchError } from '../../entities/entity';
 import { displayErrorNotification } from '../../util/notification';
-import { tsExpressionWithTypeArguments } from '@babel/types';
 import { connect } from 'react-redux';
 import { ReducerStateType } from '../../entities/reducer';
 import { isLoggedIn } from '../../entities/selectors';
