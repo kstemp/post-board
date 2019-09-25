@@ -22,7 +22,7 @@ interface OwnProps {
 
 interface State {
 	comments?: TComment[];
-	openReplyInputField: boolean;
+	displayChildComments: boolean;
 }
 
 class Comment extends React.Component<OwnProps, State> {
@@ -30,7 +30,7 @@ class Comment extends React.Component<OwnProps, State> {
 		super(props);
 
 		this.state = {
-			openReplyInputField: false
+			displayChildComments: false
 		};
 	}
 
@@ -43,7 +43,7 @@ class Comment extends React.Component<OwnProps, State> {
 
 	openInputFieldAndLoadComments = () => {
 		this.setState({
-			openReplyInputField: true
+			displayChildComments: true
 		});
 		fetchCommentsForPostIDAndParentCommentID(
 			this.props.comment.parent_post_id,
@@ -57,6 +57,8 @@ class Comment extends React.Component<OwnProps, State> {
 				)
 			);
 	};
+
+	closeChildComments = () => this.setState({ displayChildComments: false });
 
 	render() {
 		return (
@@ -72,7 +74,10 @@ class Comment extends React.Component<OwnProps, State> {
 						)}
 					</span>
 				</div>
-				<div className={`${baseClassName}__thread-line`} />
+				<div
+					className={`${baseClassName}__thread-line`}
+					onClick={this.closeChildComments}
+				/>
 				<span className={`${baseClassName}__content`}>
 					{this.props.comment.text}
 				</span>
@@ -92,7 +97,7 @@ class Comment extends React.Component<OwnProps, State> {
 					/>
 					<Button icon={'report'} label={'Report'} />
 				</div>
-				{this.state.openReplyInputField && (
+				{this.state.displayChildComments && (
 					<div className={`${baseClassName}__input-wrapper`}>
 						<Input
 							placeholder={'Comment text goes here'}
@@ -101,7 +106,7 @@ class Comment extends React.Component<OwnProps, State> {
 						/>
 					</div>
 				)}
-				{this.state.comments && (
+				{this.state.displayChildComments && this.state.comments && (
 					<div className={`${baseClassName}__child-comments`}>
 						{this.state.comments.map(comment => (
 							<Comment comment={comment} />
