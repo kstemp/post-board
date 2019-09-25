@@ -152,10 +152,10 @@ LANGUAGE plpgsql;
 
 
 */
-CREATE OR REPLACE FUNCTION get_comment_count_for_post_id(_entity_id INTEGER) RETURNS INTEGER AS 
+CREATE OR REPLACE FUNCTION get_comment_count_for_entity_id(_entity_id INTEGER) RETURNS INTEGER AS 
 $$ 
 BEGIN
-	RETURN (SELECT COUNT(*) AS comment_count FROM comments WHERE comments.parent_post_id = _entity_id);
+	RETURN (SELECT COUNT(*) AS comment_count FROM comments WHERE comments.parent_post_id = _entity_id OR comments.parent_comment_id = _entity_id);
 END 
 $$
 LANGUAGE plpgsql;
@@ -182,10 +182,10 @@ END
 $$
 LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION get_metadata_for_post_id(_entity_id INTEGER, _login VARCHAR DEFAULT NULL) RETURNS TABLE (comment_count INTEGER, reaction_count INTEGER, reacted boolean) AS
+CREATE OR REPLACE FUNCTION get_metadata_for_entity_id(_entity_id INTEGER, _login VARCHAR DEFAULT NULL) RETURNS TABLE (comment_count INTEGER, reaction_count INTEGER, reacted boolean) AS
 $$ 
 BEGIN
-	RETURN QUERY (SELECT get_comment_count_for_post_id(_entity_id), get_reaction_count_for_entity_id(_entity_id), did_user_react_to_entity_id(_entity_id, _login));
+	RETURN QUERY (SELECT get_comment_count_for_entity_id(_entity_id), get_reaction_count_for_entity_id(_entity_id), did_user_react_to_entity_id(_entity_id, _login));
 END 
 $$
 LANGUAGE plpgsql;

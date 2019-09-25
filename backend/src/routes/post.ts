@@ -19,8 +19,8 @@ router.get(
 	verifyToken(false),
 	(req: Request, res: Response) => {
 		const SQLquery = req.query.metadata_only
-			? 'SELECT * FROM get_metadata_for_post_id($1, $2)'
-			: 'SELECT * FROM get_post_by_id($1), get_metadata_for_post_id($1, $2)';
+			? 'SELECT * FROM get_metadata_for_entity_id($1, $2)'
+			: 'SELECT * FROM get_post_by_id($1), get_metadata_for_entity_id($1, $2)';
 
 		db.one(SQLquery, [req.params.postID, (req as any).login])
 			.then(data => res.status(200).send(data))

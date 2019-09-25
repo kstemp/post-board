@@ -3,6 +3,7 @@ import verifyToken from '../modules/verify-token';
 import { sanitize, check, query } from 'express-validator';
 import db, { PSQLERR, execSQLQuery } from '../modules/db';
 import { checkValidation } from '../modules/validator';
+import { verify } from 'crypto';
 
 const router = express.Router({ mergeParams: true });
 
@@ -46,10 +47,11 @@ router.get(
 			.isInt({ min: 1 })
 	],
 	checkValidation,
+	verifyToken(false),
 	(req: express.Request, res: express.Response) =>
 		db
 			.manyOrNone(
-				`SELECT * FROM comments WHERE parent_post_id = $1 AND parent_comment_id ${
+				`SELECT * FROM comments, get_metadata_for_entity_id(comments.entity_id) WHERE parent_post_id = $1 AND parent_comment_id ${
 					req.query['parent_comment_id'] ? ' = $2' : 'IS NULL'
 				}`,
 				[req.params['post_id'], req.query['parent_comment_id']]
