@@ -1,6 +1,6 @@
 @import '../../controls/variables.scss';
 
-$margin-left: 4 * $standard-spacing;
+$margin-left: 5 * $standard-spacing;
 
 .comment {
 	//	display: flex;
@@ -42,9 +42,9 @@ $margin-left: 4 * $standard-spacing;
 
 	&__thread-line {
 		position: absolute;
-		left: 0.1em;
-		top: 1em;
-		width: 0.2em;
+		left: $standard-spacing;
+		top: 1.2em;
+		width: $standard-spacing;
 		bottom: 0;
 		background-color: $color-disabled;
 
@@ -54,12 +54,14 @@ $margin-left: 4 * $standard-spacing;
 		}
 	}
 
-	input {
-		margin-left: $margin-left;
-		margin-right: 2 * $standard-spacing;
+	&__input-wrapper {
+		margin-left: $margin-left + $standard-spacing;
+		right: 0;
 		margin-top: 2 * $standard-spacing;
 
-		width: 100%;
+		> input {
+			width: 100%;
+		}
 	}
 
 	.pb-button {

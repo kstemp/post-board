@@ -93,11 +93,13 @@ class Comment extends React.Component<OwnProps, State> {
 					<Button icon={'report'} label={'Report'} />
 				</div>
 				{this.state.openReplyInputField && (
-					<Input
-						placeholder={'Comment text goes here'}
-						required
-						onSubmit={this.createComment}
-					/>
+					<div className={`${baseClassName}__input-wrapper`}>
+						<Input
+							placeholder={'Comment text goes here'}
+							required
+							onSubmit={this.createComment}
+						/>
+					</div>
 				)}
 				{this.state.comments && (
 					<div className={`${baseClassName}__child-comments`}>
