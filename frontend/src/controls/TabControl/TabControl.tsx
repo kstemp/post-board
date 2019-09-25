@@ -1,6 +1,6 @@
 import React from 'react';
 import Button from '../Button/Button';
-
+import './TabControl.scss';
 const baseClassName = 'tab-control';
 
 interface TabItem {
@@ -32,19 +32,21 @@ class TabControl extends React.Component<OwnProps, State> {
 				{React.Children.toArray(this.props.children).filter(
 					(child, index) => index === this.state.selectedIndex
 				)}
-				{this.props.tabs.map((tab, index) => (
-					<Button
-						key={index}
-						className={`${baseClassName}__button`}
-						label={tab.label}
-						icon={tab.icon}
-						onClick={() =>
-							this.setState({
-								selectedIndex: index
-							})
-						}
-					/>
-				))}
+				<div className={`${baseClassName}__buttons`}>
+					{this.props.tabs.map((tab, index) => (
+						<Button
+							key={index}
+							className={`${baseClassName}__button`}
+							label={tab.label}
+							icon={tab.icon}
+							onClick={() =>
+								this.setState({
+									selectedIndex: index
+								})
+							}
+						/>
+					))}
+				</div>
 			</div>
 		);
 	}

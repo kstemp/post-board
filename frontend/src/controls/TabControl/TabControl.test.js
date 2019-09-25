@@ -1,16 +1,14 @@
 import Enzyme, { configure } from 'enzyme';
 import React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
-import { restElement } from '@babel/types';
 import TabControl from './TabControl';
 import chai from 'chai';
-import { element } from 'prop-types';
 
 configure({ adapter: new Adapter() });
 
 describe('The Tab Control component', () => {
 	beforeEach(() => {
-		test.component = test.component = Enzyme.shallow(
+		test.component = Enzyme.shallow(
 			<TabControl
 				defaultTab={0}
 				tabs={[

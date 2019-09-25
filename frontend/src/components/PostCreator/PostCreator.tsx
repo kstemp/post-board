@@ -10,6 +10,7 @@ import TextArea from '../../controls/TextArea/TextArea';
 import './PostCreator.scss';
 import { FetchError } from '../../entities/entity';
 import TabControl from '../../controls/TabControl/TabControl';
+import ImageUploader from '../ImageUploader/ImageUploader';
 
 const baseClassName = 'post-creator';
 
@@ -71,7 +72,7 @@ class PostCreator extends React.Component<OwnProps, State> {
 						onChange={this.fieldChanged}
 						required
 					/>
-					<div>Test test</div>
+					<ImageUploader />
 				</TabControl>
 				<Button
 					fill
