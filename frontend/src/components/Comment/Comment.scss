@@ -40,15 +40,30 @@ $margin-left: 5 * $standard-spacing;
 
 	&__thread-line {
 		position: absolute;
-		left: $standard-spacing;
+
+		left: 0;
 		top: 1.2em;
-		width: $standard-spacing;
 		bottom: 0;
-		background-color: $color-disabled;
+
+		width: $margin-left;
+
+		&:after {
+			content: '';
+
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 2 * $standard-spacing;
+			transform: translate(-50%);
+
+			border-left: $standard-spacing solid $color-disabled;
+		}
 
 		&:hover {
-			background-color: $color-hover;
 			cursor: pointer;
+			&:after {
+				border-left: $standard-spacing solid $color-hover;
+			}
 		}
 	}
 
