@@ -148,16 +148,14 @@ class Comment extends React.Component<Props, State> {
 						/>
 					</div>
 				)}
-				{this.state.displayChildComments && this.state.comments && (
-					<div className={`${baseClassName}__child-comments`}>
-						{this.state.comments.map(comment => (
-							<Comment
-								isLoggedIn={this.props.isLoggedIn}
-								comment={comment}
-							/> // TODO figure out a better workaround around Redux not liking recursive components
-						))}
-					</div>
-				)}
+				{this.state.displayChildComments &&
+					this.state.comments &&
+					this.state.comments.map(comment => (
+						<Comment
+							isLoggedIn={this.props.isLoggedIn}
+							comment={comment}
+						/> // TODO figure out a better workaround around Redux not liking recursive components
+					))}
 			</div>
 		);
 	}

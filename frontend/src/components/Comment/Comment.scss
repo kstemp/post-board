@@ -3,12 +3,16 @@
 $margin-left: 5 * $standard-spacing;
 
 .comment {
-	width: 100%;
+	right: 0;
 
 	margin-top: 3 * $standard-spacing;
 	margin-bottom: $standard-spacing;
 
 	position: relative;
+
+	> .comment {
+		margin-left: $margin-left;
+	}
 
 	&__header {
 		display: flex;
@@ -31,10 +35,6 @@ $margin-left: 5 * $standard-spacing;
 	}
 
 	&__buttons {
-		margin-left: $margin-left;
-	}
-
-	&__child-comments {
 		margin-left: $margin-left;
 	}
 
