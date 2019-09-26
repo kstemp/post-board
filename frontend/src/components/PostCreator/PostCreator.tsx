@@ -5,7 +5,6 @@ import Button from '../../controls/Button/Button';
 import { createPost } from '../../entities/fetchers';
 
 import { displayErrorNotification } from '../../util/notification';
-import TextArea from '../../controls/TextArea/TextArea';
 
 import './PostCreator.scss';
 import { FetchError } from '../../entities/entity';
@@ -24,7 +23,7 @@ interface State {
 }
 
 class PostCreator extends React.Component<OwnProps, State> {
-	private postTextField: React.RefObject<TextArea>;
+	private postTextField: React.RefObject<HTMLTextAreaElement>;
 
 	constructor(props: OwnProps) {
 		super(props);
@@ -66,7 +65,7 @@ class PostCreator extends React.Component<OwnProps, State> {
 					defaultTab={0}
 					tabs={[{ label: 'Text post' }, { label: 'Image post' }]}
 				>
-					<TextArea
+					<textarea
 						ref={this.postTextField}
 						placeholder={'Post text goes here'}
 						onChange={this.fieldChanged}

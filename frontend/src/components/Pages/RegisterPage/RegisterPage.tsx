@@ -6,6 +6,7 @@ import FormPage from '../FormPage/FormPage';
 import { register } from '../../../security';
 import { Link, Redirect } from 'react-router-dom';
 import { FetchError } from '../../../entities/entity';
+import Button from '../../../controls/Button/Button';
 
 const baseClassName = 'register-page';
 
@@ -20,12 +21,12 @@ interface State {
 type Props = OwnProps;
 
 class RegisterPage extends React.Component<Props, State> {
-	private refFormPage: React.RefObject<FormPage>;
+	private refForm: React.RefObject<HTMLFormElement>;
 
 	constructor(props: Props) {
 		super(props);
 
-		this.refFormPage = React.createRef();
+		this.refForm = React.createRef();
 
 		this.state = {
 			redirect: false
@@ -33,11 +34,7 @@ class RegisterPage extends React.Component<Props, State> {
 	}
 
 	register = () => {
-		const login = (this.refFormPage as any).current.valuesByID['login'];
-		const email = (this.refFormPage as any).current.valuesByID['email'];
-		const password = (this.refFormPage as any).current.valuesByID[
-			'password'
-		];
+		/*
 
 		console.log('login: ', login, ' password: ', password);
 
@@ -49,34 +46,45 @@ class RegisterPage extends React.Component<Props, State> {
 			})
 			.catch((error: FetchError) =>
 				displayErrorNotification('Failed to register', error)
-			);
+			);*/
 	};
 
 	render() {
 		return this.state.redirect ? (
 			<Redirect to={'login'} />
 		) : (
-			<div className={baseClassName}>
-				<FormPage
-					ref={this.refFormPage}
-					title={'Register in post-board'}
-					fields={[
-						{
-							id: 'login',
-							placeholder: 'Login'
-						},
-						{
-							id: 'email',
-							placeholder: 'E-mail'
-						},
-						{
-							id: 'password',
-							placeholder: 'Password',
-							password: true
-						}
-					]}
-					buttonLabel={'Register'}
-					onFormSubmit={this.register}
+			<div className={'page-content'}>
+				<form onSubmit={e => e.preventDefault()} ref={this.refForm}>
+					<div className={`${baseClassName}__form-field`}>
+						<label htmlFor={'email'}>E-mail:</label>
+						<input
+							id={'email'}
+							placeholder={'email@domain.com'}
+							required
+						/>
+					</div>
+					<div className={`${baseClassName}__form-field`}>
+						<label htmlFor={'password1'}>Password:</label>
+						<input
+							id={'password1'}
+							placeholder={'Your password'}
+							required
+						/>
+					</div>
+					<div className={`${baseClassName}__form-field`}>
+						<label htmlFor={'password2'}>Confirm password:</label>
+						<input
+							id={'password2'}
+							placeholder={'Your password again'}
+							required
+						/>
+					</div>
+				</form>
+				<Button
+					onClick={() => {
+						this.refForm.current &&
+							this.refForm.current.reportValidity();
+					}}
 				/>
 				<p>
 					Already have an account?{' '}
