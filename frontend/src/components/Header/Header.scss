@@ -1,14 +1,7 @@
 @import '../../controls/variables.scss';
 
-header {
+.header {
 	z-index: 1;
-
-	border-bottom: 1px solid lightgray;
-
-	box-sizing: border-box;
-	background: white;
-
-	box-shadow: 0 1px 3px 0 grey; // TODO make a variable, since we repeat this in CommunityBar
 
 	position: fixed;
 	top: 0;
@@ -17,11 +10,21 @@ header {
 
 	height: $header-height;
 
-	> a {
-		text-decoration: none;
-	}
+	border-bottom: 1px solid lightgray;
+
+	box-sizing: border-box;
+	background: white;
+
+	padding: 1em;
+
+	box-shadow: 0 1px 3px 0 grey; // TODO make a variable, since we repeat this in CommunityBar
 
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+
+	&__label {
+		font-weight: bold;
+		color: $color-hover;
+	}
 }

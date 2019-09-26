@@ -7,7 +7,6 @@ import { isLoggedIn } from '../../entities/selectors';
 import { securityLogout } from '../../security';
 
 import './Header.scss';
-import Dropdown from '../../controls/Dropdown/Dropdown';
 
 interface StateProps {
 	isLoggedIn: boolean;
@@ -18,9 +17,9 @@ const baseClassName = 'header';
 class Header extends React.Component<StateProps> {
 	render() {
 		return (
-			<header /*className={`${baseClassName}__header`}*/>
-				<span>post-board v.1.0</span>
-				<div className={`${baseClassName}__header-container`}>
+			<div className={baseClassName}>
+				<span className={`${baseClassName}__label`}>post-board</span>
+				<div className={`${baseClassName}__container`}>
 					{this.props.isLoggedIn && (
 						<React.Fragment>
 							<Button
@@ -44,7 +43,7 @@ class Header extends React.Component<StateProps> {
 						<></> //<LoginDropdown />
 					)}
 				</div>
-			</header>
+			</div>
 		);
 	}
 }
