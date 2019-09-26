@@ -135,13 +135,15 @@ END
 $$
 LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION create_comment(_parent_post_id INTEGER, _text VARCHAR, _login VARCHAR DEFAULT NULL, _parent_comment_id INTEGER DEFAULT NULL) RETURNS VOID AS 
+CREATE OR REPLACE FUNCTION create_comment(_parent_post_id INTEGER, _text VARCHAR, _login VARCHAR DEFAULT NULL, _parent_comment_id INTEGER DEFAULT NULL) RETURNS comments AS 
 $$
 DECLARE
 	new_entity_id INTEGER;
+	new_comment comments%ROWTYPE;
 BEGIN
 	INSERT INTO entities (entity_id) VALUES (DEFAULT) RETURNING entity_id INTO new_entity_id;
-	INSERT INTO comments (entity_id, parent_post_id, parent_comment_id, text, login) VALUES (new_entity_id, _parent_post_id, _parent_comment_id, _text, _login);
+	INSERT INTO comments (entity_id, parent_post_id, parent_comment_id, text, login) VALUES (new_entity_id, _parent_post_id, _parent_comment_id, _text, _login) RETURNING * INTO new_comment;
+	RETURN new_comment;
 END
 $$
 LANGUAGE plpgsql;

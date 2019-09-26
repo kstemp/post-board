@@ -51,7 +51,15 @@ class Comment extends React.Component<Props, State> {
 			this.props.comment.parent_post_id,
 			this.props.comment.entity_id,
 			text
-		);
+		)
+			.then(comment =>
+				this.setState({
+					comments: [...(this.state.comments || []), comment] // this || [] is to make TypeScript happy, since this.state.coomments can be undefined... TODO fix
+				})
+			)
+			.catch((error: FetchError) =>
+				displayErrorNotification('Failed to create comment', error)
+			);
 
 	openInputFieldAndLoadComments = () => {
 		this.setState({
@@ -102,6 +110,7 @@ class Comment extends React.Component<Props, State> {
 				<div
 					className={`${baseClassName}__thread-line`}
 					onClick={this.closeChildComments}
+					title={'Collapse thread to parent comment'}
 				/>
 				<span className={`${baseClassName}__content`}>
 					{this.props.comment.text}

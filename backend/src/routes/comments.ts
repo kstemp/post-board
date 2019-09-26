@@ -23,13 +23,17 @@ router.post(
 	verifyToken(false),
 	(req: express.Request, res: express.Response) =>
 		db
-			.proc('create_comment', [
+			.one('SELECT * FROM create_comment($1, $2, $3, $4)', [
 				req.params['post_id'],
 				req.body.text,
 				(req as any).login,
 				req.query['parent_comment_id']
 			])
-			.then(() => res.sendStatus(204))
+			.then(data => {
+				console.log(data);
+				return res.status(200).send(data);
+			})
+
 			.catch(error => {
 				console.log(error);
 				if (error.code === PSQLERR.FOREIGN_KEY_VIOLATION) {

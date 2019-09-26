@@ -49,7 +49,8 @@ export const createCommentForPostIDAndParentCommentID = (
 	parent_comment_id: IDType,
 	commentText: string
 ) =>
-	createEntity(
+	createEntity<TComment>(
 		`/post/${postID}/comments?parent_comment_id=${parent_comment_id}`,
-		JSON.stringify({ text: commentText })
+		JSON.stringify({ text: commentText }),
+		true
 	);
