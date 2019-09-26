@@ -22,18 +22,17 @@ class Header extends React.Component<StateProps> {
 				<span>post-board v.1.0</span>
 				<div className={`${baseClassName}__header-container`}>
 					{this.props.isLoggedIn && (
-						<>
-							{' '}
+						<React.Fragment>
 							<Button
-								icon={'message'}
-								toolTipEnabled={'Messages'}
+								icon={'notifications'}
+								toolTipEnabled={'Notifications'}
 							/>
 							<Button
 								icon={'people_alt'}
 								toolTipEnabled={'My friends'}
 							/>
 							<Button icon={'person'} />
-						</>
+						</React.Fragment>
 					)}
 					{this.props.isLoggedIn ? (
 						<Button
