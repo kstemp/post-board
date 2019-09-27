@@ -13,7 +13,10 @@ class HomePage extends React.Component {
 	render() {
 		return (
 			<div className={baseClassName}>
-				<CommunityBar communityID={1} />
+				<CommunityBar
+					notifyContentSortingChanged={() => {}}
+					communityID={1}
+				/>
 				<p>Welcome to post-board.</p>
 				<p>Sample communities:</p>
 				{SAMPLE_COMMUNITIES.map(community => (

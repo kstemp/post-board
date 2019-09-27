@@ -46,3 +46,5 @@ export interface IEntityMetadata {
 export type TPost = TEntity & TPostBase & IEntityMetadata;
 
 export type TComment = TEntity & TCommentBase & IEntityMetadata;
+
+export type TContentSorting = 'new' | 'top';

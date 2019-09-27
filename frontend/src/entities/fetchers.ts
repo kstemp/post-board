@@ -5,7 +5,8 @@ import {
 	TComment,
 	TPost,
 	IEntityMetadata,
-	IEntityIDs
+	IEntityIDs,
+	TContentSorting
 } from './types';
 
 export const fetchCommunityMetadataForCommunityID = (communityID: IDType) =>
@@ -13,8 +14,12 @@ export const fetchCommunityMetadataForCommunityID = (communityID: IDType) =>
 
 export const fetchPostIDsForCommunityID = (
 	communityID: IDType,
-	offset: number
-) => fetchEntity<IEntityIDs>(`/community/${communityID}/top?offset=${offset}`);
+	offset: number,
+	contentSorting: TContentSorting
+) =>
+	fetchEntity<IEntityIDs>(
+		`/community/${communityID}/${contentSorting}?offset=${offset}`
+	);
 
 export const fetchPostByID = (postID: IDType) =>
 	fetchEntity<TPost>(`/post/${postID}`);

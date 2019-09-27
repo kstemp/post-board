@@ -5,10 +5,12 @@ import Dropdown from '../../controls/Dropdown/Dropdown';
 import { connect } from 'react-redux';
 import { ReducerStateType } from '../../entities/reducer';
 import { isLoggedIn } from '../../entities/selectors';
+import { TContentSorting } from '../../entities/types';
 const baseClassName = 'community-bar';
 
 interface OwnProps {
 	communityID: number;
+	notifyContentSortingChanged: (sorting: TContentSorting) => void;
 }
 
 interface StateProps {
@@ -23,9 +25,12 @@ class CommunityBar extends React.Component<Props> {
 			<div className={baseClassName}>
 				<span>Sort posts by: </span>
 				<Dropdown
-					defaultOption={1}
-					notifyOptionChanged={(option: number) =>
-						console.log(option)
+					defaultOption={0}
+					notifyOptionChanged={
+						(option: number) =>
+							this.props.notifyContentSortingChanged(
+								option == 0 ? 'new' : 'top'
+							) // TODO map, or sth like that...
 					}
 					type={'select'}
 					options={[

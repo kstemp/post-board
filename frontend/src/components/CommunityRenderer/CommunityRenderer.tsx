@@ -1,5 +1,5 @@
 import React from 'react';
-import { IDType } from '../../entities/types';
+import { IDType, TContentSorting } from '../../entities/types';
 import CommunityBar from '../CommunityBar/CommunityBar';
 
 import './CommunityRenderer.scss';
@@ -24,6 +24,7 @@ interface State {
 	communityName: string;
 	postIDs: IDType[];
 	currentOffset: number;
+	contentSorting: TContentSorting;
 }
 
 class CommunityRenderer extends React.Component<OwnProps, State> {
@@ -34,9 +35,17 @@ class CommunityRenderer extends React.Component<OwnProps, State> {
 			communityName: '',
 			failedToLoadMetadata: false,
 			postIDs: [],
-			currentOffset: 0
+			currentOffset: 0,
+			contentSorting: 'new'
 		};
 	}
+
+	reset = () => {
+		this.setState({
+			postIDs: [],
+			currentOffset: 0
+		});
+	};
 
 	componentDidMount() {
 		fetchCommunityMetadataForCommunityID(this.props.communityID)
@@ -61,7 +70,8 @@ class CommunityRenderer extends React.Component<OwnProps, State> {
 	loadMorePosts = () => {
 		fetchPostIDsForCommunityID(
 			this.props.communityID,
-			this.state.currentOffset
+			this.state.currentOffset,
+			this.state.contentSorting
 		)
 			.then(entityIDList =>
 				this.setState(state => ({
@@ -86,7 +96,14 @@ class CommunityRenderer extends React.Component<OwnProps, State> {
 						<div className={`${baseClassName}__banner`}>
 							<span>{this.state.communityName}</span>
 						</div>
-						<CommunityBar communityID={this.props.communityID} />
+						<CommunityBar
+							communityID={this.props.communityID}
+							notifyContentSortingChanged={contentSorting =>
+								this.setState({
+									contentSorting: contentSorting
+								})
+							}
+						/>
 
 						<div className={'page-content'}>
 							<PostCreator communityID={this.props.communityID} />
