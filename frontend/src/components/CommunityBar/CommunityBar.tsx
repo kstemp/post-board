@@ -23,13 +23,17 @@ class CommunityBar extends React.Component<Props> {
 			<div className={baseClassName}>
 				<span>Sort posts by: </span>
 				<Dropdown
-					defaultOption={1} // by ID!
+					defaultOption={1}
+					notifyOptionChanged={(option: number) =>
+						console.log(option)
+					}
 					type={'select'}
 					options={[
 						{
-							label: 'New'
+							label: 'New',
+							icon: 'flare'
 						},
-						{ label: 'Top' }
+						{ label: 'Top', icon: 'trending_up' }
 					]}
 				/>
 			</div>

@@ -15,6 +15,8 @@ interface OwnProps {
 	options: IDropdownOption[];
 	type: 'just-click' | 'select';
 	defaultOption: number;
+
+	notifyOptionChanged: (arg0: number) => void;
 }
 
 interface State {
@@ -64,6 +66,7 @@ class Dropdown extends React.Component<OwnProps, State> {
 						{this.props.options.map((option, index) => (
 							<Button
 								label={option.label}
+								icon={option.icon}
 								onClick={() => {
 									if (
 										this.props.type === 'just-click' &&
@@ -74,6 +77,7 @@ class Dropdown extends React.Component<OwnProps, State> {
 										this.setState({
 											selectedOption: index
 										});
+										this.props.notifyOptionChanged(index);
 									}
 									this.toggleOpen(false);
 								}}
