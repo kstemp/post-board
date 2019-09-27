@@ -12,6 +12,7 @@ import Post from '../Post/Post';
 import Button from '../../controls/Button/Button';
 import PostCreator from '../PostCreator/PostCreator';
 import { FetchError } from '../../entities/entity';
+import CommunitySidebar from '../CommunitySidebar/CommunitySidebar';
 
 const baseClassName = 'community-renderer';
 
@@ -106,18 +107,26 @@ class CommunityRenderer extends React.Component<OwnProps, State> {
 						/>
 
 						<div className={'page-content'}>
-							<PostCreator communityID={this.props.communityID} />
-							{this.state.postIDs.length
-								? this.state.postIDs.map(postID => (
-										<Post key={postID} entity_id={postID} />
-								  ))
-								: 'No posts here.'}
-							<Button
-								fill
-								className={`${baseClassName}-load-more-posts`}
-								label={'Load more posts...'}
-								onClick={this.loadMorePosts}
-							/>
+							<div className={`${baseClassName}__posts`}>
+								<PostCreator
+									communityID={this.props.communityID}
+								/>
+								{this.state.postIDs.length
+									? this.state.postIDs.map(postID => (
+											<Post
+												key={postID}
+												entity_id={postID}
+											/>
+									  ))
+									: 'No posts here.'}
+								<Button
+									fill
+									className={`${baseClassName}-load-more-posts`}
+									label={'Load more posts...'}
+									onClick={this.loadMorePosts}
+								/>
+							</div>
+							<CommunitySidebar />
 						</div>
 					</>
 				)}

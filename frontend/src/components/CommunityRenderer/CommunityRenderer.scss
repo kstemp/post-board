@@ -4,14 +4,6 @@
 	width: 100%;
 	height: 100%;
 
-	//	margin-left: 10em;
-
-	> .page-content {
-		//@at-root//	margin-left: 0.5em;
-		//margin-top: 0.5em;
-		margin-top: 0.1em;
-	}
-
 	&-load-more-posts {
 		width: 100%;
 	}
@@ -35,5 +27,31 @@
 			vertical-align: bottom;
 			display: table-cell;
 		}
+	}
+
+	&__posts {
+		width: 500px;
+	}
+}
+
+.page-content {
+	width: 100%;
+	height: 100%;
+
+	padding-left: 1em;
+	padding-top: 1em;
+
+	display: flex;
+
+	> .community-sidebar {
+		margin-left: 1em; // TODO make a variable
+	}
+}
+
+@media only screen and (max-width: 480px) {
+	.page-content {
+		width: 100%;
+		padding-left: 0;
+		padding-top: 0.1em;
 	}
 }

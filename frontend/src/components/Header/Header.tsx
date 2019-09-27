@@ -18,7 +18,9 @@ class Header extends React.Component<StateProps> {
 	render() {
 		return (
 			<div className={baseClassName}>
-				<span className={`${baseClassName}__label`}>post-board</span>
+				<span className={`${baseClassName}__label`}>
+					<b>post-board</b>
+				</span>
 				<div className={`${baseClassName}__container`}>
 					{this.props.isLoggedIn && (
 						<React.Fragment>

@@ -1,12 +1,12 @@
 @import '../../controls/variables.scss';
 .post {
 	width: 100%;
-	border: 1px solid lightgray;
+	border: $border;
 
 	background-color: white;
 
 	margin-bottom: 2px;
-	padding: 5px;
+	padding: $standard-spacing;
 
 	box-sizing: border-box;
 
