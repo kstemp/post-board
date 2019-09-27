@@ -60,7 +60,7 @@ class Dropdown extends React.Component<OwnProps, State> {
 					}
 				/>
 				{this.state.isOpen && (
-					<div className={`${baseClassName}-content`}>
+					<div className={`${baseClassName}__content`}>
 						{this.props.options.map((option, index) => (
 							<Button
 								label={option.label}
