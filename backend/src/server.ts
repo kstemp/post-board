@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 
 app.use('/community', require('./routes/community'));
 app.use('/post', require('./routes/post'));
-app.use('/session', require('./routes/session'));
+app.use('/users', require('./routes/users'));
 app.use('/reactions', require('./routes/reactions'));
 
 app.get('/', (req, res) => res.sendStatus(204));

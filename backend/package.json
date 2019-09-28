@@ -23,12 +23,15 @@
 		"express-validator": "^6.2.0",
 		"jsonwebtoken": "^8.5.1",
 		"keycloak-connect": "^7.0.0",
+		"md5": "^2.2.1",
 		"node-fetch": "^2.6.0",
+		"nodemailer": "^6.3.0",
 		"pg-promise": "^9.1.2",
 		"ts-node": "^8.3.0",
 		"typescript": "^3.6.3"
 	},
 	"devDependencies": {
+		"@types/md5": "^2.1.33",
 		"chai": "^4.2.0",
 		"chai-http": "^4.3.0",
 		"mocha": "^6.2.0",

@@ -3,11 +3,10 @@ import store from './entities/store';
 import { createEntity } from './entities/entity';
 import { ITokenPayload } from './entities/types';
 
-export const register = (login: string, email: string, password: string) =>
+export const register = (email: string, password: string) =>
 	createEntity(
-		'/session/register',
+		'/users/register',
 		JSON.stringify({
-			login: login,
 			email: email,
 			password: password
 		})

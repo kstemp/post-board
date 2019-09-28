@@ -52,10 +52,13 @@ router.get(
 	],
 	checkValidation,
 	verifyToken(false),
-	(req: express.Request, res: express.Response) =>
+	(
+		req: express.Request,
+		res: express.Response // , get_metadata_for_entity_id(comments.entity_id, $3)
+	) =>
 		db
 			.manyOrNone(
-				`SELECT * FROM comments, get_metadata_for_entity_id(comments.entity_id, $3) WHERE parent_post_id = $1 AND parent_comment_id ${
+				`SELECT * FROM comments WHERE parent_post_id = $1 AND parent_comment_id ${
 					req.query['parent_comment_id'] ? ' = $2' : 'IS NULL'
 				}`,
 				[

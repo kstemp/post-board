@@ -1,5 +1,3 @@
-export const SECRET = 'JNIMFY.IVILWH,AIAVAOAI.IM,WCITTAH?';
-
 export const POSTGRES_USER = 'postgres';
 export const POSTGRES_PASSWORD = 'postgres';
 export const POSTGRES_HOST = 'localhost';

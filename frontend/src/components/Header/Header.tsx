@@ -21,6 +21,7 @@ class Header extends React.Component<StateProps> {
 				<span className={`${baseClassName}__label`}>
 					<b>post-board</b>
 				</span>
+				
 				<div className={`${baseClassName}__container`}>
 					{this.props.isLoggedIn && (
 						<React.Fragment>

@@ -6,7 +6,7 @@
 
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import { SECRET } from './config';
+import { SECRET } from './secret';
 
 const verifyToken = (mustBeLoggedIn: boolean) => {
 	return (req: Request, res: Response, next: NextFunction) => {
