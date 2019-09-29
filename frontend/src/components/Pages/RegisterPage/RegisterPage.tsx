@@ -9,6 +9,7 @@ import { FetchError } from '../../../entities/entity';
 import Button from '../../../controls/Button/Button';
 
 import './RegisterPage.scss';
+import Input from '../../../controls/Input/Input';
 const baseClassName = 'register-page';
 
 interface OwnProps {
@@ -20,7 +21,6 @@ interface OwnProps {
 interface State {
 	stage: 'redirect' | 'data_input' | 'email_code';
 	userData: {
-		login: string;
 		email: string;
 		password: string;
 	};
@@ -34,67 +34,76 @@ class RegisterPage extends React.Component<Props, State> {
 
 		this.state = {
 			stage: 'data_input',
-			userData: { login: '', email: '', password: '' }
+			userData: { email: '', password: '' }
 		};
 	}
 
-	registerStage1 = () => {
+	registerStage1 = async () => {
 		//	console.log('login: ', login, ' password: ', password);
-
-		register(this.state.userData.email, this.state.userData.password)
-			.then(() =>
-				this.setState({
-					stage: 'email_code'
-				})
-			)
-			.catch((error: FetchError) =>
-				displayErrorNotification('Failed to register', error)
+		try {
+			await register(
+				this.state.userData.email,
+				this.state.userData.password
 			);
+
+			this.setState({
+				stage: 'email_code'
+			});
+		} catch (error) {
+			displayErrorNotification('Failed to register', error);
+		}
 	};
 
-	setUserData = (id: 'email' | 'login' | 'password') => {
-		return (event: React.ChangeEvent<HTMLInputElement>) =>
-			this.setState({
-				userData: { ...this.state.userData, [id]: event.target.value }
-			});
-	};
+	setUserData = (id: 'email' | 'password') => (
+		event: React.ChangeEvent<HTMLInputElement>
+	) =>
+		this.setState({
+			userData: { ...this.state.userData, [id]: event.target.value }
+		});
+
+	validate = (id: 'email' | 'password') => () => {};
 
 	render() {
-		console.log(this.state.userData);
+		//console.log(this.state.userData);
 		switch (this.state.stage) {
 			case 'redirect':
 				return <Redirect to={'login'} />;
 			case 'email_code':
 				return (
-					<div className={'page-content'}>
+					<div className={baseClassName}>
 						<p>
 							We have send a verification email to{' '}
-							{this.state.userData.email}.
+							<b>{this.state.userData.email}</b>
 						</p>
 					</div>
 				);
 			case 'data_input':
 				return (
-					<div className={'page-content'}>
+					<div className={baseClassName}>
+						<p>
+							<b>Create your account</b>
+						</p>
 						<div className={`${baseClassName}__form-field`}>
 							<span className={`${baseClassName}__label`}>
 								E-mail
 							</span>
-							<input
+							<Input
 								placeholder={'email@domain.com'}
 								required
 								onChange={this.setUserData('email')}
+								onSubmit={this.registerStage1}
 							/>
 						</div>
 						<div className={`${baseClassName}__form-field`}>
 							<span className={`${baseClassName}__label`}>
 								Password
 							</span>
-							<input
+							<Input
 								placeholder={'Your password'}
 								required
 								type={'password'}
 								onChange={this.setUserData('password')}
+								onSubmit={this.registerStage1}
 							/>
 						</div>
 						<Button

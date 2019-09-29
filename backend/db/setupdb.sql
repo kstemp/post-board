@@ -70,7 +70,7 @@ CREATE TABLE posts (
 
 	parent_community_id INTEGER REFERENCES communities (community_id), 
 
-	user_id INTEGER NOT NULL REFERENCES users (user_id),
+	user_id INTEGER REFERENCES users (user_id),
 
 	created_on TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT (NOW() AT TIME ZONE 'utc'),
 
@@ -89,7 +89,7 @@ CREATE TABLE comments (
 	parent_post_id INTEGER NOT NULL REFERENCES posts (entity_id),
 	parent_comment_id INTEGER REFERENCES comments (entity_id),
 
-	user_id INTEGER NOT NULL REFERENCES users (user_id),
+	user_id INTEGER REFERENCES users (user_id),
 
 	created_on TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT (NOW() AT TIME ZONE 'utc'),
 

@@ -1,5 +1,4 @@
 import React from 'react';
-import PostCreator from './components/PostCreator/PostCreator';
 import {
 	BrowserRouter as Router,
 	Route,
@@ -10,7 +9,6 @@ import LoginPage from './components/Pages/LoginPage/LoginPage';
 import HomePage from './components/Pages/HomePage/HomePage';
 import RegisterPage from './components/Pages/RegisterPage/RegisterPage';
 import UserPage from './components/Pages/UserPage/UserPage';
-import Header from './components/Header/Header';
 import CommunityRenderer from './components/CommunityRenderer/CommunityRenderer';
 
 interface MatchParams {

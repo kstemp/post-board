@@ -24,15 +24,15 @@ class App extends React.Component {
 					></link>
 					<ToastContainer />
 					<Header />
-					<div className={'page'}>
-						<Sidebar />
-						<MainRouter />
-					</div>
+					<MainRouter />
+
 					<footer>post-board v.0.1 (C) by kstemp</footer>
 				</div>
 			</Provider>
 		);
 	}
 }
-//
+//<div className={'page'}>
+//<Sidebar />
+//</div>
 export default App;
