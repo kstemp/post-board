@@ -8,14 +8,10 @@
 	box-sizing: border-box;
 	box-shadow: 0 0 2px 0px $color-disabled-text;
 
-	//margin-top: $header-height;
+	margin-top: 2 * $header-height;
 	margin-left: auto;
 	margin-right: auto;
 	width: 500px;
-
-	position: relative;
-	top: 0;
-	bottom: 0;
 
 	background-color: white;
 
@@ -41,5 +37,12 @@
 		> span {
 			font-weight: 450;
 		}
+	}
+}
+
+@media only screen and (max-width: 480px) {
+	.register-page {
+		width: 100%;
+		margin-top: $header-height;
 	}
 }
