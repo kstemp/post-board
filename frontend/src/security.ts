@@ -12,11 +12,11 @@ export const register = (email: string, password: string) =>
 		})
 	);
 
-export const securityLogin = (login: string, password: string) =>
+export const securityLogin = (email: string, password: string) =>
 	createEntity<ITokenPayload>(
-		'/session/login',
+		'/users/login',
 		JSON.stringify({
-			login: login,
+			email: email,
 			password: password
 		}),
 		true

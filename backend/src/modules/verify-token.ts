@@ -29,8 +29,7 @@ const verifyToken = (mustBeLoggedIn: boolean) => {
 				return res.sendStatus(403);
 			}
 
-			//console.log('Login: ', (decoded as any).login);
-			(req as any).login = (decoded as any).login;
+			(req as any).userID = (decoded as any).userID;
 
 			return next();
 		});

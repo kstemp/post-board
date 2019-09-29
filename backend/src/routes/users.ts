@@ -109,46 +109,40 @@ router.get(
 	}
 );
 
-router.post(
-	'/login',
-	[
-		check('login', 'Login does not exist').custom(login =>
-			checkLoginExists(login)
-				.then(exists => (exists ? Promise.resolve() : Promise.reject()))
-				.catch(err => Promise.reject())
-		)
-	],
-	checkValidation,
-	(req: express.Request, res: express.Response) => {
-		db.one('SELECT * FROM users WHERE login=$1', [req.body.login])
-			.then(data => {
-				console.log('Hashed password: ', data.password);
-				return bcrypt
-					.compare(req.body.password, data.password)
-					.then(correct => {
-						if (!correct) {
-							return res.sendStatus(403);
-						}
-						const token = jwt.sign(
-							{ login: req.body.login },
-							SECRET,
-							{
-								expiresIn: 600
-							}
-						);
-						return res.status(200).send({
-							token: token
-						});
-					})
-					.catch(err => {
-						return console.log(err); // TODO can bcrypt fail here?
-					});
-			})
-			.catch(error => {
-				console.log(error);
-				return res.sendStatus(500);
-			});
+// TODO validation
+router.post('/login', async (req: express.Request, res: express.Response) => {
+	try {
+		const data = await db.oneOrNone(
+			'SELECT user_id, password FROM users WHERE email=$1',
+			[req.body['email']]
+		);
+
+		console.log(data);
+
+		if (!data) {
+			return res.sendStatus(401);
+		}
+
+		const correct = await bcrypt.compare(
+			req.body['password'],
+			data['password']
+		);
+
+		if (!correct) {
+			return res.sendStatus(401);
+		}
+
+		const token = jwt.sign({ userID: data['user_id'] }, SECRET, {
+			expiresIn: 600
+		});
+
+		return res.status(200).send({
+			token: token
+		});
+	} catch (e) {
+		console.log(e);
+		return res.sendStatus(500);
 	}
-);
+});
 
 module.exports = router;

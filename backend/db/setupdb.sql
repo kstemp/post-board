@@ -211,5 +211,24 @@ END;
 $$ 
 LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION update_reaction_count() RETURNS TRIGGER AS 
+$$ 
+BEGIN
+	IF TG_OP = 'INSERT' THEN
+	
+		UPDATE posts SET reaction_count = reaction_count + 1 WHERE posts.entity_id = NEW.parent_entity_id;
+
+	ELSIF TG_OP = 'DELETE' THEN
+
+    	UPDATE posts SET reaction_count = reaction_count - 1 WHERE posts.entity_id = OLD.parent_entity_id;
+
+	END IF;
+
+	RETURN NEW;
+END;
+$$ 
+LANGUAGE plpgsql;
+
 CREATE TRIGGER update_comment_count AFTER INSERT OR DELETE ON comments FOR EACH ROW EXECUTE PROCEDURE update_comment_count();
 
+CREATE TRIGGER update_reaction_count AFTER INSERT OR DELETE ON reactions FOR EACH ROW EXECUTE PROCEDURE update_reaction_count();

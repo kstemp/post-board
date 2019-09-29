@@ -37,7 +37,7 @@ router.get(
 		execSQLQuery(
 			req,
 			res,
-			'SELECT ARRAY(SELECT entity_id FROM posts WHERE parent_community_id = $1 ORDER BY get_reaction_count_for_entity_id(entity_id) DESC, created_on DESC OFFSET $2 LIMIT 5) AS entity_ids',
+			'SELECT ARRAY(SELECT entity_id FROM posts WHERE parent_community_id = $1 ORDER BY reaction_count DESC, created_on DESC OFFSET $2 LIMIT 5) AS entity_ids',
 			[req.params.communityID, req.query.offset || 0]
 		)
 );
@@ -71,7 +71,7 @@ router.post(
 			req,
 			res,
 			'SELECT follow_community($1, $2)',
-			[req.params.communityID, (req as any).login],
+			[req.params.communityID, (req as any).userID],
 			true
 		)
 );
@@ -87,7 +87,7 @@ router.post(
 			req,
 			res,
 			'SELECT unfollow_community($1, $2)',
-			[req.params.communityID, (req as any).login],
+			[req.params.communityID, (req as any).userID],
 			true
 		)
 );

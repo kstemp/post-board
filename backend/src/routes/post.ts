@@ -20,10 +20,11 @@ router.get(
 	(req: Request, res: Response) => {
 		//const SQLquery =req.query.metadata_only
 		//? 'SELECT * FROM get_metadata_for_entity_id($1, $2)'*/
-		const SQLquery = 'SELECT * FROM get_post_by_id($1)';
+		const SQLquery =
+			'SELECT * FROM get_post_by_id($1), did_user_react_to_entity_id($1, $2) AS reacted';
 		//: 'SELECT * FROM get_post_by_id($1), get_metadata_for_entity_id($1, $2)';
 
-		db.one(SQLquery, [req.params.postID, (req as any).login])
+		db.one(SQLquery, [req.params.postID, (req as any).userID])
 			.then(data => res.status(200).send(data))
 			.catch(error => {
 				console.log(error);
@@ -48,7 +49,7 @@ router.post(
 		db.any('SELECT create_post($1, $2, $3)', [
 			req.query.communityID,
 			req.body.text,
-			(req as any).login
+			(req as any).userID
 		])
 			.then(() => res.sendStatus(204))
 			.catch(error => {
@@ -67,17 +68,17 @@ router.delete(
 	checkValidation,
 	verifyToken(true),
 	(req: Request, res: Response) => {
-		const login = (req as any).login;
+		const login = (req as any).userID;
 
 		const SQLquery = `WITH deleted AS (
 			DELETE FROM posts 
 			WHERE posts.entity_id = $1 
 			AND (
-				posts.login = $2 
+				posts.user_id = $2 
 				OR EXISTS (
 							SELECT * FROM user_roles 
 							WHERE user_roles.community_id = posts.parent_community_id  
-							AND user_roles.login = $2 
+							AND user_roles.user_id = $2 
 							AND user_roles.role = 'admin'
 						)
 			) 

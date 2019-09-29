@@ -22,7 +22,7 @@ type TEntity = {
 
 	created_on: string;
 
-	login: string;
+	user_id: IDType;
 };
 
 export type TCommentBase = TEntity & {

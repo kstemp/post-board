@@ -60,7 +60,9 @@ class PostCreator extends React.Component<OwnProps, State> {
 	render() {
 		return (
 			<div className={baseClassName}>
-				<p>Create a post: </p>
+				<p>
+					<b>Create a post: </b>
+				</p>
 				<TabControl
 					defaultTab={0}
 					tabs={[{ label: 'Text post' }, { label: 'Image post' }]}

@@ -33,14 +33,14 @@ class LoginPage extends React.Component<Props> {
 	}
 
 	login = () => {
-		const login = (this.refFormPage as any).current.valuesByID['login'];
+		const email = (this.refFormPage as any).current.valuesByID['email'];
 		const password = (this.refFormPage as any).current.valuesByID[
 			'password'
 		];
 
-		console.log('login: ', login, ' password: ', password);
+		console.log('email: ', email, ' password: ', password);
 
-		securityLogin(login, password)
+		securityLogin(email, password)
 			.then(tokenPayload => {
 				console.log(tokenPayload);
 				return this.props.setAccessToken(tokenPayload.token);
@@ -60,8 +60,8 @@ class LoginPage extends React.Component<Props> {
 					title={'Login to post-board'}
 					fields={[
 						{
-							id: 'login',
-							placeholder: 'Login',
+							id: 'email',
+							placeholder: 'Email',
 							required: true
 						},
 						{

@@ -98,7 +98,7 @@ class Comment extends React.Component<Props, State> {
 			<div className={baseClassName}>
 				<div className={`${baseClassName}__header`}>
 					<span className={`${baseClassName}__header-login`}>
-						{this.props.comment.login || 'Anonymous'}
+						{this.props.comment.user_id || 'Anonymous'}
 					</span>
 					<span className={`${baseClassName}__header-created-on`}>
 						{prettyPrintDateDifference(

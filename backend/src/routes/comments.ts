@@ -26,7 +26,7 @@ router.post(
 			.one('SELECT * FROM create_comment($1, $2, $3, $4)', [
 				req.params['post_id'],
 				req.body.text,
-				(req as any).login,
+				(req as any).userID,
 				req.query['parent_comment_id']
 			])
 			.then(data => {
@@ -64,7 +64,7 @@ router.get(
 				[
 					req.params['post_id'],
 					req.query['parent_comment_id'],
-					(req as any).login
+					(req as any).userID
 				]
 			)
 			.then(comments => res.status(200).send(comments))

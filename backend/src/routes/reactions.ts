@@ -15,8 +15,8 @@ router.post(
 		execSQLQuery(
 			req,
 			res,
-			'INSERT INTO reactions (parent_entity_id, login) VALUES ($1, $2)',
-			[req.query.entityID, (req as any).login],
+			'INSERT INTO reactions (parent_entity_id, user_id) VALUES ($1, $2)',
+			[req.query.entityID, (req as any).userID],
 			true
 		)
 );
@@ -30,8 +30,8 @@ router.delete(
 		execSQLQuery(
 			req,
 			res,
-			'DELETE FROM reactions WHERE reactions.parent_entity_id = $1 AND reactions.login = $2',
-			[req.query.entityID, (req as any).login],
+			'DELETE FROM reactions WHERE reactions.parent_entity_id = $1 AND reactions.user_id = $2',
+			[req.query.entityID, (req as any).userID],
 			true
 		)
 );

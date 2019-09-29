@@ -99,9 +99,9 @@ class Post extends React.Component<Props, State> {
 			<div className={`${baseClassName}`}>
 				<div className={`${baseClassName}__header`}>
 					<span className={`${baseClassName}__header-user`}>
-						{this.state.post.login ? (
-							<NavLink to={`/user/${this.state.post.login}`}>
-								<b>{this.state.post.login}</b>
+						{this.state.post.user_id ? (
+							<NavLink to={`/user/${this.state.post.user_id}`}>
+								<b>{this.state.post.user_id}</b>
 							</NavLink>
 						) : (
 							'Anonymous'
