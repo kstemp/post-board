@@ -11,17 +11,6 @@
 	background-color: $color-background;
 
 	position: fixed;
-	overflow-y: auto;
-
-	> footer {
-		position: relative;
-		bottom: 0;
-		left: 0;
-		width: 100%;
-		height: $header-height;
-
-		text-align: center;
-	}
 
 	.page {
 		position: relative;

@@ -2,7 +2,12 @@
 
 .community-renderer {
 	width: 100%;
-	height: 100%;
+
+	position: absolute;
+	top: $header-height;
+	bottom: $standard-spacing;
+
+	overflow-y: auto;
 
 	&-load-more-posts {
 		width: 100%;

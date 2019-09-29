@@ -21,7 +21,7 @@ class Header extends React.Component<StateProps> {
 				<span className={`${baseClassName}__label`}>
 					<b>post-board</b>
 				</span>
-				
+
 				<div className={`${baseClassName}__container`}>
 					{this.props.isLoggedIn && (
 						<React.Fragment>
@@ -43,7 +43,7 @@ class Header extends React.Component<StateProps> {
 							onClick={securityLogout}
 						/>
 					) : (
-						<></> //<LoginDropdown />
+						<Button fill label={'Login'} />
 					)}
 				</div>
 			</div>

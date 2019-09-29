@@ -25,8 +25,6 @@ class App extends React.Component {
 					<ToastContainer />
 					<Header />
 					<MainRouter />
-
-					<footer>post-board v.0.1 (C) by kstemp</footer>
 				</div>
 			</Provider>
 		);

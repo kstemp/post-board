@@ -89,12 +89,11 @@ router.get(
 				[data['email'], data['password']]
 			);
 
-			await db.none(
-				'DELETE FROM nonactive_users WHERE email=$1 AND email_hash=$2',
-				[req.query['email'], req.query['email_hash']]
-			);
+			await db.none('DELETE FROM nonactive_users WHERE email=$1', [
+				req.query['email']
+			]);
 
-			return res.sendStatus(200);
+			return res.redirect('http://localhost:3000/login');
 		} catch (e) {
 			if (e.code === errors.queryResultErrorCode.noData) {
 				return res.sendStatus(400);
