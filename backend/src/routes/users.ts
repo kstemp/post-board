@@ -7,6 +7,7 @@ import { checkLoginExists, checkValidation } from '../modules/validator';
 import jwt from 'jsonwebtoken';
 import md5 from 'md5';
 import { queryResult, errors } from 'pg-promise';
+import { resolveSoa } from 'dns';
 
 const router = express.Router();
 
@@ -21,10 +22,27 @@ const randomInRange = (min: number, max: number) => {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-//TODO check if email is in use, because we get internal server error...!!!!!!!!!!!
+//TODO  password length!!!
 router.post(
 	'/register',
-	[check('email').isEmail(), check('password').isLength({ min: 8 })],
+	[
+		check('email')
+			.isEmail()
+			.custom(async emailToVerify => {
+				try {
+					const email = await db.oneOrNone(
+						'SELECT email FROM users WHERE email=$1',
+						[emailToVerify]
+					);
+
+					return email ? Promise.reject() : Promise.resolve();
+				} catch (e) {
+					console.log(e);
+					return Promise.reject();
+				}
+			}),
+		check('password').isLength({ min: 8 })
+	],
 	checkValidation,
 	async (req: express.Request, res: express.Response) => {
 		try {
@@ -62,7 +80,7 @@ router.get(
 	async (req: express.Request, res: express.Response) => {
 		try {
 			const data = await db.one(
-				'SELECT * FROM nonactive_users WHERE email=$1 AND email_hash=$2',
+				'SELECT email, password FROM nonactive_users WHERE email=$1 AND email_hash=$2',
 				[req.query['email'], req.query['email_hash']]
 			);
 
