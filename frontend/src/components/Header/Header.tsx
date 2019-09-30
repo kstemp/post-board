@@ -75,7 +75,7 @@ class Header extends React.Component<StateProps, State> {
 							onClick={securityLogout}
 						/>
 					) : (
-						<NavLink to={'login'}>
+						<NavLink to={'/login'}>
 							<Button
 								fill
 								label={'Login'}
