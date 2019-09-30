@@ -1,31 +1,33 @@
 import React from 'react';
-import { IDType, TContentSorting } from '../../entities/types';
+import { IDType, TContentSorting, IBoard } from '../../entities/types';
 import CommunityBar from '../CommunityBar/CommunityBar';
 
 import './CommunityRenderer.scss';
 import {
 	fetchPostIDsForCommunityID,
-	fetchCommunityMetadataForCommunityID
+	fetchBoardMetadata
 } from '../../entities/fetchers';
 import { displayErrorNotification } from '../../util/notification';
 import Post from '../Post/Post';
 import Button from '../../controls/Button/Button';
 import PostCreator from '../PostCreator/PostCreator';
 import { FetchError } from '../../entities/entity';
-import CommunitySidebar from '../CommunitySidebar/CommunitySidebar';
+import CommunitySidebar from '../BoardSidebar/BoardSidebar';
+import BoardSidebar from '../BoardSidebar/BoardSidebar';
 
 const baseClassName = 'community-renderer';
 
 interface OwnProps {
-	communityID: IDType;
+	boardID: string;
 }
 
 interface State {
 	failedToLoadMetadata: boolean;
-	communityName: string;
 	postIDs: IDType[];
 	currentOffset: number;
 	contentSorting: TContentSorting;
+
+	metadata?: IBoard;
 }
 
 class CommunityRenderer extends React.Component<OwnProps, State> {
@@ -33,7 +35,6 @@ class CommunityRenderer extends React.Component<OwnProps, State> {
 		super(props);
 
 		this.state = {
-			communityName: '',
 			failedToLoadMetadata: false,
 			postIDs: [],
 			currentOffset: 0,
@@ -49,12 +50,12 @@ class CommunityRenderer extends React.Component<OwnProps, State> {
 	};
 
 	componentDidMount() {
-		fetchCommunityMetadataForCommunityID(this.props.communityID)
+		fetchBoardMetadata(this.props.boardID)
 			.then(data => {
 				this.loadMorePosts();
 				return this.setState({
 					// TODO we should just get a string, and not an object
-					communityName: data.name
+					metadata: data
 				});
 			})
 			.catch((error: FetchError) => {
@@ -69,7 +70,7 @@ class CommunityRenderer extends React.Component<OwnProps, State> {
 	}
 
 	loadMorePosts = () => {
-		fetchPostIDsForCommunityID(
+		/*fetchPostIDsForCommunityID(
 			this.props.communityID,
 			this.state.currentOffset,
 			this.state.contentSorting
@@ -82,7 +83,7 @@ class CommunityRenderer extends React.Component<OwnProps, State> {
 			)
 			.catch((error: FetchError) =>
 				displayErrorNotification('Failed to fetch posts', error)
-			);
+			);*/
 	};
 
 	render() {
@@ -95,10 +96,13 @@ class CommunityRenderer extends React.Component<OwnProps, State> {
 				) : (
 					<>
 						<div className={`${baseClassName}__banner`}>
-							<span>{this.state.communityName}</span>
+							<span>
+								{this.state.metadata &&
+									this.state.metadata.name}
+							</span>
 						</div>
 						<CommunityBar
-							communityID={this.props.communityID}
+							communityID={1}
 							notifyContentSortingChanged={contentSorting =>
 								this.setState({
 									contentSorting: contentSorting
@@ -108,9 +112,7 @@ class CommunityRenderer extends React.Component<OwnProps, State> {
 
 						<div className={'page-content'}>
 							<div className={`${baseClassName}__posts`}>
-								<PostCreator
-									communityID={this.props.communityID}
-								/>
+								<PostCreator communityID={1} />
 								{this.state.postIDs.length
 									? this.state.postIDs.map(postID => (
 											<Post
@@ -126,7 +128,9 @@ class CommunityRenderer extends React.Component<OwnProps, State> {
 									onClick={this.loadMorePosts}
 								/>
 							</div>
-							<CommunitySidebar />
+							{this.state.metadata && (
+								<BoardSidebar metadata={this.state.metadata} />
+							)}
 						</div>
 					</>
 				)}

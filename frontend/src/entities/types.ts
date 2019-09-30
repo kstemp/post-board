@@ -2,14 +2,24 @@ export type IDType = number;
 
 export type EntityTypeEnum = 'post' | 'comment';
 
+export interface IUser {
+	name: string;
+}
+
+export type TUserProfile = IUser & {
+	bio: string;
+};
+
 export interface ITokenPayload {
 	token: string;
 }
 
-export interface ICommunity {
-	id: IDType;
+export interface IBoard {
+	id: string;
 	name: string;
-	followed: boolean;
+	description: string;
+	subscribed_users: number;
+	created_on: string;
 }
 
 export interface IEntityIDs {

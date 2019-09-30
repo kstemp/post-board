@@ -1,17 +1,15 @@
 import { createEntity, fetchEntity } from './entity';
 import {
 	IDType,
-	ICommunity,
 	TComment,
 	TPost,
 	IEntityMetadata,
 	IEntityIDs,
-	TContentSorting
+	TContentSorting,
+	IUser,
+	TUserProfile,
+	IBoard
 } from './types';
-
-export const fetchCommunityMetadataForCommunityID = (communityID: IDType) =>
-	fetchEntity<ICommunity>(`/community/${communityID}`);
-
 export const fetchPostIDsForCommunityID = (
 	communityID: IDType,
 	offset: number,
@@ -37,11 +35,24 @@ export const fetchCommentsForPostIDAndParentCommentID = (
 		}`
 	);
 
+export const fetchUser = (userID: IDType) =>
+	fetchEntity<IUser>(`/users/${userID}`);
+
+export const fetchUserProfile = (userID: IDType) =>
+	fetchEntity<TUserProfile>(`/users/${userID}/profile`);
+
 export const createPost = (postText: string, communityID: IDType) =>
 	createEntity(
 		`/post?communityID=${communityID}`,
 		JSON.stringify({ text: postText })
 	);
+
+/* board-related */
+export const createBoard = (id: string, title: string) =>
+	createEntity(`/boards`, JSON.stringify({ id: id, title: title }));
+
+export const fetchBoardMetadata = (id: string) =>
+	fetchEntity<IBoard>(`/boards/${id}`);
 
 export const createCommentForPostID = (postID: IDType, commentText: string) =>
 	createEntity(

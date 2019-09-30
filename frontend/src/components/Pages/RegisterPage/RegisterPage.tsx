@@ -18,6 +18,7 @@ interface OwnProps {
 interface State {
 	stage: 'redirect' | 'data_input' | 'email_code';
 	userData: {
+		name: string;
 		email: string;
 		password: string;
 	};
@@ -35,7 +36,7 @@ class RegisterPage extends React.Component<Props, State> {
 
 		this.state = {
 			stage: 'data_input',
-			userData: { email: '', password: '' },
+			userData: { name: '', email: '', password: '' },
 			validity: { email: false, password: false } // TODO figure out a better way to make fields initially have no CSS valid/invali styling, but have the button disabled
 		};
 	}
@@ -44,6 +45,7 @@ class RegisterPage extends React.Component<Props, State> {
 		//	console.log('login: ', login, ' password: ', password);
 		try {
 			await register(
+				this.state.userData.name,
 				this.state.userData.email,
 				this.state.userData.password
 			);
@@ -56,7 +58,7 @@ class RegisterPage extends React.Component<Props, State> {
 		}
 	};
 
-	setUserData = (id: 'email' | 'password') => (
+	setUserData = (id: 'name' | 'email' | 'password') => (
 		event: React.ChangeEvent<HTMLInputElement>
 	) =>
 		this.setState({
@@ -94,7 +96,6 @@ class RegisterPage extends React.Component<Props, State> {
 
 	render() {
 		console.log(this.state.validity);
-		//console.log(this.state.userData);
 		switch (this.state.stage) {
 			case 'redirect':
 				return <Redirect to={'login'} />;
@@ -113,6 +114,18 @@ class RegisterPage extends React.Component<Props, State> {
 						<p>
 							<b>Create your account</b>
 						</p>
+						<div className={`${baseClassName}__form-field`}>
+							<span className={`${baseClassName}__label`}>
+								What should we call you?
+							</span>
+							<input
+								className={getClassNames({
+									[`${baseClassName}__input`]: true
+								})}
+								placeholder={'Test User'}
+								onChange={this.setUserData('name')}
+							/>
+						</div>
 						<div className={`${baseClassName}__form-field`}>
 							<span className={`${baseClassName}__label`}>
 								E-mail
@@ -145,6 +158,13 @@ class RegisterPage extends React.Component<Props, State> {
 								onChange={this.setUserData('password')}
 								onBlur={this.validate('password')}
 							/>
+							{!this.state.validity.password && (
+								<span
+									className={`${baseClassName}__label-validity`}
+								>
+									Password must be at least 8 characters long.
+								</span>
+							)}
 						</div>
 						<Button
 							fill

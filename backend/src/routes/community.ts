@@ -37,7 +37,7 @@ router.get(
 		execSQLQuery(
 			req,
 			res,
-			'SELECT ARRAY(SELECT entity_id FROM posts WHERE parent_community_id = $1 ORDER BY reaction_count DESC, created_on DESC OFFSET $2 LIMIT 5) AS entity_ids',
+			"SELECT ARRAY(SELECT entity_id FROM entities WHERE type = 'post' AND parent_community_id = $1 ORDER BY reaction_count DESC, created_on DESC OFFSET $2 LIMIT 5) AS entity_ids",
 			[req.params.communityID, req.query.offset || 0]
 		)
 );
@@ -55,7 +55,7 @@ router.get(
 		execSQLQuery(
 			req,
 			res,
-			'SELECT ARRAY(SELECT entity_id FROM posts WHERE parent_community_id = $1 ORDER BY created_on DESC OFFSET $2 LIMIT 5) AS entity_ids',
+			"SELECT ARRAY(SELECT entity_id FROM entities WHERE type='post' AND parent_community_id = $1 ORDER BY created_on DESC OFFSET $2 LIMIT 5) AS entity_ids",
 			[req.params.communityID, req.query.offset || 0]
 		)
 );

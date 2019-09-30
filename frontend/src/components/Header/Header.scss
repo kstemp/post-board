@@ -26,4 +26,8 @@
 	&__label {
 		color: $color-hover;
 	}
+
+	&__container {
+		display: flex;
+	}
 }

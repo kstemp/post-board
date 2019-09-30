@@ -12,6 +12,7 @@ app.use('/community', require('./routes/community'));
 app.use('/post', require('./routes/post'));
 app.use('/users', require('./routes/users'));
 app.use('/reactions', require('./routes/reactions'));
+app.use('/boards', require('./routes/boards'));
 
 app.get('/', (req, res) => res.sendStatus(204));
 

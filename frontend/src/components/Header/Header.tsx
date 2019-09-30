@@ -7,14 +7,44 @@ import { isLoggedIn } from '../../entities/selectors';
 import { securityLogout } from '../../security';
 
 import './Header.scss';
+import LoginPage from '../Pages/LoginPage/LoginPage';
+import { displayErrorNotification } from '../../util/notification';
+import { createBoard } from '../../entities/fetchers';
 
 interface StateProps {
 	isLoggedIn: boolean;
 }
 
+interface State {
+	openLoginFields?: boolean;
+}
+
 const baseClassName = 'header';
 
-class Header extends React.Component<StateProps> {
+class Header extends React.Component<StateProps, State> {
+	constructor(props: StateProps) {
+		super(props);
+
+		this.state = {
+			openLoginFields: false
+		};
+	}
+
+	createBoard = async () => {
+		const boardID =
+			prompt("Enter the ID for the new board (e.g. 'sampleboard1')") ||
+			'';
+		const boardTitle =
+			prompt(
+				"Enter the title of the new board (e.g. 'Sample Board 1')"
+			) || '';
+		try {
+			await createBoard(boardID, boardTitle);
+		} catch (e) {
+			return displayErrorNotification('Failed to create board', e);
+		}
+	};
+
 	render() {
 		return (
 			<div className={baseClassName}>
@@ -26,9 +56,16 @@ class Header extends React.Component<StateProps> {
 					{this.props.isLoggedIn && (
 						<React.Fragment>
 							<Button
-								icon={'notifications'}
-								toolTipEnabled={'Notifications'}
+								icon={'post_add'}
+								toolTipEnabled={'Create a board'}
+								onClick={this.createBoard}
+								label={'New Board'}
 							/>
+							<Button
+								icon={'people_alt'}
+								toolTipEnabled={'My friends'}
+							/>
+							<Button icon={'person'} />
 							<Button
 								icon={'people_alt'}
 								toolTipEnabled={'My friends'}
@@ -36,6 +73,7 @@ class Header extends React.Component<StateProps> {
 							<Button icon={'person'} />
 						</React.Fragment>
 					)}
+					{this.state.openLoginFields && <LoginPage />}
 					{this.props.isLoggedIn ? (
 						<Button
 							fill
@@ -43,7 +81,13 @@ class Header extends React.Component<StateProps> {
 							onClick={securityLogout}
 						/>
 					) : (
-						<Button fill label={'Login'} />
+						<Button
+							fill
+							label={'Login'}
+							onClick={() =>
+								this.setState({ openLoginFields: true })
+							}
+						/>
 					)}
 				</div>
 			</div>

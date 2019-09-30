@@ -3,14 +3,18 @@ import React from 'react';
 import CommentList from '../CommentList/CommentList';
 import Button from '../../controls/Button/Button';
 
-import { TPost, IDType } from '../../entities/types';
+import { TPost, IDType, IUser } from '../../entities/types';
 
 import { prettyPrintDateDifference } from '../../util/date';
 import { ReducerStateType } from '../../entities/reducer';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { isLoggedIn } from '../../entities/selectors';
-import { fetchPostByID, fetchMetadataForPostID } from '../../entities/fetchers';
+import {
+	fetchPostByID,
+	fetchMetadataForPostID,
+	fetchUser
+} from '../../entities/fetchers';
 
 import {
 	createReactionForEntityID,
@@ -34,6 +38,7 @@ interface StateProps {
 interface State {
 	showComments: boolean;
 	post?: TPost;
+	userData: IUser | null;
 }
 
 type Props = OwnProps & StateProps;
@@ -43,16 +48,26 @@ class Post extends React.Component<Props, State> {
 		super(props);
 
 		this.state = {
-			showComments: false
+			showComments: false,
+			userData: null
 		};
 	}
 
-	fetchPost = () =>
-		fetchPostByID(this.props.entity_id)
-			.then(post => this.setState({ post: post }))
-			.catch((error: FetchError) =>
-				displayErrorNotification('Failed to load post', error)
-			);
+	fetchPost = async () => {
+		try {
+			const post = await fetchPostByID(this.props.entity_id);
+			const userData = post.user_id
+				? await fetchUser(post.user_id)
+				: null;
+
+			return this.setState({
+				post: post,
+				userData: userData
+			});
+		} catch (error) {
+			return displayErrorNotification('Failed to load post', error);
+		}
+	};
 
 	fetchMetadata = () =>
 		fetchMetadataForPostID(this.props.entity_id)
@@ -101,7 +116,10 @@ class Post extends React.Component<Props, State> {
 					<span className={`${baseClassName}__header-user`}>
 						{this.state.post.user_id ? (
 							<NavLink to={`/user/${this.state.post.user_id}`}>
-								<b>{this.state.post.user_id}</b>
+								<b>
+									{this.state.userData &&
+										this.state.userData.name}
+								</b>
 							</NavLink>
 						) : (
 							'Anonymous'

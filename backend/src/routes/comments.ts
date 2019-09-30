@@ -58,8 +58,8 @@ router.get(
 	) =>
 		db
 			.manyOrNone(
-				`SELECT * FROM comments WHERE parent_post_id = $1 AND parent_comment_id ${
-					req.query['parent_comment_id'] ? ' = $2' : 'IS NULL'
+				`SELECT * FROM entities WHERE parent_entity_id = $1 AND parent_comment_id ${
+					req.query['parent_entity_id'] ? ' = $2' : 'IS NULL'
 				}`,
 				[
 					req.params['post_id'],

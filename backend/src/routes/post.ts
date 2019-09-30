@@ -21,7 +21,7 @@ router.get(
 		//const SQLquery =req.query.metadata_only
 		//? 'SELECT * FROM get_metadata_for_entity_id($1, $2)'*/
 		const SQLquery =
-			'SELECT * FROM get_post_by_id($1), did_user_react_to_entity_id($1, $2) AS reacted';
+			'SELECT * FROM get_entity_by_id($1), did_user_react_to_entity_id($1, $2) AS reacted';
 		//: 'SELECT * FROM get_post_by_id($1), get_metadata_for_entity_id($1, $2)';
 
 		db.one(SQLquery, [req.params.postID, (req as any).userID])

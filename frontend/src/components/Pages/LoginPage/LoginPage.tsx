@@ -3,40 +3,25 @@ import { Dispatch } from 'redux';
 import { securityLogin } from '../../../security';
 import { displayErrorNotification } from '../../../util/notification';
 import { connect } from 'react-redux';
-import { Link, Redirect } from 'react-router-dom';
-import FormPage from '../FormPage/FormPage';
 import { ReducerStateType } from '../../../entities/reducer';
 import { isLoggedIn } from '../../../entities/selectors';
 import { FetchError } from '../../../entities/entity';
-import { ITokenPayload } from '../../../entities/types';
 
+import './LoginPage.scss';
+import Button from '../../../controls/Button/Button';
 const baseClassName = 'login-page';
-
-interface OwnProps {
-	redirectTo: string;
-}
 
 interface StateProps {
 	setAccessToken: (arg0: string) => void;
 	isLoggedIn: boolean;
 }
 
-type Props = OwnProps & StateProps;
+type Props = StateProps;
 
 class LoginPage extends React.Component<Props> {
-	private refFormPage: React.RefObject<FormPage>;
-
-	constructor(props: Props) {
-		super(props);
-
-		this.refFormPage = React.createRef();
-	}
-
 	login = () => {
-		const email = (this.refFormPage as any).current.valuesByID['email'];
-		const password = (this.refFormPage as any).current.valuesByID[
-			'password'
-		];
+		const email = 'another@outlook.com';
+		const password = 'lomtjjz2';
 
 		console.log('email: ', email, ' password: ', password);
 
@@ -51,32 +36,11 @@ class LoginPage extends React.Component<Props> {
 	};
 
 	render() {
-		return this.props.isLoggedIn ? (
-			<Redirect to={this.props.redirectTo} />
-		) : (
+		return (
 			<div className={baseClassName}>
-				<FormPage
-					ref={this.refFormPage}
-					title={'Login to post-board'}
-					fields={[
-						{
-							id: 'email',
-							placeholder: 'Email',
-							required: true
-						},
-						{
-							id: 'password',
-							placeholder: 'Password',
-							password: true,
-							required: true
-						}
-					]}
-					buttonLabel={'Login'}
-					onFormSubmit={this.login}
-				/>
-				<p>
-					No account? <Link to={'/register'}>Register here</Link>!
-				</p>
+				<input placeholder={'E-mail'} />
+				<input placeholder={'Password'} type={'password'} />
+				<Button label={'ggg'} onClick={this.login} />
 			</div>
 		);
 	}
