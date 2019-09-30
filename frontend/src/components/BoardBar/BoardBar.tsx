@@ -1,12 +1,14 @@
 import React from 'react';
 
-import './CommunityBar.scss';
+import './BoardBar.scss';
 import Dropdown from '../../controls/Dropdown/Dropdown';
 import { connect } from 'react-redux';
 import { ReducerStateType } from '../../entities/reducer';
 import { isLoggedIn } from '../../entities/selectors';
 import { TContentSorting } from '../../entities/types';
-const baseClassName = 'community-bar';
+import Button from '../../controls/Button/Button';
+
+const baseClassName = 'board-bar';
 
 interface OwnProps {
 	communityID: number;
@@ -19,10 +21,11 @@ interface StateProps {
 
 type Props = OwnProps & StateProps;
 
-class CommunityBar extends React.Component<Props> {
+class BoardBar extends React.Component<Props> {
 	render() {
 		return (
 			<div className={baseClassName}>
+				{this.props.isLoggedIn && <Button label={'Follow'} />}
 				<span>Sort posts by: </span>
 				<Dropdown
 					defaultOption={0}
@@ -49,4 +52,4 @@ class CommunityBar extends React.Component<Props> {
 const mapStateToProps = (state: ReducerStateType) => ({
 	isLoggedIn: isLoggedIn(state)
 });
-export default connect(mapStateToProps)(CommunityBar);
+export default connect(mapStateToProps)(BoardBar);

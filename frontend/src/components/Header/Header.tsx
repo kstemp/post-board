@@ -7,7 +7,7 @@ import { isLoggedIn } from '../../entities/selectors';
 import { securityLogout } from '../../security';
 
 import './Header.scss';
-import LoginPage from '../Pages/LoginPage/LoginPage';
+//import LoginPage from '../Pages/LoginPage/LoginPage';
 import { displayErrorNotification } from '../../util/notification';
 import { createBoard } from '../../entities/fetchers';
 
@@ -66,14 +66,8 @@ class Header extends React.Component<StateProps, State> {
 								toolTipEnabled={'My friends'}
 							/>
 							<Button icon={'person'} />
-							<Button
-								icon={'people_alt'}
-								toolTipEnabled={'My friends'}
-							/>
-							<Button icon={'person'} />
 						</React.Fragment>
 					)}
-					{this.state.openLoginFields && <LoginPage />}
 					{this.props.isLoggedIn ? (
 						<Button
 							fill

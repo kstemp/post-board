@@ -9,7 +9,6 @@ import { displayErrorNotification } from '../../util/notification';
 import './PostCreator.scss';
 import { FetchError } from '../../entities/entity';
 import TabControl from '../../controls/TabControl/TabControl';
-import ImageUploader from '../ImageUploader/ImageUploader';
 
 const baseClassName = 'post-creator';
 
@@ -73,7 +72,6 @@ class PostCreator extends React.Component<OwnProps, State> {
 						onChange={this.fieldChanged}
 						required
 					/>
-					<ImageUploader />
 				</TabControl>
 				<Button
 					fill

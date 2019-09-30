@@ -17,7 +17,7 @@ class MainRouter extends React.Component {
 					<Route
 						exact
 						path={'/register'}
-						render={() => <RegisterPage redirectTo={'/'} />}
+						render={() => <RegisterPage />}
 					/>
 
 					<Route

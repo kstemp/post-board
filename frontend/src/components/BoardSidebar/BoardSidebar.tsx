@@ -18,7 +18,6 @@ class BoardSidebar extends React.Component<OwnProps> {
 					</p>
 					<p>Created on: {this.props.metadata.created_on}</p>
 					<br />
-					<p>Community description:</p>
 					<p>{this.props.metadata.description}</p>
 				</div>
 			</div>

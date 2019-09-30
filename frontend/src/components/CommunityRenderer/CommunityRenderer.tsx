@@ -1,6 +1,6 @@
 import React from 'react';
 import { IDType, TContentSorting, IBoard } from '../../entities/types';
-import CommunityBar from '../CommunityBar/CommunityBar';
+import CommunityBar from '../BoardBar/BoardBar';
 
 import './CommunityRenderer.scss';
 import {
@@ -14,6 +14,7 @@ import PostCreator from '../PostCreator/PostCreator';
 import { FetchError } from '../../entities/entity';
 import CommunitySidebar from '../BoardSidebar/BoardSidebar';
 import BoardSidebar from '../BoardSidebar/BoardSidebar';
+import BoardBar from '../BoardBar/BoardBar';
 
 const baseClassName = 'community-renderer';
 
@@ -101,7 +102,7 @@ class CommunityRenderer extends React.Component<OwnProps, State> {
 									this.state.metadata.name}
 							</span>
 						</div>
-						<CommunityBar
+						<BoardBar
 							communityID={1}
 							notifyContentSortingChanged={contentSorting =>
 								this.setState({

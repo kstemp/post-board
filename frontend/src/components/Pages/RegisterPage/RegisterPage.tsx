@@ -3,52 +3,52 @@ import React from 'react';
 import { displayErrorNotification } from '../../../util/notification';
 
 import { register } from '../../../security';
-import { Link, Redirect } from 'react-router-dom';
-import { FetchError } from '../../../entities/entity';
-import Button from '../../../controls/Button/Button';
+import { Link } from 'react-router-dom';
 
 import './RegisterPage.scss';
-import { getClassNames } from '../../../util/class-names';
+import FormPage, { TFormData } from '../FormPage/FormPage';
 const baseClassName = 'register-page';
 
-interface OwnProps {
-	redirectTo: string;
-}
-
 interface State {
-	stage: 'redirect' | 'data_input' | 'email_code';
-	userData: {
-		name: string;
-		email: string;
-		password: string;
-	};
-	validity: {
-		email: boolean;
-		password: boolean;
-	};
+	stage: 'data_input' | 'email_code';
 }
 
-type Props = OwnProps;
+const fields = [
+	{
+		id: 'name',
+		validation: (name: string) => true,
+		placeholder: 'Name Surname',
+		label: 'What should we call you?'
+	},
+	{
+		id: 'email',
+		validation: (email: string) => new RegExp('^\\S+@\\S+$').test(email),
+		placeholder: 'email@domain.com',
+		label: 'Your e-mail address',
+		messageIfInvalid: 'Plase enter a valid e-mail address.'
+	},
+	{
+		id: 'password',
+		validation: (password: string) => password.length >= 8,
+		placeholder: 'At least 8 characters',
+		label: 'Password',
+		type: 'password',
+		messageIfInvalid: 'At least 8 characters long.'
+	}
+];
 
-class RegisterPage extends React.Component<Props, State> {
-	constructor(props: Props) {
+class RegisterPage extends React.Component<{}, State> {
+	constructor(props: {}) {
 		super(props);
-
 		this.state = {
-			stage: 'data_input',
-			userData: { name: '', email: '', password: '' },
-			validity: { email: false, password: false } // TODO figure out a better way to make fields initially have no CSS valid/invali styling, but have the button disabled
+			stage: 'data_input'
 		};
 	}
 
-	registerStage1 = async () => {
-		//	console.log('login: ', login, ' password: ', password);
+	registerStage1 = async (formData: TFormData) => {
+		console.log(formData);
 		try {
-			await register(
-				this.state.userData.name,
-				this.state.userData.email,
-				this.state.userData.password
-			);
+			await register(formData.name, formData.email, formData.password);
 
 			this.setState({
 				stage: 'email_code'
@@ -58,53 +58,14 @@ class RegisterPage extends React.Component<Props, State> {
 		}
 	};
 
-	setUserData = (id: 'name' | 'email' | 'password') => (
-		event: React.ChangeEvent<HTMLInputElement>
-	) =>
-		this.setState({
-			userData: { ...this.state.userData, [id]: event.target.value }
-		});
-
-	validate = (id: 'email' | 'password') => (
-		event: React.FocusEvent<HTMLInputElement>
-	) => {
-		console.log(event.target.value);
-		switch (id) {
-			case 'email': {
-				console.log('validating email');
-				const reg = new RegExp('^\\S+@\\S+$');
-				return this.setState({
-					// TODO this is not good, since setState is a bit async...
-					validity: {
-						...this.state.validity,
-						email: reg.test(event.target.value)
-					}
-				});
-			}
-
-			case 'password': {
-				console.log('validating pass');
-				return this.setState({
-					validity: {
-						...this.state.validity,
-						password: event.target.value.length >= 8
-					}
-				});
-			}
-		}
-	};
-
 	render() {
-		console.log(this.state.validity);
 		switch (this.state.stage) {
-			case 'redirect':
-				return <Redirect to={'login'} />;
 			case 'email_code':
 				return (
 					<div className={baseClassName}>
 						<p>
-							We have send a verification email to{' '}
-							<b>{this.state.userData.email}</b>
+							We have sent a verification email to <b>TODO</b>.
+							You can close this tab now.
 						</p>
 					</div>
 				);
@@ -114,62 +75,9 @@ class RegisterPage extends React.Component<Props, State> {
 						<p>
 							<b>Create your account</b>
 						</p>
-						<div className={`${baseClassName}__form-field`}>
-							<span className={`${baseClassName}__label`}>
-								What should we call you?
-							</span>
-							<input
-								className={getClassNames({
-									[`${baseClassName}__input`]: true
-								})}
-								placeholder={'Test User'}
-								onChange={this.setUserData('name')}
-							/>
-						</div>
-						<div className={`${baseClassName}__form-field`}>
-							<span className={`${baseClassName}__label`}>
-								E-mail
-							</span>
-							<input
-								className={getClassNames({
-									[`${baseClassName}__input`]: true,
-									[`${baseClassName}__input--${
-										this.state.validity.email ? '' : 'in'
-									}valid`]: true
-								})}
-								placeholder={'email@domain.com'}
-								onChange={this.setUserData('email')}
-								onBlur={this.validate('email')}
-							/>
-						</div>
-						<div className={`${baseClassName}__form-field`}>
-							<span className={`${baseClassName}__label`}>
-								Password
-							</span>
-							<input
-								className={getClassNames({
-									[`${baseClassName}__input`]: true,
-									[`${baseClassName}__input--${
-										this.state.validity.password ? '' : 'in'
-									}valid`]: true
-								})}
-								placeholder={'Your password'}
-								type={'password'}
-								onChange={this.setUserData('password')}
-								onBlur={this.validate('password')}
-							/>
-							{!this.state.validity.password && (
-								<span
-									className={`${baseClassName}__label-validity`}
-								>
-									Password must be at least 8 characters long.
-								</span>
-							)}
-						</div>
-						<Button
-							fill
-							label={'Register'}
-							onClick={this.registerStage1}
+						<FormPage
+							fields={fields}
+							onSubmit={this.registerStage1}
 						/>
 						<p>
 							Already have an account?{' '}
