@@ -10,6 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import './App.scss';
 import Header from './components/Header/Header';
 import Sidebar from './controls/Sidebar/Sidebar';
+import { BrowserRouter } from 'react-router-dom';
 
 const baseClassName = 'App';
 
@@ -23,8 +24,10 @@ class App extends React.Component {
 						rel='stylesheet'
 					></link>
 					<ToastContainer />
-					<Header />
-					<MainRouter />
+					<BrowserRouter>
+						<Header />
+						<MainRouter />
+					</BrowserRouter>
 				</div>
 			</Provider>
 		);

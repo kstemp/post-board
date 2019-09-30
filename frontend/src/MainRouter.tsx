@@ -13,31 +13,29 @@ import LoginPage from './components/Pages/LoginPage/LoginPage';
 class MainRouter extends React.Component {
 	render() {
 		return (
-			<Router>
-				<Switch>
-					<Route
-						exact
-						path={'/register'}
-						render={() => <RegisterPage />}
-					/>
-					<Route exact path={'/login'} render={() => <LoginPage />} />
+			<Switch>
+				<Route
+					exact
+					path={'/register'}
+					render={() => <RegisterPage />}
+				/>
+				<Route exact path={'/login'} render={() => <LoginPage />} />
 
-					<Route
-						exact
-						path='/board/:id'
-						render={({ match }) => (
-							<CommunityRenderer boardID={match.params['id']} />
-						)}
-					/>
-					<Route
-						exact
-						path='/user/:userID'
-						render={({ match }) => (
-							<UserPage userID={match.params.userID} />
-						)}
-					/>
-				</Switch>
-			</Router>
+				<Route
+					exact
+					path='/board/:id'
+					render={({ match }) => (
+						<CommunityRenderer boardID={match.params['id']} />
+					)}
+				/>
+				<Route
+					exact
+					path='/user/:userID'
+					render={({ match }) => (
+						<UserPage userID={match.params.userID} />
+					)}
+				/>
+			</Switch>
 		);
 	}
 }

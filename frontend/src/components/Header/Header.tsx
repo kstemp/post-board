@@ -75,13 +75,15 @@ class Header extends React.Component<StateProps, State> {
 							onClick={securityLogout}
 						/>
 					) : (
-						<Button
-							fill
-							label={'Login'}
-							onClick={() =>
-								this.setState({ openLoginFields: true })
-							}
-						/>
+						<NavLink to={'login'}>
+							<Button
+								fill
+								label={'Login'}
+								onClick={() =>
+									this.setState({ openLoginFields: true })
+								}
+							/>
+						</NavLink>
 					)}
 				</div>
 			</div>

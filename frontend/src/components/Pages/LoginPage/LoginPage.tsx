@@ -39,7 +39,7 @@ class LoginPage extends React.Component {
 		return (
 			<div className={baseClassName}>
 				<p>
-					<b>Create your account</b>
+					<b>Login to post-board</b>
 				</p>
 				<FormPage
 					buttonLabel={'Login'}
