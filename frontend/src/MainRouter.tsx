@@ -8,6 +8,7 @@ import {
 import RegisterPage from './components/Pages/RegisterPage/RegisterPage';
 import UserPage from './components/Pages/UserPage/UserPage';
 import CommunityRenderer from './components/CommunityRenderer/CommunityRenderer';
+import LoginPage from './components/Pages/LoginPage/LoginPage';
 
 class MainRouter extends React.Component {
 	render() {
@@ -19,6 +20,7 @@ class MainRouter extends React.Component {
 						path={'/register'}
 						render={() => <RegisterPage />}
 					/>
+					<Route exact path={'/login'} render={() => <LoginPage />} />
 
 					<Route
 						exact

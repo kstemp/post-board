@@ -1,0 +1,25 @@
+@import '../../../controls/variables.scss';
+
+// TODO don't fucking duplicate!!!!
+.login-page {
+	display: block;
+
+	padding: 2em;
+
+	box-sizing: border-box;
+	box-shadow: 0 0 2px 0px $color-disabled-text;
+
+	margin-top: 2 * $header-height;
+	margin-left: auto;
+	margin-right: auto;
+	width: 500px;
+
+	background-color: white;
+}
+
+@media only screen and (max-width: 480px) {
+	.login-page {
+		width: 100%;
+		margin-top: $header-height;
+	}
+}

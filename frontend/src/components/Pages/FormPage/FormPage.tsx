@@ -19,6 +19,7 @@ export type TFormData = {
 };
 
 interface OwnProps {
+	buttonLabel: string;
 	fields: IFormField[];
 	onSubmit: (arg0: TFormData) => void;
 }
@@ -41,7 +42,7 @@ class FormPage extends React.Component<OwnProps, State> {
 			validity: this.props.fields.reduce((validity, field) => {
 				validity[field.id] = field.validation
 					? field.validation('')
-					: false; // TODO awful...
+					: true; // TODO awful...
 				return validity;
 			}, validityInitial)
 		};
@@ -97,7 +98,7 @@ class FormPage extends React.Component<OwnProps, State> {
 				))}
 				<Button
 					fill
-					label={'Register'}
+					label={this.props.buttonLabel}
 					onClick={() => this.props.onSubmit(this.state.formData)}
 					disabled={Object.values(this.state.validity).includes(
 						false

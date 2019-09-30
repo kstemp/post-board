@@ -76,6 +76,7 @@ class RegisterPage extends React.Component<{}, State> {
 							<b>Create your account</b>
 						</p>
 						<FormPage
+							buttonLabel={'Register'}
 							fields={fields}
 							onSubmit={this.registerStage1}
 						/>
