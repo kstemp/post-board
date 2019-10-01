@@ -6,14 +6,30 @@
 	width: $form-field-height;
 
 	&__list {
-		height: 6 * $form-field-height;
-		width: $form-field-height;
+		//height: 6 * $form-field-height;
+		//width: $form-field-height;
 
 		display: grid;
+		grid-template-columns: 1fr 1fr 1fr 1fr;
+
+		background: white;
+		border: $border;
 	}
 
 	&__list-item {
+		border-radius: 100%;
+
 		height: $form-field-height;
 		width: $form-field-height;
+
+		border: none;
+
+		&:hover {
+			border: 2px solid gray;
+		}
+
+		&:focus {
+			outline: none;
+		}
 	}
 }
