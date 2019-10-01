@@ -127,9 +127,11 @@ class Post extends React.Component<Props, State> {
 						)}
 					</span>
 				</div>
-				<div className={`${baseClassName}__body`}>
-					{this.state.post.text}
-				</div>
+				<div
+					className={`${baseClassName}__body`}
+					dangerouslySetInnerHTML={{ __html: this.state.post.text }}
+				/>
+
 				<div className={`${baseClassName}__buttons`}>
 					<div className={`${baseClassName}__buttons-left`}>
 						<Button

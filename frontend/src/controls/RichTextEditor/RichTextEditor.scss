@@ -1,0 +1,9 @@
+@import '../../style/variables.scss';
+
+.rich-text-editor {
+	border: $border;
+
+	&__buttons {
+		display: flex;
+	}
+}
