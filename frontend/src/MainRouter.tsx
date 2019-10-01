@@ -4,6 +4,7 @@ import RegisterPage from './components/Pages/RegisterPage/RegisterPage';
 import UserPage from './components/Pages/UserPage/UserPage';
 import BoardRenderer from './components/BoardRenderer/BoardRenderer';
 import LoginPage from './components/Pages/LoginPage/LoginPage';
+import RichTextEditor from './controls/RichTextEditor/RichTextEditor';
 
 class MainRouter extends React.Component {
 	render() {
@@ -30,6 +31,7 @@ class MainRouter extends React.Component {
 						<UserPage userID={match.params.userID} />
 					)}
 				/>
+				<Route exact path='/editor' component={RichTextEditor} />
 			</Switch>
 		);
 	}
