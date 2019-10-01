@@ -7,7 +7,6 @@ import { createPost } from '../../entities/fetchers';
 import { displayErrorNotification } from '../../util/notification';
 
 import './PostCreator.scss';
-import { FetchError } from '../../entities/entity';
 
 const baseClassName = 'post-creator';
 
