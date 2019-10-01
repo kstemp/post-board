@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from '../Button/Button';
+import ColorPicker from '../ColorPicker/ColorPicker';
 
 const baseClassName = 'rich-text-editor';
 
@@ -9,6 +10,9 @@ const buttons = [
 	},
 	{
 		icon: 'format_italic'
+	},
+	{
+		icon: 'strikethrough_s'
 	}
 ];
 
@@ -27,6 +31,7 @@ class RichTextEditor extends React.Component {
 				{buttons.map(button => (
 					<Button icon={button.icon} />
 				))}
+				<ColorPicker />
 				<div
 					style={{
 						width: '100%',

@@ -1,0 +1,19 @@
+@import '../../style/variables.scss';
+
+.color-picker {
+	z-index: 4;
+	height: $form-field-height;
+	width: $form-field-height;
+
+	&__list {
+		height: 6 * $form-field-height;
+		width: $form-field-height;
+
+		display: grid;
+	}
+
+	&__list-item {
+		height: $form-field-height;
+		width: $form-field-height;
+	}
+}
