@@ -65,8 +65,8 @@ class FormPage extends React.Component<OwnProps, State> {
 						</span>
 						<input
 							className={getClassNames({
-								[`${baseClassName}__input`]: true,
-								[`${baseClassName}__input--${
+								['pb-input']: true,
+								[`pb-input--${
 									this.state.validity[field.id] ? '' : 'in'
 								}valid`]: true
 							})}

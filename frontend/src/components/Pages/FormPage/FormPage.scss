@@ -1,4 +1,4 @@
-@import '../../../controls/variables.scss';
+@import '../../../style/variables.scss';
 
 .form-page {
 	display: block;
@@ -21,36 +21,5 @@
 
 	&__label-validity {
 		color: $color-invalid;
-	}
-
-	&__input {
-		width: 100%;
-
-		box-sizing: border-box;
-		height: $form-field-height;
-
-		transition: all 0.2s ease-in-out;
-
-		outline: none;
-		border: 2px solid #dddddd;
-
-		padding-left: 0.5rem;
-
-		&--invalid {
-			box-shadow: 0 0 3px $color-invalid;
-			border: 1px solid $color-invalid;
-			color: $color-invalid;
-		}
-
-		&--valid {
-			box-shadow: 0 0 3px $color-valid;
-			border: 1px solid $color-valid;
-			color: $color-valid;
-		}
-
-		&:focus {
-			box-shadow: 0 0 5px $color-base;
-			border: 1px solid $color-base;
-		}
 	}
 }

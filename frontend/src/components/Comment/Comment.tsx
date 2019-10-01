@@ -134,6 +134,8 @@ class Comment extends React.Component<Props, State> {
 				{this.state.displayChildComments && (
 					<div className={`${baseClassName}__input-wrapper`}>
 						<Input
+							autoFocus
+							className={'pb-input'}
 							placeholder={'Comment text goes here'}
 							required
 							onInputSubmit={this.createComment}

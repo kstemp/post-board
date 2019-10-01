@@ -61,6 +61,7 @@ class CommentList extends React.Component<Props, State> {
 				{
 					<div className={`${baseClassName}__new-comment`}>
 						<Input
+							className={'pb-input'}
 							required
 							autoFocus
 							placeholder={'Write something...'}
