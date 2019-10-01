@@ -23,6 +23,23 @@ router.get(
 	}
 );
 
+router.get(
+	'/:id/children',
+	[check('id').isInt()],
+	checkValidation,
+	verifyToken(false),
+	(req: Request, res: Response) => {
+		const SQLquery = 'SELECT * FROM get_entities_by_parent_id($1)';
+
+		db.manyOrNone(SQLquery, [req.params['id'], (req as any).userID])
+			.then(data => res.status(200).send(data))
+			.catch(error => {
+				console.log(error);
+				return res.sendStatus(500);
+			});
+	}
+);
+
 router.post(
 	'/:id/',
 	[check('id').isInt()],
@@ -38,23 +55,6 @@ router.post(
 			console.log(error);
 			return res.sendStatus(500);
 		}
-	}
-);
-
-router.get(
-	'/:id/children',
-	[check('id').isInt()],
-	checkValidation,
-	verifyToken(false),
-	(req: Request, res: Response) => {
-		const SQLquery = 'SELECT * FROM get_entities_by_parent_id($1)';
-
-		db.manyOrNone(SQLquery, [req.params['id'], (req as any).userID])
-			.then(data => res.status(200).send(data))
-			.catch(error => {
-				console.log(error);
-				return res.sendStatus(500);
-			});
 	}
 );
 

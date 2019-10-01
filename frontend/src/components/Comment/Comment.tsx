@@ -17,6 +17,7 @@ import {
 	fetchEntitiesByParentID,
 	createCommentForParentID
 } from '../../entities/fetchers';
+import Input from '../../controls/Input/Input';
 
 const baseClassName = 'comment';
 
@@ -31,7 +32,6 @@ interface StateProps {
 type Props = OwnProps & StateProps;
 
 interface State {
-	childCommentText: string;
 	comments?: TEntity[];
 	displayChildComments: boolean;
 }
@@ -41,16 +41,12 @@ class Comment extends React.Component<Props, State> {
 		super(props);
 
 		this.state = {
-			childCommentText: '',
 			displayChildComments: false
 		};
 	}
 
-	createComment = () =>
-		createCommentForParentID(
-			this.props.comment.entity_id,
-			this.state.childCommentText
-		)
+	createComment = (text: string) =>
+		createCommentForParentID(this.props.comment.entity_id, text)
 			.then(comment =>
 				this.setState({
 					comments: [...(this.state.comments || []), comment] // this || [] is to make TypeScript happy, since this.state.coomments can be undefined... TODO fix
@@ -137,23 +133,10 @@ class Comment extends React.Component<Props, State> {
 				</div>
 				{this.state.displayChildComments && (
 					<div className={`${baseClassName}__input-wrapper`}>
-						<input
+						<Input
 							placeholder={'Comment text goes here'}
 							required
-							onChange={(
-								event: React.ChangeEvent<HTMLInputElement>
-							) =>
-								this.setState({
-									childCommentText: event.target.value
-								})
-							}
-							onKeyUp={(
-								event: React.KeyboardEvent<HTMLInputElement>
-							) => {
-								if (event.key === 'Enter') {
-									this.createComment();
-								}
-							}}
+							onInputSubmit={this.createComment}
 						/>
 					</div>
 				)}

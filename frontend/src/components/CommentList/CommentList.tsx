@@ -12,6 +12,7 @@ import {
 	fetchEntitiesByParentID,
 	createCommentForParentID
 } from '../../entities/fetchers';
+import Input from '../../controls/Input/Input';
 
 const baseClassName = 'comment-list';
 
@@ -24,16 +25,13 @@ type Props = OwnProps;
 
 interface State {
 	comments?: TEntity[];
-	isValid: boolean;
 }
 
 class CommentList extends React.Component<Props, State> {
 	constructor(props: Props) {
 		super(props);
 
-		this.state = {
-			isValid: false
-		};
+		this.state = {};
 	}
 
 	fetchComments = () =>
@@ -47,35 +45,26 @@ class CommentList extends React.Component<Props, State> {
 		this.fetchComments();
 	}
 
-	fieldChanged = (event: React.ChangeEvent<HTMLInputElement>) =>
-		this.setState({
-			isValid: event.target.validity.valid
-		});
-
-	/*createComment = () =>
-		createCommentForParentID(
-			this.props.postID,
-			(this.commentTextInput as any).current.value // TODO this is an ugly hack...
-		)
+	createComment = (text: string) =>
+		createCommentForParentID(this.props.postID, text)
 			.then(() => {
 				this.props.onUpdate();
 				this.fetchComments();
 			})
 			.catch((error: FetchError) =>
 				displayErrorNotification('Failed to create comment', error)
-			);*/
+			);
 
 	render() {
 		return (
 			<div className={baseClassName}>
 				{
 					<div className={`${baseClassName}__new-comment`}>
-						<input
+						<Input
 							required
 							autoFocus
 							placeholder={'Write something...'}
-							onChange={this.fieldChanged}
-							//onSubmit={this.createComment}
+							onInputSubmit={this.createComment}
 						/>
 					</div>
 				}
