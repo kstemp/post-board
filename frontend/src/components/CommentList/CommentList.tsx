@@ -1,19 +1,17 @@
 import React from 'react';
 import Comment from '../Comment/Comment';
 
-import { IDType, TComment } from '../../entities/types';
-
-import {
-	createCommentForPostID,
-	fetchCommentsForPostIDAndParentCommentID
-} from '../../entities/fetchers';
-
+import { IDType, TEntity } from '../../entities/types';
 import LoadingSpinner from '../../controls/LoadingSpinner/LoadingSpinner';
 
 import { displayErrorNotification } from '../../util/notification';
 
 import './CommentList.scss';
 import { FetchError } from '../../entities/entity';
+import {
+	fetchEntitiesByParentID,
+	createCommentForParentID
+} from '../../entities/fetchers';
 
 const baseClassName = 'comment-list';
 
@@ -25,7 +23,7 @@ interface OwnProps {
 type Props = OwnProps;
 
 interface State {
-	comments?: TComment[];
+	comments?: TEntity[];
 	isValid: boolean;
 }
 
@@ -39,7 +37,7 @@ class CommentList extends React.Component<Props, State> {
 	}
 
 	fetchComments = () =>
-		fetchCommentsForPostIDAndParentCommentID(this.props.postID)
+		fetchEntitiesByParentID(this.props.postID)
 			.then(comments => this.setState({ comments: comments }))
 			.catch((error: FetchError) =>
 				displayErrorNotification('Failed to fetch comments', error)
@@ -54,8 +52,8 @@ class CommentList extends React.Component<Props, State> {
 			isValid: event.target.validity.valid
 		});
 
-	//createComment = () =>
-	/*	createCommentForPostID(
+	/*createComment = () =>
+		createCommentForParentID(
 			this.props.postID,
 			(this.commentTextInput as any).current.value // TODO this is an ugly hack...
 		)

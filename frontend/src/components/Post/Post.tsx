@@ -3,18 +3,14 @@ import React from 'react';
 import CommentList from '../CommentList/CommentList';
 import Button from '../../controls/Button/Button';
 
-import { TPost, IDType, IUser } from '../../entities/types';
+import { IDType, IUser, TEntity } from '../../entities/types';
 
 import { prettyPrintDateDifference } from '../../util/date';
 import { ReducerStateType } from '../../entities/reducer';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { isLoggedIn } from '../../entities/selectors';
-import {
-	fetchPostByID,
-	fetchMetadataForPostID,
-	fetchUser
-} from '../../entities/fetchers';
+import { fetchUser, fetchEntityByID } from '../../entities/fetchers';
 
 import {
 	createReactionForEntityID,
@@ -36,7 +32,7 @@ interface StateProps {
 
 interface State {
 	showComments: boolean;
-	post?: TPost;
+	post?: TEntity;
 	userData: IUser | null;
 }
 
@@ -54,7 +50,7 @@ class Post extends React.Component<Props, State> {
 
 	fetchPost = async () => {
 		try {
-			const post = await fetchPostByID(this.props.entity_id);
+			const post = await fetchEntityByID(this.props.entity_id);
 			const userData = post.user_id
 				? await fetchUser(post.user_id)
 				: null;
@@ -68,8 +64,8 @@ class Post extends React.Component<Props, State> {
 		}
 	};
 
-	fetchMetadata = () =>
-		fetchMetadataForPostID(this.props.entity_id)
+	/*etchMetadata = () =>
+		fetchMetadataForE(this.props.entity_id)
 			.then(metadata =>
 				this.setState({
 					post: {
@@ -80,13 +76,13 @@ class Post extends React.Component<Props, State> {
 			)
 			.catch((error: FetchError) =>
 				displayErrorNotification('Failed to load post metadata', error)
-			);
+			);*/
 
 	componentDidMount() {
 		this.fetchPost();
 	}
 
-	updateCommentList = () => this.fetchMetadata();
+	//updateCommentList = () => this.fetchMetadata();
 
 	toggleShowComments = () =>
 		this.setState({
@@ -97,12 +93,12 @@ class Post extends React.Component<Props, State> {
 		this.state.post &&
 			(this.state.post.reacted
 				? deleteReactionForEntityID(this.state.post.entity_id)
-						.then(() => this.fetchMetadata())
+						.then(() => {} /* this.fetchMetadata()*/)
 						.catch((error: FetchError) =>
 							displayErrorNotification('Failed to react', error)
 						)
 				: createReactionForEntityID(this.state.post.entity_id)
-						.then(() => this.fetchMetadata())
+						.then(() => {} /* this.fetchMetadata()*/)
 						.catch((error: FetchError) =>
 							displayErrorNotification('Failed to react', error)
 						));
@@ -155,7 +151,7 @@ class Post extends React.Component<Props, State> {
 						<Button
 							size={'nice-rectangle'}
 							icon={'chat_bubble_outline'}
-							label={this.state.post.comment_count.toString()}
+							//label={this.state.post.child_count.toString()}
 							toolTipEnabled={'Comment'}
 							onClick={this.toggleShowComments}
 						/>
@@ -172,7 +168,8 @@ class Post extends React.Component<Props, State> {
 				{this.state.showComments && (
 					<CommentList
 						postID={this.state.post.entity_id}
-						onUpdate={this.updateCommentList}
+						onUpdate={() => {}}
+						//onUpdate={this.updateCommentList}
 					/>
 				)}
 			</div>

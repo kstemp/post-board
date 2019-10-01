@@ -1,14 +1,8 @@
 import React from 'react';
 
-import { TComment } from '../../entities/types';
-
 import './Comment.scss';
 import { prettyPrintDateDifference } from '../../util/date';
 import Button from '../../controls/Button/Button';
-import {
-	fetchCommentsForPostIDAndParentCommentID,
-	createCommentForPostIDAndParentCommentID
-} from '../../entities/fetchers';
 import { FetchError } from '../../entities/entity';
 import { displayErrorNotification } from '../../util/notification';
 import { connect } from 'react-redux';
@@ -18,11 +12,16 @@ import {
 	deleteReactionForEntityID,
 	createReactionForEntityID
 } from '../../entities/reactions';
+import { TEntity } from '../../entities/types';
+import {
+	fetchEntitiesByParentID,
+	createCommentForParentID
+} from '../../entities/fetchers';
 
 const baseClassName = 'comment';
 
 interface OwnProps {
-	comment: TComment;
+	comment: TEntity;
 }
 
 interface StateProps {
@@ -32,7 +31,7 @@ interface StateProps {
 type Props = OwnProps & StateProps;
 
 interface State {
-	comments?: TComment[];
+	comments?: TEntity[];
 	displayChildComments: boolean;
 }
 
@@ -46,11 +45,7 @@ class Comment extends React.Component<Props, State> {
 	}
 
 	createComment = (text: string) =>
-		createCommentForPostIDAndParentCommentID(
-			this.props.comment.parent_post_id,
-			this.props.comment.entity_id,
-			text
-		)
+		createCommentForParentID(this.props.comment.entity_id, text)
 			.then(comment =>
 				this.setState({
 					comments: [...(this.state.comments || []), comment] // this || [] is to make TypeScript happy, since this.state.coomments can be undefined... TODO fix
@@ -64,10 +59,7 @@ class Comment extends React.Component<Props, State> {
 		this.setState({
 			displayChildComments: true
 		});
-		fetchCommentsForPostIDAndParentCommentID(
-			this.props.comment.parent_post_id,
-			this.props.comment.entity_id
-		)
+		fetchEntitiesByParentID(this.props.comment.entity_id)
 			.then(comments => this.setState({ comments: comments }))
 			.catch((error: FetchError) =>
 				displayErrorNotification(
@@ -131,9 +123,9 @@ class Comment extends React.Component<Props, State> {
 					/>
 					<Button
 						icon={'chat_bubble_outline'}
-						label={(
-							this.props.comment.comment_count || 0
-						).toString()}
+						//	label={(
+						///	this.props.comment.comment_count || 0
+						///	).toString()}
 						onClick={this.openInputFieldAndLoadComments}
 					/>
 					<Button icon={'report'} label={'Report'} />

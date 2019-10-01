@@ -67,7 +67,6 @@ CREATE TABLE entities (
 	type VARCHAR, /* TODO make an enum*/
 
 	parent_board_id VARCHAR REFERENCES boards (id), 
-	--parent_post_id INTEGER REFERENCES entities (entity_id),
 	parent_entity_id INTEGER REFERENCES entities (entity_id),
 
 	user_id INTEGER REFERENCES users (user_id),
@@ -76,7 +75,7 @@ CREATE TABLE entities (
 
 	text VARCHAR NOT NULL,
 
-	comment_count INTEGER NOT NULL DEFAULT 0,
+	child_count INTEGER NOT NULL DEFAULT 0,
 	reaction_count INTEGER NOT NULL DEFAULT 0
 
 );
@@ -100,6 +99,14 @@ END
 $$
 LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION get_entities_by_parent_id(_parent_entity_id INTEGER) RETURNS SETOF entities AS 
+$$
+BEGIN
+	RETURN QUERY (SELECT * FROM entities WHERE parent_entity_id = _parent_entity_id);
+END
+$$
+LANGUAGE plpgsql;
+
 CREATE OR REPLACE FUNCTION create_post(_parent_board_id VARCHAR, _text VARCHAR, _user_id INTEGER DEFAULT NULL) RETURNS VOID AS 
 $$
 BEGIN
@@ -109,6 +116,7 @@ END
 $$
 LANGUAGE plpgsql;
 
+/*
 CREATE OR REPLACE FUNCTION create_comment(_parent_entity_id INTEGER, _text VARCHAR, _user_id INTEGER DEFAULT NULL) RETURNS entities AS 
 $$
 DECLARE
@@ -118,7 +126,7 @@ BEGIN
 	RETURN new_comment;
 END
 $$
-LANGUAGE plpgsql;
+LANGUAGE plpgsql;*/
 
 
 CREATE OR REPLACE FUNCTION did_user_react_to_entity_id(_entity_id INTEGER, _user_id INTEGER DEFAULT NULL) RETURNS boolean AS 

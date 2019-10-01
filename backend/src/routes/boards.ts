@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import db, { execSQLQuery, PSQLERR } from '../modules/db';
-import { check, query } from 'express-validator';
+import { check, query, sanitize } from 'express-validator';
 import { checkValidation } from '../modules/validator';
 import verifyToken from '../modules/verify-token';
 import { errors } from 'pg-promise';
@@ -87,4 +87,32 @@ router.get('/:id/new', async (req: Request, res: Response) => {
 	}
 });
 
+router.post(
+	'/:id/',
+	[
+		sanitize('text').trim(),
+		check('text')
+			.not()
+			.isEmpty(),
+		check('text').isLength({ max: 1200 })
+	],
+	checkValidation,
+	verifyToken(false),
+	async (req: Request, res: Response) => {
+		try {
+			const post = await db.func('create_post', [
+				req.params['id'],
+				req.body['text'],
+				(req as any)['userID']
+			]);
+
+			return res.status(200).send(post);
+		} catch (error) {
+			if (error.code === PSQLERR.FOREIGN_KEY_VIOLATION) {
+				return res.sendStatus(400);
+			}
+			return res.sendStatus(500);
+		}
+	}
+);
 module.exports = router;
