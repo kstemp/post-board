@@ -1,6 +1,7 @@
 import React from 'react';
 import Button from '../Button/Button';
 import ColorPicker from '../ColorPicker/ColorPicker';
+import { throwStatement } from '@babel/types';
 
 const baseClassName = 'rich-text-editor';
 
@@ -17,6 +18,18 @@ const buttons = [
 ];
 
 class RichTextEditor extends React.Component {
+	refContent: React.RefObject<HTMLDivElement>;
+
+	constructor(props: any) {
+		super(props);
+
+		this.refContent = React.createRef();
+	}
+	click = () => {
+		if (this.refContent.current) {
+			console.log(this.refContent.current.innerHTML);
+		}
+	};
 	render() {
 		return (
 			<div
@@ -29,7 +42,7 @@ class RichTextEditor extends React.Component {
 				}}
 			>
 				{buttons.map(button => (
-					<Button icon={button.icon} />
+					<Button icon={button.icon} onClick={this.click} />
 				))}
 				<ColorPicker />
 				<div
@@ -39,7 +52,7 @@ class RichTextEditor extends React.Component {
 						overflow: 'auto'
 					}}
 				>
-					<div contentEditable={true} />
+					<div contentEditable={true} ref={this.refContent} />
 				</div>
 			</div>
 		);
