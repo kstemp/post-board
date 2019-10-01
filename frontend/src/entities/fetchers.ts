@@ -30,7 +30,8 @@ export const createPost = (text: string, board_id: string) =>
 export const createCommentForParentID = (parentID: IDType, text: string) =>
 	createEntity<TEntity>(
 		`/entities/${parentID}/`,
-		JSON.stringify({ text: text })
+		JSON.stringify({ text: text }),
+		true
 	);
 /*
 export const fetchMetadataForPostID = (postID: IDType) =>
