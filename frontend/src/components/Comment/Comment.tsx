@@ -31,6 +31,7 @@ interface StateProps {
 type Props = OwnProps & StateProps;
 
 interface State {
+	childCommentText: string;
 	comments?: TEntity[];
 	displayChildComments: boolean;
 }
@@ -40,12 +41,16 @@ class Comment extends React.Component<Props, State> {
 		super(props);
 
 		this.state = {
+			childCommentText: '',
 			displayChildComments: false
 		};
 	}
 
-	createComment = (text: string) =>
-		createCommentForParentID(this.props.comment.entity_id, text)
+	createComment = () =>
+		createCommentForParentID(
+			this.props.comment.entity_id,
+			this.state.childCommentText
+		)
 			.then(comment =>
 				this.setState({
 					comments: [...(this.state.comments || []), comment] // this || [] is to make TypeScript happy, since this.state.coomments can be undefined... TODO fix
@@ -123,8 +128,8 @@ class Comment extends React.Component<Props, State> {
 					/>
 					<Button
 						icon={'chat_bubble_outline'}
-						//	label={(
-						///	this.props.comment.comment_count || 0
+						//label={(
+						//	this.props.comment.comment_count || 0
 						///	).toString()}
 						onClick={this.openInputFieldAndLoadComments}
 					/>
@@ -135,7 +140,20 @@ class Comment extends React.Component<Props, State> {
 						<input
 							placeholder={'Comment text goes here'}
 							required
-							//onSubmit={this.createComment}
+							onChange={(
+								event: React.ChangeEvent<HTMLInputElement>
+							) =>
+								this.setState({
+									childCommentText: event.target.value
+								})
+							}
+							onKeyUp={(
+								event: React.KeyboardEvent<HTMLInputElement>
+							) => {
+								if (event.key === 'Enter') {
+									this.createComment();
+								}
+							}}
 						/>
 					</div>
 				)}

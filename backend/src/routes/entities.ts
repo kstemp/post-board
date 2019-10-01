@@ -31,7 +31,7 @@ router.post(
 	async (req: Request, res: Response) => {
 		try {
 			await db.one(
-				'INSERT INTO entities (parent_entity_id, text, user_id) VALUES ($1, $2, $3);',
+				'INSERT INTO entities (parent_entity_id, text, user_id) VALUES ($1, $2, $3) RETURNING *',
 				[req.params['id'], req.body['text'], (req as any).userID]
 			);
 		} catch (error) {
