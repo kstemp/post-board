@@ -45,43 +45,44 @@ class Comment extends React.Component<Props, State> {
 		};
 	}
 
-	createComment = (text: string) =>
-		createCommentForParentID(this.props.comment.entity_id, text)
-			.then(comment =>
-				this.setState({
-					comments: [...(this.state.comments || []), comment] // this || [] is to make TypeScript happy, since this.state.coomments can be undefined... TODO fix
-				})
-			)
-			.catch((error: FetchError) =>
-				displayErrorNotification('Failed to create comment', error)
+	createComment = async (text: string) => {
+		try {
+			const comment = await createCommentForParentID(
+				this.props.comment.entity_id,
+				text
 			);
+			this.setState({
+				comments: [...(this.state.comments || []), comment] // this || [] is to make TypeScript happy, since this.state.coomments can be undefined... TODO fix
+			});
+		} catch (error) {
+			displayErrorNotification('Failed to create comment', error);
+		}
+	};
 
-	openInputFieldAndLoadComments = () => {
+	openInputFieldAndLoadComments = async () => {
 		this.setState({
 			displayChildComments: true
 		});
-		fetchEntitiesByParentID(this.props.comment.entity_id)
-			.then(comments => this.setState({ comments: comments }))
-			.catch((error: FetchError) =>
-				displayErrorNotification(
-					'Failed to fetch child comments',
-					error
-				)
+
+		try {
+			const comments = await fetchEntitiesByParentID(
+				this.props.comment.entity_id
 			);
+			this.setState({ comments: comments });
+		} catch (error) {
+			displayErrorNotification('Failed to fetch child comments', error);
+		}
 	};
 
-	toggleLiked = () =>
-		this.props.comment.reacted
-			? deleteReactionForEntityID(this.props.comment.entity_id)
-					.then(() => {})
-					.catch((error: FetchError) =>
-						displayErrorNotification('Failed to react', error)
-					)
-			: createReactionForEntityID(this.props.comment.entity_id)
-					.then(() => {})
-					.catch((error: FetchError) =>
-						displayErrorNotification('Failed to react', error)
-					);
+	toggleLiked = async () => {
+		try {
+			(await this.props.comment.reacted)
+				? deleteReactionForEntityID(this.props.comment.entity_id)
+				: createReactionForEntityID(this.props.comment.entity_id);
+		} catch (error) {
+			displayErrorNotification('Failed to react', error);
+		}
+	};
 
 	closeChildComments = () => this.setState({ displayChildComments: false });
 

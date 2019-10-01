@@ -89,19 +89,16 @@ class Post extends React.Component<Props, State> {
 			showComments: !this.state.showComments
 		});
 
-	toggleLiked = () => {
-		this.state.post &&
-			(this.state.post.reacted
-				? deleteReactionForEntityID(this.state.post.entity_id)
-						.then(() => {} /* this.fetchMetadata()*/)
-						.catch((error: FetchError) =>
-							displayErrorNotification('Failed to react', error)
-						)
-				: createReactionForEntityID(this.state.post.entity_id)
-						.then(() => {} /* this.fetchMetadata()*/)
-						.catch((error: FetchError) =>
-							displayErrorNotification('Failed to react', error)
-						));
+	toggleLiked = async () => {
+		if (this.state.post) {
+			try {
+				(await this.state.post.reacted)
+					? deleteReactionForEntityID(this.state.post.entity_id)
+					: createReactionForEntityID(this.state.post.entity_id);
+			} catch (error) {
+				displayErrorNotification('Failed to react', error);
+			}
+		}
 	};
 
 	render() {

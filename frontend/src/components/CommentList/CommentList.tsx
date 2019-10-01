@@ -34,26 +34,34 @@ class CommentList extends React.Component<Props, State> {
 		this.state = {};
 	}
 
-	fetchComments = () =>
-		fetchEntitiesByParentID(this.props.postID)
-			.then(comments => this.setState({ comments: comments }))
-			.catch((error: FetchError) =>
-				displayErrorNotification('Failed to fetch comments', error)
-			);
+	fetchComments = async () => {
+		try {
+			const comments = await fetchEntitiesByParentID(this.props.postID);
+
+			this.setState({ comments: comments });
+		} catch (error) {
+			displayErrorNotification('Failed to fetch comments', error);
+		}
+	};
 
 	componentDidMount() {
 		this.fetchComments();
 	}
 
-	createComment = (text: string) =>
-		createCommentForParentID(this.props.postID, text)
-			.then(() => {
-				this.props.onUpdate();
-				this.fetchComments();
-			})
-			.catch((error: FetchError) =>
-				displayErrorNotification('Failed to create comment', error)
+	createComment = async (text: string) => {
+		try {
+			const comment = await createCommentForParentID(
+				this.props.postID,
+				text
 			);
+			this.props.onUpdate();
+			this.setState({
+				comments: [...(this.state.comments || []), comment]
+			});
+		} catch (error) {
+			displayErrorNotification('Failed to create comment', error);
+		}
+	};
 
 	render() {
 		return (
