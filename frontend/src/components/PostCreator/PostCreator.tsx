@@ -8,53 +8,40 @@ import { displayErrorNotification } from '../../util/notification';
 
 import './PostCreator.scss';
 import { FetchError } from '../../entities/entity';
-import TabControl from '../../controls/TabControl/TabControl';
 
 const baseClassName = 'post-creator';
 
 interface OwnProps {
-	communityID: number;
+	boardID: string;
 }
 
 interface State {
-	isInCreationMode: boolean;
+	value: string;
 	isValid: boolean;
 }
 
 class PostCreator extends React.Component<OwnProps, State> {
-	private postTextField: React.RefObject<HTMLTextAreaElement>;
-
 	constructor(props: OwnProps) {
 		super(props);
 
-		this.postTextField = React.createRef();
-
 		this.state = {
-			isInCreationMode: false,
+			value: '',
 			isValid: false
 		};
 	}
-	createPost = () => {
-		createPost(
-			(this.postTextField as any).current.value, // TOOD get rid of any
-			this.props.communityID
-		)
-			.then(
-				() => 0
-				//fetchPostsForCommunityID(
-				//	parseInt(this.props.match.params.communityID)
-				//)
-			)
-			.catch((error: FetchError) =>
-				displayErrorNotification('Failed to create post', error)
-			);
+	createPost = async () => {
+		try {
+			await createPost(this.state.value, this.props.boardID);
+		} catch (error) {
+			displayErrorNotification('Failed to create post', error);
+		}
 	};
 
-	fieldChanged = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+	fieldChanged = (event: React.ChangeEvent<HTMLTextAreaElement>) =>
 		this.setState({
+			value: event.target.value,
 			isValid: event.target.validity.valid
 		});
-	};
 
 	render() {
 		return (
@@ -62,17 +49,11 @@ class PostCreator extends React.Component<OwnProps, State> {
 				<p>
 					<b>Create a post: </b>
 				</p>
-				<TabControl
-					defaultTab={0}
-					tabs={[{ label: 'Text post' }, { label: 'Image post' }]}
-				>
-					<textarea
-						ref={this.postTextField}
-						placeholder={'Post text goes here'}
-						onChange={this.fieldChanged}
-						required
-					/>
-				</TabControl>
+				<textarea
+					placeholder={'Post text goes here'}
+					onChange={this.fieldChanged}
+					required
+				/>
 				<Button
 					fill
 					label={'Post'}

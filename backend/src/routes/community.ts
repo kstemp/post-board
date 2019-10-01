@@ -24,42 +24,6 @@ router.get(
 		)
 );
 
-router.get(
-	'/:communityID/top',
-	[
-		...verifyCommunityID,
-		query('offset')
-			.optional()
-			.isInt({ min: 0 })
-	],
-	checkValidation,
-	(req: Request, res: Response) =>
-		execSQLQuery(
-			req,
-			res,
-			"SELECT ARRAY(SELECT entity_id FROM entities WHERE type = 'post' AND parent_community_id = $1 ORDER BY reaction_count DESC, created_on DESC OFFSET $2 LIMIT 5) AS entity_ids",
-			[req.params.communityID, req.query.offset || 0]
-		)
-);
-
-router.get(
-	'/:communityID/new',
-	[
-		...verifyCommunityID,
-		query('offset')
-			.optional()
-			.isInt({ min: 0 })
-	],
-	checkValidation,
-	(req: Request, res: Response) =>
-		execSQLQuery(
-			req,
-			res,
-			"SELECT ARRAY(SELECT entity_id FROM entities WHERE type='post' AND parent_community_id = $1 ORDER BY created_on DESC OFFSET $2 LIMIT 5) AS entity_ids",
-			[req.params.communityID, req.query.offset || 0]
-		)
-);
-
 // TODO db.any? none?
 router.post(
 	'/:communityID/follow',

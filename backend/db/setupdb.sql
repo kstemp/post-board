@@ -45,6 +45,7 @@ CREATE TABLE boards (
 	subscribed_users INTEGER NOT NULL DEFAULT 0
 );
 -- 
+/*
 CREATE TYPE type_role AS ENUM ('admin');
 
 CREATE TABLE user_roles (
@@ -56,7 +57,7 @@ CREATE TABLE user_roles (
 
 	role type_role NOT NULL DEFAULT 'admin'
 
-);
+);*/
 
 CREATE TABLE entities (
 
@@ -65,7 +66,7 @@ CREATE TABLE entities (
 
 	type VARCHAR, /* TODO make an enum*/
 
-	parent_community_id INTEGER REFERENCES communities (community_id), 
+	parent_board_id VARCHAR REFERENCES boards (id), 
 	--parent_post_id INTEGER REFERENCES entities (entity_id),
 	parent_entity_id INTEGER REFERENCES entities (entity_id),
 
@@ -99,11 +100,11 @@ END
 $$
 LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION create_post(_parent_community_id INTEGER, _text VARCHAR, _user_id INTEGER DEFAULT NULL) RETURNS VOID AS 
+CREATE OR REPLACE FUNCTION create_post(_parent_board_id VARCHAR, _text VARCHAR, _user_id INTEGER DEFAULT NULL) RETURNS VOID AS 
 $$
 BEGIN
 	/*INSERT INTO entities (entity_id) VALUES (DEFAULT) RETURNING entity_id INTO new_entity_id;*/
-	INSERT INTO entities (type, parent_community_id, text, user_id) VALUES ('post', _parent_community_id, _text, _user_id);
+	INSERT INTO entities (type, parent_board_id, text, user_id) VALUES ('post', _parent_board_id, _text, _user_id);
 END
 $$
 LANGUAGE plpgsql;

@@ -5,7 +5,6 @@ import { TComment } from '../../entities/types';
 import './Comment.scss';
 import { prettyPrintDateDifference } from '../../util/date';
 import Button from '../../controls/Button/Button';
-import Input from '../../controls/Input/Input';
 import {
 	fetchCommentsForPostIDAndParentCommentID,
 	createCommentForPostIDAndParentCommentID
@@ -141,10 +140,10 @@ class Comment extends React.Component<Props, State> {
 				</div>
 				{this.state.displayChildComments && (
 					<div className={`${baseClassName}__input-wrapper`}>
-						<Input
+						<input
 							placeholder={'Comment text goes here'}
 							required
-							onSubmit={this.createComment}
+							//onSubmit={this.createComment}
 						/>
 					</div>
 				)}

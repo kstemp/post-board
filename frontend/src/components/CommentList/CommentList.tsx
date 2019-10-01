@@ -10,8 +10,6 @@ import {
 
 import LoadingSpinner from '../../controls/LoadingSpinner/LoadingSpinner';
 
-import Input from '../../controls/Input/Input';
-
 import { displayErrorNotification } from '../../util/notification';
 
 import './CommentList.scss';
@@ -32,12 +30,8 @@ interface State {
 }
 
 class CommentList extends React.Component<Props, State> {
-	private commentTextInput: React.RefObject<Input>;
-
 	constructor(props: Props) {
 		super(props);
-
-		this.commentTextInput = React.createRef();
 
 		this.state = {
 			isValid: false
@@ -60,8 +54,8 @@ class CommentList extends React.Component<Props, State> {
 			isValid: event.target.validity.valid
 		});
 
-	createComment = () =>
-		createCommentForPostID(
+	//createComment = () =>
+	/*	createCommentForPostID(
 			this.props.postID,
 			(this.commentTextInput as any).current.value // TODO this is an ugly hack...
 		)
@@ -71,20 +65,19 @@ class CommentList extends React.Component<Props, State> {
 			})
 			.catch((error: FetchError) =>
 				displayErrorNotification('Failed to create comment', error)
-			);
+			);*/
 
 	render() {
 		return (
 			<div className={baseClassName}>
 				{
 					<div className={`${baseClassName}__new-comment`}>
-						<Input
+						<input
 							required
 							autoFocus
 							placeholder={'Write something...'}
-							ref={this.commentTextInput}
 							onChange={this.fieldChanged}
-							onSubmit={this.createComment}
+							//onSubmit={this.createComment}
 						/>
 					</div>
 				}

@@ -10,13 +10,13 @@ import {
 	TUserProfile,
 	IBoard
 } from './types';
-export const fetchPostIDsForCommunityID = (
-	communityID: IDType,
+export const fetchPostIDsForBoardID = (
+	boardID: string,
 	offset: number,
 	contentSorting: TContentSorting
 ) =>
 	fetchEntity<IEntityIDs>(
-		`/community/${communityID}/${contentSorting}?offset=${offset}`
+		`/boards/${boardID}/${contentSorting}?offset=${offset}`
 	);
 
 export const fetchPostByID = (postID: IDType) =>
@@ -41,11 +41,8 @@ export const fetchUser = (userID: IDType) =>
 export const fetchUserProfile = (userID: IDType) =>
 	fetchEntity<TUserProfile>(`/users/${userID}/profile`);
 
-export const createPost = (postText: string, communityID: IDType) =>
-	createEntity(
-		`/post?communityID=${communityID}`,
-		JSON.stringify({ text: postText })
-	);
+export const createPost = (text: string, board_id: string) =>
+	createEntity(`/post?board_id=${board_id}`, JSON.stringify({ text: text }));
 
 /* board-related */
 export const createBoard = (id: string, title: string) =>

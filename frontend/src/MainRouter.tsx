@@ -1,13 +1,8 @@
 import React from 'react';
-import {
-	BrowserRouter as Router,
-	Route,
-	RouteComponentProps,
-	Switch
-} from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import RegisterPage from './components/Pages/RegisterPage/RegisterPage';
 import UserPage from './components/Pages/UserPage/UserPage';
-import CommunityRenderer from './components/CommunityRenderer/CommunityRenderer';
+import BoardRenderer from './components/BoardRenderer/BoardRenderer';
 import LoginPage from './components/Pages/LoginPage/LoginPage';
 
 class MainRouter extends React.Component {
@@ -25,7 +20,7 @@ class MainRouter extends React.Component {
 					exact
 					path='/board/:id'
 					render={({ match }) => (
-						<CommunityRenderer boardID={match.params['id']} />
+						<BoardRenderer boardID={match.params['id']} />
 					)}
 				/>
 				<Route

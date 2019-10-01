@@ -31,9 +31,6 @@ router.get('/:id', async (req, res) => {
 router.post(
 	'/',
 	[
-		check('id')
-			.not()
-			.contains(' '),
 		check('id').isAlphanumeric(),
 		check('title').isLength({ min: 2, max: 100 })
 	],
@@ -55,5 +52,39 @@ router.post(
 		}
 	}
 );
+
+/*
+router.get(
+	'/:id/top',
+	[
+		...verifyCommunityID,
+		query('offset')
+			.optional()
+			.isInt({ min: 0 })
+	],
+	checkValidation,
+	(req: Request, res: Response) =>
+		execSQLQuery(
+			req,
+			res,
+			"SELECT ARRAY(SELECT entity_id FROM entities WHERE type = 'post' AND parent_community_id = $1 ORDER BY reaction_count DESC, created_on DESC OFFSET $2 LIMIT 5) AS entity_ids",
+			[req.params.communityID, req.query.offset || 0]
+		)
+);*/
+
+// TODO validation
+router.get('/:id/new', async (req: Request, res: Response) => {
+	try {
+		const data = await db.oneOrNone(
+			"SELECT ARRAY(SELECT entity_id FROM entities WHERE type='post' AND parent_board_id = $1 ORDER BY created_on DESC OFFSET $2 LIMIT 5) AS entity_ids",
+			[req.params['id'], req.query.offset || 0]
+		);
+
+		return res.status(200).send(data);
+	} catch (e) {
+		console.log(e);
+		return res.sendStatus(500);
+	}
+});
 
 module.exports = router;

@@ -37,28 +37,29 @@ router.post(
 	'/',
 	[
 		sanitize('text').trim(),
-		check('text', 'Post text must not be empty')
+		check('text')
 			.not()
 			.isEmpty(),
-		check('text', 'bounds TODO').isLength({ max: 1200 }),
-		query('communityID', 'community ID must be an integer').isInt()
+		check('text').isLength({ max: 1200 }),
+		query('board_id').isAlphanumeric()
 	],
 	checkValidation,
 	verifyToken(false),
-	(req: Request, res: Response) => {
-		db.any('SELECT create_post($1, $2, $3)', [
-			req.query.communityID,
-			req.body.text,
-			(req as any).userID
-		])
-			.then(() => res.sendStatus(204))
-			.catch(error => {
-				console.log(error);
-				if (error.code === PSQLERR.FOREIGN_KEY_VIOLATION) {
-					return res.sendStatus(400);
-				}
-				return res.sendStatus(500);
-			});
+	async (req: Request, res: Response) => {
+		try {
+			const post = await db.func('create_post', [
+				req.query['board_id'],
+				req.body['text'],
+				(req as any)['userID']
+			]);
+
+			return res.status(200).send(post);
+		} catch (error) {
+			if (error.code === PSQLERR.FOREIGN_KEY_VIOLATION) {
+				return res.sendStatus(400);
+			}
+			return res.sendStatus(500);
+		}
 	}
 );
 

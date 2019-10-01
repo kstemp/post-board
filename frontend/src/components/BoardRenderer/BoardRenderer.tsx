@@ -1,20 +1,18 @@
 import React from 'react';
 import { IDType, TContentSorting, IBoard } from '../../entities/types';
-import CommunityBar from '../BoardBar/BoardBar';
+import BoardBar from '../BoardBar/BoardBar';
 
-import './CommunityRenderer.scss';
+import './BoardRenderer.scss';
 import {
-	fetchPostIDsForCommunityID,
-	fetchBoardMetadata
+	fetchBoardMetadata,
+	fetchPostIDsForBoardID
 } from '../../entities/fetchers';
 import { displayErrorNotification } from '../../util/notification';
 import Post from '../Post/Post';
 import Button from '../../controls/Button/Button';
 import PostCreator from '../PostCreator/PostCreator';
 import { FetchError } from '../../entities/entity';
-import CommunitySidebar from '../BoardSidebar/BoardSidebar';
 import BoardSidebar from '../BoardSidebar/BoardSidebar';
-import BoardBar from '../BoardBar/BoardBar';
 
 const baseClassName = 'community-renderer';
 
@@ -31,7 +29,7 @@ interface State {
 	metadata?: IBoard;
 }
 
-class CommunityRenderer extends React.Component<OwnProps, State> {
+class BoardRenderer extends React.Component<OwnProps, State> {
 	constructor(props: OwnProps) {
 		super(props);
 
@@ -71,10 +69,10 @@ class CommunityRenderer extends React.Component<OwnProps, State> {
 	}
 
 	loadMorePosts = () => {
-		/*fetchPostIDsForCommunityID(
-			this.props.communityID,
+		fetchPostIDsForBoardID(
+			this.props.boardID,
 			this.state.currentOffset,
-			this.state.contentSorting
+			'new'
 		)
 			.then(entityIDList =>
 				this.setState(state => ({
@@ -84,7 +82,7 @@ class CommunityRenderer extends React.Component<OwnProps, State> {
 			)
 			.catch((error: FetchError) =>
 				displayErrorNotification('Failed to fetch posts', error)
-			);*/
+			);
 	};
 
 	render() {
@@ -113,7 +111,7 @@ class CommunityRenderer extends React.Component<OwnProps, State> {
 
 						<div className={'page-content'}>
 							<div className={`${baseClassName}__posts`}>
-								<PostCreator communityID={1} />
+								<PostCreator boardID={this.props.boardID} />
 								{this.state.postIDs.length
 									? this.state.postIDs.map(postID => (
 											<Post
@@ -140,4 +138,4 @@ class CommunityRenderer extends React.Component<OwnProps, State> {
 	}
 }
 
-export default CommunityRenderer;
+export default BoardRenderer;

@@ -28,7 +28,6 @@ const baseClassName = 'post';
 
 interface OwnProps {
 	entity_id: IDType;
-	communityName?: string;
 }
 
 interface StateProps {
