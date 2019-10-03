@@ -121,7 +121,7 @@ router.post(
 					(req as any)['userID']
 				]);
 
-				fs.writeFileSync('img/' + fileName, req.body);
+				fs.writeFileSync(`img/${fileName}`, req.body);
 
 				return res.status(200).send(post);
 			}
