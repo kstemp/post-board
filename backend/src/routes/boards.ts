@@ -5,7 +5,7 @@ import { checkValidation } from '../modules/validator';
 import verifyToken from '../modules/verify-token';
 import { errors } from 'pg-promise';
 import uuidv4 from 'uuid/v4';
-
+import fs from 'fs';
 const router = express.Router();
 
 // TODO use func for function execution
@@ -120,6 +120,8 @@ router.post(
 					fileName,
 					(req as any)['userID']
 				]);
+
+				fs.writeFileSync('img/' + fileName, req.body);
 
 				return res.status(200).send(post);
 			}
