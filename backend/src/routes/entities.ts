@@ -48,8 +48,14 @@ router.post(
 	async (req: Request, res: Response) => {
 		try {
 			const entity = await db.one(
-				'INSERT INTO entities (parent_entity_id, text, user_id) VALUES ($1, $2, $3) RETURNING *',
-				[req.params['id'], req.body['text'], (req as any).userID]
+				// TODO use create_entity or sth
+				'INSERT INTO entities (parent_entity_id, content_type, content, user_id) VALUES ($1, $2, $3, $4) RETURNING *',
+				[
+					req.params['id'],
+					'html',
+					req.body['text'],
+					(req as any).userID
+				]
 			);
 			return res.status(200).send(entity);
 		} catch (error) {

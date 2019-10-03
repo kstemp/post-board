@@ -2,7 +2,7 @@
 	"name": "backend",
 	"version": "1.0.0",
 	"scripts": {
-		"dev": "set NODE_ENV=production&& nodemon src/server.ts",
+		"dev": "nodemon src/server.ts",
 		"build": "tsc",
 		"test": "ts-mocha  'src/test/**/*.js' --w --recursive --timeout 10000"
 	},
@@ -28,10 +28,12 @@
 		"nodemailer": "^6.3.0",
 		"pg-promise": "^9.1.2",
 		"ts-node": "^8.3.0",
-		"typescript": "^3.6.3"
+		"typescript": "^3.6.3",
+		"uuid": "^3.3.3"
 	},
 	"devDependencies": {
 		"@types/md5": "^2.1.33",
+		"@types/uuid": "^3.4.5",
 		"chai": "^4.2.0",
 		"chai-http": "^4.3.0",
 		"mocha": "^6.2.0",

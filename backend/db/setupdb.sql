@@ -73,7 +73,8 @@ CREATE TABLE entities (
 
 	created_on TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT (NOW() AT TIME ZONE 'utc'),
 
-	text VARCHAR NOT NULL,
+	content_type VARCHAR NOT NULL, /* TODO make an enum IMAGE/HTML */ 
+	content VARCHAR NOT NULL,
 
 	child_count INTEGER NOT NULL DEFAULT 0,
 	reaction_count INTEGER NOT NULL DEFAULT 0
@@ -107,11 +108,11 @@ END
 $$
 LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION create_post(_parent_board_id VARCHAR, _text VARCHAR, _user_id INTEGER DEFAULT NULL) RETURNS VOID AS 
+CREATE OR REPLACE FUNCTION create_post(_parent_board_id VARCHAR, _content_type VARCHAR, _content VARCHAR, _user_id INTEGER DEFAULT NULL) RETURNS VOID AS 
 $$
 BEGIN
 	/*INSERT INTO entities (entity_id) VALUES (DEFAULT) RETURNING entity_id INTO new_entity_id;*/
-	INSERT INTO entities (type, parent_board_id, text, user_id) VALUES ('post', _parent_board_id, _text, _user_id);
+	INSERT INTO entities (type, parent_board_id, content_type, content, user_id) VALUES ('post', _parent_board_id, _content_type, _content, _user_id);
 END
 $$
 LANGUAGE plpgsql;

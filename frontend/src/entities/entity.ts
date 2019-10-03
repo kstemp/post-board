@@ -71,16 +71,16 @@ export const fetchEntity = <T>(route: string) =>
 
 export const createEntity = <T>(
 	route: string,
-	body?: string,
+	body?: any,
 	expectJSONPayload?: boolean
 ) => {
 	const headers = store.getState().accessToken
 		? new Headers({
-				'Content-Type': 'application/json',
+				//	'Content-Type': 'application/json',
 				token: store.getState().accessToken
 		  })
 		: new Headers({
-				'Content-Type': 'application/json'
+				//'Content-Type': 'application/json'
 		  });
 
 	console.log('Headers: ', headers);
@@ -96,6 +96,8 @@ export const createEntity = <T>(
 				method: 'POST',
 				headers: headers
 		  };
+
+	console.log(fetchParams);
 
 	return new Promise<T>((resolve, reject) => {
 		fetch(`${BACKEND_URL}${route}`, fetchParams)
@@ -122,30 +124,3 @@ export const createEntity = <T>(
 			});
 	});
 };
-
-export const deleteEntity = (route: string) =>
-	new Promise((resolve, reject) => {
-		// TODO add this header conditionally
-		const fetchParams = {
-			method: 'DELETE',
-			headers: new Headers({
-				token: store.getState().accessToken
-			})
-		};
-
-		fetch(`${BACKEND_URL}${route}`, fetchParams)
-			.then(response => {
-				if (response.ok) {
-					return resolve();
-				}
-
-				throw new FetchErrorResponse(
-					response.status,
-					response.statusText
-				);
-			})
-			.catch(error => {
-				console.log('Error in deleteEntity: ', error);
-				return reject(handleFetchError(error));
-			});
-	});

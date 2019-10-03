@@ -8,6 +8,8 @@ import { displayErrorNotification } from '../../util/notification';
 
 import './PostCreator.scss';
 import RichTextEditor from '../../controls/RichTextEditor/RichTextEditor';
+import ImageUploader from '../../controls/ImageUploader/ImageUploader';
+import { BACKEND_URL } from '../../Config';
 
 const baseClassName = 'post-creator';
 
@@ -17,6 +19,8 @@ interface OwnProps {
 
 interface State {
 	isValid: boolean;
+	activeTab: number;
+	file?: File;
 }
 
 class PostCreator extends React.Component<OwnProps, State> {
@@ -25,22 +29,37 @@ class PostCreator extends React.Component<OwnProps, State> {
 		super(props);
 
 		this.refEditor = React.createRef();
+		// TODO would be nice if we had 'onChange' event in richTexteditor,
+		// so that we could save value to state and use in createPost
 
 		this.state = {
-			isValid: false
+			isValid: false,
+			activeTab: 0
 		};
 	}
 	createPost = async () => {
-		if (!this.refEditor.current) {
-			return;
+		if (this.state.activeTab === 0) {
+			// 'Text post'
+			if (this.refEditor.current) {
+				try {
+					await createPost(
+						this.refEditor.current.getInnerHTML(),
+						this.props.boardID
+					);
+				} catch (error) {
+					displayErrorNotification('Failed to create post', error);
+				}
+			}
 		}
-
-		const dataHTML = this.refEditor.current.getInnerHTML();
-		console.log(dataHTML);
-		try {
-			await createPost(dataHTML, this.props.boardID);
-		} catch (error) {
-			displayErrorNotification('Failed to create post', error);
+		if (this.state.activeTab === 1) {
+			// 'Image post'
+			if (this.state.file) {
+				try {
+					await createPost(this.state.file, this.props.boardID);
+				} catch (error) {
+					displayErrorNotification('Failed to create post', error);
+				}
+			}
 		}
 	};
 
@@ -50,7 +69,27 @@ class PostCreator extends React.Component<OwnProps, State> {
 				<p>
 					<b>Create a post: </b>
 				</p>
-				<RichTextEditor ref={this.refEditor} />
+				{this.state.activeTab === 0 ? (
+					<RichTextEditor ref={this.refEditor} />
+				) : (
+					<ImageUploader
+						onChange={(file: File) =>
+							this.setState({
+								file: file
+							})
+						}
+					/>
+				)}
+
+				<div className={`${baseClassName}__tab-buttons`}>
+					{['Text post', 'Image post'].map((label, index) => (
+						<Button
+							label={label}
+							onClick={() => this.setState({ activeTab: index })}
+							fill={this.state.activeTab === index}
+						/>
+					))}
+				</div>
 
 				<Button fill label={'Post'} onClick={this.createPost} />
 			</div>

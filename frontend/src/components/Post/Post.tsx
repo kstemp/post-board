@@ -12,14 +12,12 @@ import { NavLink } from 'react-router-dom';
 import { isLoggedIn } from '../../entities/selectors';
 import { fetchUser, fetchEntityByID } from '../../entities/fetchers';
 
-import {
-	createReactionForEntityID,
-	deleteReactionForEntityID
-} from '../../entities/reactions';
+import { createReactionForEntityID } from '../../entities/reactions';
 import { displayErrorNotification } from '../../util/notification';
 
 import './Post.scss';
 import { FetchError } from '../../entities/entity';
+import { BACKEND_URL } from '../../Config';
 const baseClassName = 'post';
 
 interface OwnProps {
@@ -90,7 +88,7 @@ class Post extends React.Component<Props, State> {
 		});
 
 	toggleLiked = async () => {
-		if (this.state.post) {
+		/*	if (this.state.post) {
 			try {
 				(await this.state.post.reacted)
 					? deleteReactionForEntityID(this.state.post.entity_id)
@@ -98,7 +96,7 @@ class Post extends React.Component<Props, State> {
 			} catch (error) {
 				displayErrorNotification('Failed to react', error);
 			}
-		}
+		}*/
 	};
 
 	render() {
@@ -127,10 +125,20 @@ class Post extends React.Component<Props, State> {
 						)}
 					</span>
 				</div>
-				<div
-					className={`${baseClassName}__body`}
-					dangerouslySetInnerHTML={{ __html: this.state.post.text }}
-				/>
+				{this.state.post.content_type === 'html' ? (
+					<div
+						className={`${baseClassName}__body`}
+						dangerouslySetInnerHTML={{
+							__html: this.state.post.content
+						}}
+					/>
+				) : (
+					<img
+						className={`${baseClassName}__body`}
+						src={`${BACKEND_URL}/img/${this.state.post.content}`}
+						alt={'TODO'}
+					></img>
+				)}
 
 				<div className={`${baseClassName}__buttons`}>
 					<div className={`${baseClassName}__buttons-left`}>

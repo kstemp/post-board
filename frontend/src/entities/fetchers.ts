@@ -24,8 +24,14 @@ export const fetchEntityByID = (id: IDType) =>
 export const fetchEntitiesByParentID = (id: IDType) =>
 	fetchEntity<TEntity[]>(`/entities/${id}/children`);
 
-export const createPost = (text: string, board_id: string) =>
-	createEntity(`/boards/${board_id}`, JSON.stringify({ text: text }));
+// TODO overloads with any!
+export const createPost = (data: string | File, board_id: string) => {
+	if (typeof data === 'string') {
+		createEntity(`/boards/${board_id}`, JSON.stringify({ data: data }));
+	} else {
+		createEntity(`/boards/${board_id}`, data);
+	}
+};
 
 export const createCommentForParentID = (parentID: IDType, text: string) =>
 	createEntity<TEntity>(

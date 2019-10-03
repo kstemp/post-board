@@ -22,6 +22,8 @@ export interface IBoard {
 	created_on: string;
 }
 
+export type TEntityContent = 'html' | 'file';
+
 export interface IEntityIDs {
 	entity_ids: IDType[];
 }
@@ -35,7 +37,8 @@ type IEntityBase = {
 
 	user_id: IDType;
 
-	text: string;
+	content_type: TEntityContent;
+	content: string;
 };
 
 export interface IEntityMetadata {

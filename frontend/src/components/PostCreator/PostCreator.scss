@@ -2,11 +2,11 @@
 
 .post-creator {
 	padding: $padding;
-	border: 1px solid lightgray;
+	border: $border;
 
 	background-color: white;
 
-	box-sizing: border-box;
+	height: 300px; // TODO temporary
 
 	> p {
 		margin: 0;
@@ -16,19 +16,11 @@
 		width: 100%;
 	}
 
-	> .pb-button {
-		height: $form-field-height;
+	> .image-uploader {
+		height: 200px; // TODO temporary
 	}
 
-	.tab-control .pb-textarea {
-		height: 50px;
-		box-sizing: border-box;
-
-		&:focus {
-			height: 150px;
-		}
-		&:not(:invalid) {
-			height: 150px;
-		}
+	> .pb-button {
+		height: $form-field-height;
 	}
 }

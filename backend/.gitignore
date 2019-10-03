@@ -10,6 +10,8 @@ package-lock.json
 
 old/
 
+# images
+img/
 
 # dependencies
 /node_modules

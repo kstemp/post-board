@@ -4,6 +4,8 @@ import { check, query, sanitize } from 'express-validator';
 import { checkValidation } from '../modules/validator';
 import verifyToken from '../modules/verify-token';
 import { errors } from 'pg-promise';
+import uuidv4 from 'uuid/v4';
+
 const router = express.Router();
 
 // TODO use func for function execution
@@ -87,30 +89,45 @@ router.get('/:id/new', async (req: Request, res: Response) => {
 	}
 });
 
+// TODO validation!!!!!!
+// and VERIFY cnontent-type header present
 router.post(
 	'/:id/',
-	[
-		sanitize('text').trim(),
+	//[
+	/*	sanitize('text').trim(),
 		check('text')
 			.not()
 			.isEmpty(),
-		check('text').isLength({ max: 1200 })
-	],
-	checkValidation,
+		check('text').isLength({ max: 1200 })*/
+	//],
+	//	checkValidation,
 	verifyToken(false),
 	async (req: Request, res: Response) => {
+		// TODO use createEntity
 		try {
-			const post = await db.func('create_post', [
-				req.params['id'],
-				req.body['text'],
-				(req as any)['userID']
-			]);
+			//INSERT INTO entities (type, parent_board_id, content_type, content, user_id) VALUES ('post', _parent_board_id, _content_type, _content, _user_id);
+			console.log('BODY: ', req.body);
+			console.log('HEADERS', req.headers);
+			if (req.is('image/*')) {
+				const fileName = `${uuidv4()}.${(
+					req.headers['content-type'] || ''
+				).slice(6)}`;
+				console.log(fileName);
 
-			return res.status(200).send(post);
+				const post = await db.func('create_post', [
+					req.params['id'],
+					'file',
+					fileName,
+					(req as any)['userID']
+				]);
+
+				return res.status(200).send(post);
+			}
 		} catch (error) {
 			if (error.code === PSQLERR.FOREIGN_KEY_VIOLATION) {
 				return res.sendStatus(400);
 			}
+			console.log(error);
 			return res.sendStatus(500);
 		}
 	}

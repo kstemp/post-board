@@ -8,10 +8,7 @@ import { displayErrorNotification } from '../../util/notification';
 import { connect } from 'react-redux';
 import { ReducerStateType } from '../../entities/reducer';
 import { isLoggedIn } from '../../entities/selectors';
-import {
-	deleteReactionForEntityID,
-	createReactionForEntityID
-} from '../../entities/reactions';
+import { createReactionForEntityID } from '../../entities/reactions';
 import { TEntity } from '../../entities/types';
 import {
 	fetchEntitiesByParentID,
@@ -75,13 +72,13 @@ class Comment extends React.Component<Props, State> {
 	};
 
 	toggleLiked = async () => {
-		try {
+		/*	try {
 			(await this.props.comment.reacted)
 				? deleteReactionForEntityID(this.props.comment.entity_id)
 				: createReactionForEntityID(this.props.comment.entity_id);
 		} catch (error) {
 			displayErrorNotification('Failed to react', error);
-		}
+		}*/
 	};
 
 	closeChildComments = () => this.setState({ displayChildComments: false });
@@ -106,7 +103,7 @@ class Comment extends React.Component<Props, State> {
 					title={'Collapse thread to parent comment'}
 				/>
 				<span className={`${baseClassName}__content`}>
-					{this.props.comment.text}
+					{this.props.comment.content}
 				</span>
 				<div className={`${baseClassName}__buttons`}>
 					<Button
