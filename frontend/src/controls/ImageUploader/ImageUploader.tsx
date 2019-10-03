@@ -1,6 +1,7 @@
 import React from 'react';
 
 import './ImageUploader.scss';
+import Button from '../Button/Button';
 const baseClasssName = 'image-uploader';
 
 interface OwnProps {
@@ -33,18 +34,24 @@ class ImageUploader extends React.Component<OwnProps, State> {
 						}
 					}}
 				/>
-				{this.state.fileURL && (
-					<img src={this.state.fileURL} alt={'TODO'}></img>
-				)}
-				<button
-					className={'pb-button'}
-					onClick={() => {
-						this.refFileInput.current &&
-							this.refFileInput.current.click();
-					}}
-				>
-					Upload image
-				</button>
+				<div className={`${baseClasssName}__wrapper`}>
+					{this.state.fileURL && (
+						<img src={this.state.fileURL} alt={'TODO'}></img>
+					)}
+					{this.state.fileURL ? (
+						<Button icon={'delete'} />
+					) : (
+						<button
+							className={'pb-button'}
+							onClick={() => {
+								this.refFileInput.current &&
+									this.refFileInput.current.click();
+							}}
+						>
+							Upload image
+						</button>
+					)}
+				</div>
 			</div>
 		);
 	}

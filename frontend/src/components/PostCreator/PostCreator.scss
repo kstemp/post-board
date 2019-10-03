@@ -4,9 +4,14 @@
 	padding: $padding;
 	border: $border;
 
-	background-color: white;
-
 	height: 300px; // TODO temporary
+
+	&__tab-buttons {
+		display: flex;
+		> button {
+			width: 100%;
+		}
+	}
 
 	> p {
 		margin: 0;
@@ -20,7 +25,7 @@
 		height: 200px; // TODO temporary
 	}
 
-	> .pb-button {
+	> button {
 		height: $form-field-height;
 	}
 }
