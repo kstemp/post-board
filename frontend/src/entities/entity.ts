@@ -37,21 +37,30 @@ const handleFetchError = (error: any): FetchError => {
 	return new FetchError(message);
 };
 
-// TODO merge these two below
-
-export const fetchEntity = <T>(route: string) =>
+export const fetchEntity = <T>(
+	route: string,
+	method: 'GET' | 'POST' = 'GET',
+	body?: any,
+	headers?: { [key: string]: string },
+	expectJSONresponse: boolean = true
+) =>
 	new Promise<T>((resolve, reject) => {
 		// TODO add this header conditionally
 		const fetchParams = {
+			method: method,
 			headers: new Headers({
+				...headers,
 				token: store.getState().accessToken
-			})
+			}),
+			body: body
 		};
+
+		console.log('fetch params: ', fetchParams);
 
 		fetch(`${BACKEND_URL}${route}`, fetchParams)
 			.then(response => {
 				if (response.ok) {
-					return response.json();
+					return expectJSONresponse ? response.json() : null;
 				}
 
 				throw new FetchErrorResponse(
@@ -60,67 +69,11 @@ export const fetchEntity = <T>(route: string) =>
 				);
 			})
 			.then(json => {
-				console.log('fetchEntity fetched: ', json);
-				return resolve(json);
+				console.log('fetchEntity received: ', json);
+				return json ? resolve(json) : resolve();
 			})
 			.catch(error => {
 				console.log('Error in fetchEntity: ', error);
 				return reject(handleFetchError(error));
 			});
 	});
-
-export const createEntity = <T>(
-	route: string,
-	body?: any,
-	expectJSONPayload?: boolean
-) => {
-	const headers = store.getState().accessToken
-		? new Headers({
-				//	'Content-Type': 'application/json',
-				token: store.getState().accessToken
-		  })
-		: new Headers({
-				//'Content-Type': 'application/json'
-		  });
-
-	console.log('Headers: ', headers);
-
-	// TODO figure out a better way
-	const fetchParams = body
-		? {
-				method: 'POST',
-				headers: headers,
-				body: body
-		  }
-		: {
-				method: 'POST',
-				headers: headers
-		  };
-
-	console.log(fetchParams);
-
-	return new Promise<T>((resolve, reject) => {
-		fetch(`${BACKEND_URL}${route}`, fetchParams)
-			.then(response => {
-				console.log(response);
-				if (response.ok) {
-					if (expectJSONPayload) {
-						return response.json();
-					}
-					return;
-				}
-				throw new FetchErrorResponse(
-					response.status,
-					response.statusText
-				);
-			})
-			.then(result => {
-				console.log('createEntity received: ', result);
-				result ? resolve(result) : resolve();
-			})
-			.catch(error => {
-				console.log('Error in createEntity: ', error);
-				return reject(handleFetchError(error));
-			});
-	});
-};

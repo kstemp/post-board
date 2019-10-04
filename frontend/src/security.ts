@@ -1,26 +1,29 @@
 import './Config';
 import store from './entities/store';
-import { createEntity } from './entities/entity';
 import { ITokenPayload } from './entities/types';
+import { fetchEntity } from './entities/entity';
 
 export const register = (name: string, email: string, password: string) =>
-	createEntity(
+	fetchEntity(
 		'/users/register',
+		'POST',
 		JSON.stringify({
 			name: name,
 			email: email,
 			password: password
-		})
+		}),
+		{ 'content-type': 'application/json' }
 	);
 
 export const securityLogin = (email: string, password: string) =>
-	createEntity<ITokenPayload>(
+	fetchEntity<ITokenPayload>(
 		'/users/login',
+		'POST',
 		JSON.stringify({
 			email: email,
 			password: password
 		}),
-		true
+		{ 'content-type': 'application/json' }
 	);
 
 export const securityLogout = () =>

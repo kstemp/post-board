@@ -1,4 +1,4 @@
-import { createEntity, fetchEntity } from './entity';
+import { fetchEntity } from './entity';
 import {
 	IDType,
 	TEntity,
@@ -27,17 +27,22 @@ export const fetchEntitiesByParentID = (id: IDType) =>
 // TODO overloads with any!
 export const createPost = (data: string | File, board_id: string) => {
 	if (typeof data === 'string') {
-		createEntity(`/boards/${board_id}`, JSON.stringify({ data: data }));
+		fetchEntity(
+			`/boards/${board_id}`,
+			'POST',
+			JSON.stringify({ data: data }),
+			{ 'content-type': 'application/json' }
+		);
 	} else {
-		createEntity(`/boards/${board_id}`, data);
+		fetchEntity(`/boards/${board_id}`, 'POST', data);
 	}
 };
 
 export const createCommentForParentID = (parentID: IDType, text: string) =>
-	createEntity<TEntity>(
+	fetchEntity<TEntity>(
 		`/entities/${parentID}/`,
-		JSON.stringify({ text: text }),
-		true
+		'POST',
+		JSON.stringify({ text: text })
 	);
 /*
 export const fetchMetadataForPostID = (postID: IDType) =>
@@ -52,7 +57,7 @@ export const fetchUserProfile = (userID: IDType) =>
 
 /* board-related */
 export const createBoard = (id: string, title: string) =>
-	createEntity(`/boards`, JSON.stringify({ id: id, title: title }));
+	fetchEntity(`/boards`, 'POST', JSON.stringify({ id: id, title: title }));
 
 export const fetchBoardMetadata = (id: string) =>
 	fetchEntity<IBoard>(`/boards/${id}`);

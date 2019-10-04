@@ -1,5 +1,5 @@
 import { IDType } from './types';
-import { createEntity } from './entity';
+import { fetchEntity } from './entity';
 
 export const createReactionForEntityID = (entityID: IDType) =>
-	createEntity(`/reactions?entityID=${entityID}`);
+	fetchEntity(`/reactions?entityID=${entityID}`);
