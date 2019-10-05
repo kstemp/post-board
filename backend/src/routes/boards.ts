@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
-import db, { execSQLQuery, PSQLERR } from '../modules/db';
-import { check, query, sanitize } from 'express-validator';
+import db, { PSQLERR, getCodeFromError } from '../modules/db';
+import { check, query, sanitize, oneOf, header, body } from 'express-validator';
 import { checkValidation } from '../modules/validator';
 import verifyToken from '../modules/verify-token';
 import { errors } from 'pg-promise';
@@ -46,11 +46,8 @@ router.post(
 			]);
 			return res.sendStatus(200);
 		} catch (e) {
-			if (e.code === PSQLERR.UNIQUE_VIOLATION) {
-				return res.sendStatus(400);
-			}
 			console.log(e);
-			return res.sendStatus(500);
+			return res.sendStatus(getCodeFromError(e));
 		}
 	}
 );
@@ -85,52 +82,52 @@ router.get('/:id/new', async (req: Request, res: Response) => {
 		return res.status(200).send(data);
 	} catch (e) {
 		console.log(e);
-		return res.sendStatus(500);
+		return res.sendStatus(getCodeFromError(e));
 	}
 });
 
 // TODO validation!!!!!!
 // and VERIFY cnontent-type header present
+// TODO purify with DOM purify
 router.post(
 	'/:id/',
-	//[
-	/*	sanitize('text').trim(),
-		check('text')
-			.not()
-			.isEmpty(),
-		check('text').isLength({ max: 1200 })*/
-	//],
-	//	checkValidation,
+	oneOf([
+		header('content-type').equals('image/*'),
+		header('content-type').equals('text/html')
+	]),
+	//checkValidation,
 	verifyToken(false),
+
 	async (req: Request, res: Response) => {
-		// TODO use createEntity
 		try {
-			//INSERT INTO entities (type, parent_board_id, content_type, content, user_id) VALUES ('post', _parent_board_id, _content_type, _content, _user_id);
-			console.log('BODY: ', req.body);
-			console.log('HEADERS', req.headers);
-			if (req.is('image/*')) {
-				const fileName = `${uuidv4()}.${(
-					req.headers['content-type'] || ''
-				).slice(6)}`;
-				console.log(fileName);
+			const [contentType, content] = req.is('image/*')
+				? [
+						'file',
+						`${uuidv4()}.${(
+							req.headers['content-type'] || ''
+						).slice(6)}` /* for instance, XXX-...-XXX.jpeg */
+				  ]
+				: ['html', req.body];
 
-				const post = await db.func('create_post', [
+			const post = await db.one(
+				'INSERT INTO entities (type, parent_board_id, content_type, content, user_id) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+				[
+					'post',
 					req.params['id'],
-					'file',
-					fileName,
+					contentType,
+					content,
 					(req as any)['userID']
-				]);
+				]
+			);
 
-				fs.writeFileSync(`img/${fileName}`, req.body);
-
-				return res.status(200).send(post);
+			if (req.is('image/*')) {
+				fs.writeFileSync(`img/${content}`, req.body);
 			}
+
+			return res.status(200).send(post);
 		} catch (error) {
-			if (error.code === PSQLERR.FOREIGN_KEY_VIOLATION) {
-				return res.sendStatus(400);
-			}
 			console.log(error);
-			return res.sendStatus(500);
+			return res.sendStatus(getCodeFromError(error));
 		}
 	}
 );

@@ -1,18 +1,10 @@
 version: '3'
 services:
-        api:
-                image: post-app
-                container_name: post-app
-                build: .
-                restart: always
-                ports:
-                        - "8000:8000"
-        db:
-                image: postgres
-                container_name: post-postgres
-                restart: always
-                ports: 
-                        - "5432:5432"
-                environment:
-                        POSTGRES_PASSWORD: postgres
-
+    db:
+        image: postgres
+        container_name: post-postgres
+        restart: always
+        ports:
+            - '5432:5432'
+        environment:
+            POSTGRES_PASSWORD: postgres

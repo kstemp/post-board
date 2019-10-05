@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import db, { PSQLERR } from '../modules/db';
+import db, { PSQLERR, getCodeFromError } from '../modules/db';
 import { check, sanitize, query } from 'express-validator';
 import verifyToken from '../modules/verify-token';
 import { checkValidation } from '../modules/validator';
@@ -10,16 +10,18 @@ router.get(
 	[check('id').isInt()],
 	checkValidation,
 	verifyToken(false),
-	(req: Request, res: Response) => {
-		const SQLquery =
-			'SELECT * FROM get_entity_by_id($1), did_user_react_to_entity_id($1, $2) AS reacted';
+	async (req: Request, res: Response) => {
+		try {
+			const data = await db.one(
+				'SELECT * FROM get_entity_by_id($1), did_user_react_to_entity_id($1, $2) AS reacted',
+				[req.params['id'], (req as any).userID]
+			);
 
-		db.one(SQLquery, [req.params['id'], (req as any).userID])
-			.then(data => res.status(200).send(data))
-			.catch(error => {
-				console.log(error);
-				return res.sendStatus(500);
-			});
+			res.status(200).send(data);
+		} catch (error) {
+			console.log(error);
+			return res.sendStatus(getCodeFromError(error));
+		}
 	}
 );
 
@@ -28,15 +30,17 @@ router.get(
 	[check('id').isInt()],
 	checkValidation,
 	verifyToken(false),
-	(req: Request, res: Response) => {
-		const SQLquery = 'SELECT * FROM get_entities_by_parent_id($1)';
-
-		db.manyOrNone(SQLquery, [req.params['id'], (req as any).userID])
-			.then(data => res.status(200).send(data))
-			.catch(error => {
-				console.log(error);
-				return res.sendStatus(500);
-			});
+	async (req: Request, res: Response) => {
+		try {
+			const entities = await db.manyOrNone(
+				'SELECT * FROM get_entities_by_parent_id($1)',
+				[req.params['id'], (req as any).userID]
+			);
+			res.status(200).send(entities);
+		} catch (error) {
+			console.log(error);
+			return res.sendStatus(getCodeFromError(error));
+		}
 	}
 );
 
@@ -60,7 +64,7 @@ router.post(
 			return res.status(200).send(entity);
 		} catch (error) {
 			console.log(error);
-			return res.sendStatus(500);
+			return res.sendStatus(getCodeFromError(error));
 		}
 	}
 );

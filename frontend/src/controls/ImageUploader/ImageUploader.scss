@@ -3,6 +3,8 @@
 .image-uploader {
 	border: $border;
 
+	padding: $padding;
+
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -14,19 +16,42 @@
 	&__wrapper {
 		position: relative;
 
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		max-width: 100%;
+		max-height: 100%;
+
+		width: fit-content;
+		height: fit-content;
+
 		img {
 			max-width: 100%;
 			max-height: 100%;
 			width: auto;
 			height: auto;
 
+			position: relative;
+
 			~ button {
 				position: absolute;
-				right: 0;
 				top: 0;
+				right: 0;
 
 				transform: translate(50%, -50%);
 			}
 		}
+	}
+}
+
+.pb-button--round {
+	border-radius: 100%;
+
+	width: $form-field-height;
+	height: $form-field-height;
+
+	&:hover {
+		background-color: red;
 	}
 }

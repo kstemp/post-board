@@ -36,10 +36,13 @@ class ImageUploader extends React.Component<OwnProps, State> {
 				/>
 				<div className={`${baseClasssName}__wrapper`}>
 					{this.state.fileURL && (
-						<img src={this.state.fileURL} alt={'TODO'}></img>
+						<img src={this.state.fileURL} alt={'TODO'} />
 					)}
 					{this.state.fileURL ? (
-						<Button icon={'delete'} />
+						<Button
+							icon={'delete'}
+							className={'pb-button--round'}
+						/>
 					) : (
 						<button
 							className={'pb-button'}

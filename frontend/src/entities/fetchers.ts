@@ -27,12 +27,9 @@ export const fetchEntitiesByParentID = (id: IDType) =>
 // TODO overloads with any!
 export const createPost = (data: string | File, board_id: string) => {
 	if (typeof data === 'string') {
-		fetchEntity(
-			`/boards/${board_id}`,
-			'POST',
-			JSON.stringify({ data: data }),
-			{ 'content-type': 'application/json' }
-		);
+		fetchEntity(`/boards/${board_id}`, 'POST', data, {
+			'content-type': 'text/html'
+		});
 	} else {
 		fetchEntity(`/boards/${board_id}`, 'POST', data);
 	}

@@ -6,6 +6,7 @@ const app = express();
 
 /* UN-FUCK CORS */
 app.use(cors());
+app.use(bodyParser.text({ type: 'text/html' }));
 app.use(bodyParser.raw({ limit: '50mb', type: 'image/jpeg' }));
 app.use(bodyParser.json());
 
