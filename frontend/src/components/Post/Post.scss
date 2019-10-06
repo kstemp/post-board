@@ -33,9 +33,8 @@
 		max-width: 100%;
 
 		overflow: auto;
-		border-bottom: $border;
-
 		overflow-wrap: break-word;
+
 		white-space: pre-wrap;
 
 		text-align: justify;
@@ -44,6 +43,8 @@
 	}
 
 	&__buttons {
+		border-top: $border;
+
 		padding-top: 5px;
 
 		display: flex;
