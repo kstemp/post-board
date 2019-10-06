@@ -1,11 +1,11 @@
 import React from 'react';
-import { IDType, TContentSorting, IBoard } from '../../entities/types';
+import { IDType, TContentSorting, IBoard, TEntity } from '../../entities/types';
 import BoardBar from '../BoardBar/BoardBar';
 
 import './BoardRenderer.scss';
 import {
 	fetchBoardMetadata,
-	fetchPostIDsForBoardID
+	fetchPostsForBoardID
 } from '../../entities/fetchers';
 import { displayErrorNotification } from '../../util/notification';
 import Post from '../Post/Post';
@@ -22,7 +22,7 @@ interface OwnProps {
 
 interface State {
 	failedToLoadMetadata: boolean;
-	postIDs: IDType[];
+	posts: TEntity[];
 	currentOffset: number;
 	contentSorting: TContentSorting;
 
@@ -35,7 +35,7 @@ class BoardRenderer extends React.Component<OwnProps, State> {
 
 		this.state = {
 			failedToLoadMetadata: false,
-			postIDs: [],
+			posts: [],
 			currentOffset: 0,
 			contentSorting: 'new'
 		};
@@ -43,7 +43,7 @@ class BoardRenderer extends React.Component<OwnProps, State> {
 
 	reset = () => {
 		this.setState({
-			postIDs: [],
+			posts: [],
 			currentOffset: 0
 		});
 	};
@@ -69,14 +69,14 @@ class BoardRenderer extends React.Component<OwnProps, State> {
 	}
 
 	loadMorePosts = () => {
-		fetchPostIDsForBoardID(
+		fetchPostsForBoardID(
 			this.props.boardID,
 			this.state.currentOffset,
 			'new'
 		)
-			.then(entityIDList =>
+			.then(posts =>
 				this.setState(state => ({
-					postIDs: [...state.postIDs, ...entityIDList.entity_ids],
+					posts: [...state.posts, ...posts],
 					currentOffset: this.state.currentOffset + 5
 				}))
 			)
@@ -112,11 +112,12 @@ class BoardRenderer extends React.Component<OwnProps, State> {
 						<div className={'page-content'}>
 							<div className={`${baseClassName}__posts`}>
 								<PostCreator boardID={this.props.boardID} />
-								{this.state.postIDs.length
-									? this.state.postIDs.map(postID => (
+								{this.state.posts.length
+									? this.state.posts.map(post => (
 											<Post
-												key={postID}
-												entity_id={postID}
+												key={post.entity_id}
+												//entity_id={postID}
+												post={post}
 											/>
 									  ))
 									: 'No posts here.'}

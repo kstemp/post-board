@@ -12,16 +12,20 @@ import { NavLink } from 'react-router-dom';
 import { isLoggedIn } from '../../entities/selectors';
 import { fetchUser, fetchEntityByID } from '../../entities/fetchers';
 
-import { createReactionForEntityID } from '../../entities/reactions';
+import {
+	createReactionForEntityID,
+	deleteReactionForEntityID
+} from '../../entities/reactions';
 import { displayErrorNotification } from '../../util/notification';
 
 import './Post.scss';
-import { FetchError } from '../../entities/entity';
 import { BACKEND_URL } from '../../Config';
+import { getClassNames } from '../../util/class-names';
 const baseClassName = 'post';
 
 interface OwnProps {
-	entity_id: IDType;
+	//entity_id: IDType;
+	post: TEntity;
 }
 
 interface StateProps {
@@ -30,7 +34,7 @@ interface StateProps {
 
 interface State {
 	showComments: boolean;
-	post?: TEntity;
+	post: TEntity;
 	userData: IUser | null;
 }
 
@@ -41,12 +45,13 @@ class Post extends React.Component<Props, State> {
 		super(props);
 
 		this.state = {
+			post: this.props.post,
 			showComments: false,
 			userData: null
 		};
 	}
 
-	fetchPost = async () => {
+	/*fetchPost = async () => {
 		try {
 			const post = await fetchEntityByID(this.props.entity_id);
 			const userData = post.user_id
@@ -60,27 +65,11 @@ class Post extends React.Component<Props, State> {
 		} catch (error) {
 			return displayErrorNotification('Failed to load post', error);
 		}
-	};
+	};*/
 
-	/*etchMetadata = () =>
-		fetchMetadataForE(this.props.entity_id)
-			.then(metadata =>
-				this.setState({
-					post: {
-						...(this.state.post as any), // TOOD get rid of any
-						...metadata
-					}
-				})
-			)
-			.catch((error: FetchError) =>
-				displayErrorNotification('Failed to load post metadata', error)
-			);*/
-
-	componentDidMount() {
+	/*componentDidMount() {
 		this.fetchPost();
-	}
-
-	//updateCommentList = () => this.fetchMetadata();
+	}*/
 
 	toggleShowComments = () =>
 		this.setState({
@@ -88,15 +77,31 @@ class Post extends React.Component<Props, State> {
 		});
 
 	toggleLiked = async () => {
-		/*	if (this.state.post) {
+		if (this.state.post) {
 			try {
-				(await this.state.post.reacted)
-					? deleteReactionForEntityID(this.state.post.entity_id)
-					: createReactionForEntityID(this.state.post.entity_id);
+				if (this.state.post.reacted) {
+					await deleteReactionForEntityID(this.state.post.entity_id);
+					this.setState({
+						post: {
+							...this.state.post,
+							reaction_count: this.state.post.reaction_count - 1,
+							reacted: false
+						}
+					});
+				} else {
+					await createReactionForEntityID(this.state.post.entity_id);
+					this.setState({
+						post: {
+							...this.state.post,
+							reaction_count: this.state.post.reaction_count + 1,
+							reacted: true
+						}
+					});
+				}
 			} catch (error) {
 				displayErrorNotification('Failed to react', error);
 			}
-		}*/
+		}
 	};
 
 	render() {
@@ -106,10 +111,7 @@ class Post extends React.Component<Props, State> {
 					<span className={`${baseClassName}__header-user`}>
 						{this.state.post.user_id ? (
 							<NavLink to={`/user/${this.state.post.user_id}`}>
-								<b>
-									{this.state.userData &&
-										this.state.userData.name}
-								</b>
+								<b>{this.state.post.user_id}</b>
 							</NavLink>
 						) : (
 							'Anonymous'
@@ -144,6 +146,9 @@ class Post extends React.Component<Props, State> {
 					<div className={`${baseClassName}__buttons-left`}>
 						<Button
 							size={'nice-rectangle'}
+							className={getClassNames({
+								'pb-button--liked': this.state.post.reacted
+							})}
 							label={this.state.post.reaction_count.toString()}
 							icon={`favorite${
 								this.state.post.reacted ? '' : '_border'
@@ -185,10 +190,8 @@ class Post extends React.Component<Props, State> {
 		);
 	}
 }
-const mapStateToProps = (state: ReducerStateType) => {
-	return {
-		isLoggedIn: isLoggedIn(state)
-	};
-};
+const mapStateToProps = (state: ReducerStateType) => ({
+	isLoggedIn: isLoggedIn(state)
+});
 
 export default connect(mapStateToProps)(Post);

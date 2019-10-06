@@ -1,8 +1,10 @@
 import express, { Request, Response } from 'express';
 import db, { PSQLERR, getCodeFromError } from '../modules/db';
-import { check, sanitize, query } from 'express-validator';
+import { check, sanitize, query, oneOf, header } from 'express-validator';
 import verifyToken from '../modules/verify-token';
 import { checkValidation } from '../modules/validator';
+import uuidv4 from 'uuid/v4';
+import fs from 'fs';
 const router = express.Router();
 
 router.get(
@@ -44,23 +46,50 @@ router.get(
 	}
 );
 
+/*
+TODO
+* input validation
+*/
 router.post(
-	'/:id/',
-	[check('id').isInt()],
+	'/',
+	/*	oneOf([
+		header('content-type').equals('image/*'),
+		header('content-type').equals('text/html')
+	]),*/
+	oneOf([
+		query('parent_board_id').isAlphanumeric(),
+		query('parent_entity_id').isInt({ min: 1 })
+	]),
 	checkValidation,
 	verifyToken(false),
+
 	async (req: Request, res: Response) => {
 		try {
+			const [contentType, content] = req.is('image/*')
+				? [
+						'file',
+						`${uuidv4()}.${(
+							req.headers['content-type'] || ''
+						).slice(6)}` /* for instance, XXX-...-XXX.jpeg */
+				  ]
+				: ['html', req.body];
+
+			const parentType = req.query['parent_board_id']
+				? 'parent_board_id'
+				: 'parent_entity_id';
+
+			const parentID =
+				req.query['parent_board_id'] || req.query['parent_entity_id'];
+
 			const entity = await db.one(
-				// TODO use create_entity or sth
-				'INSERT INTO entities (parent_entity_id, content_type, content, user_id) VALUES ($1, $2, $3, $4) RETURNING *',
-				[
-					req.params['id'],
-					'html',
-					req.body['text'],
-					(req as any).userID
-				]
+				`INSERT INTO entities (type, ${parentType}, content_type, content, user_id) VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+				['post', parentID, contentType, content, (req as any)['userID']]
 			);
+
+			if (req.is('image/*')) {
+				fs.writeFileSync(`img/${content}`, req.body);
+			}
+
 			return res.status(200).send(entity);
 		} catch (error) {
 			console.log(error);

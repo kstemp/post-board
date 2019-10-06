@@ -39,7 +39,7 @@ const handleFetchError = (error: any): FetchError => {
 
 export const fetchEntity = <T>(
 	route: string,
-	method: 'GET' | 'POST' = 'GET',
+	method: 'GET' | 'POST' | 'DELETE' = 'GET',
 	body?: any,
 	headers?: { [key: string]: string },
 	expectJSONresponse: boolean = true
@@ -49,11 +49,14 @@ export const fetchEntity = <T>(
 		const fetchParams = {
 			method: method,
 			headers: new Headers({
-				...headers,
-				token: store.getState().accessToken
+				...headers
 			}),
 			body: body
 		};
+
+		if (store.getState().accessToken) {
+			fetchParams.headers.append('token', store.getState().accessToken);
+		}
 
 		console.log('fetch params: ', fetchParams);
 

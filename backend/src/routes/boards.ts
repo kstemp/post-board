@@ -4,8 +4,6 @@ import { check, query, sanitize, oneOf, header, body } from 'express-validator';
 import { checkValidation } from '../modules/validator';
 import verifyToken from '../modules/verify-token';
 import { errors } from 'pg-promise';
-import uuidv4 from 'uuid/v4';
-import fs from 'fs';
 const router = express.Router();
 
 // TODO use func for function execution
@@ -71,64 +69,26 @@ router.get(
 		)
 );*/
 
+/* did_user_react_to_entity_id($1, $2) AS reacted */
 // TODO validation
-router.get('/:id/new', async (req: Request, res: Response) => {
-	try {
-		const data = await db.oneOrNone(
-			"SELECT ARRAY(SELECT entity_id FROM entities WHERE type='post' AND parent_board_id = $1 ORDER BY created_on DESC OFFSET $2 LIMIT 5) AS entity_ids",
-			[req.params['id'], req.query.offset || 0]
-		);
-
-		return res.status(200).send(data);
-	} catch (e) {
-		console.log(e);
-		return res.sendStatus(getCodeFromError(e));
-	}
-});
-
-// TODO validation!!!!!!
-// and VERIFY cnontent-type header present
-// TODO purify with DOM purify
-router.post(
-	'/:id/',
-	oneOf([
-		header('content-type').equals('image/*'),
-		header('content-type').equals('text/html')
-	]),
-	//checkValidation,
+router.get(
+	'/:id/new',
 	verifyToken(false),
-
 	async (req: Request, res: Response) => {
 		try {
-			const [contentType, content] = req.is('image/*')
-				? [
-						'file',
-						`${uuidv4()}.${(
-							req.headers['content-type'] || ''
-						).slice(6)}` /* for instance, XXX-...-XXX.jpeg */
-				  ]
-				: ['html', req.body];
-
-			const post = await db.one(
-				'INSERT INTO entities (type, parent_board_id, content_type, content, user_id) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-				[
-					'post',
-					req.params['id'],
-					contentType,
-					content,
-					(req as any)['userID']
-				]
+			const data = await db.manyOrNone(
+				'SELECT * FROM entities WHERE parent_board_id = $1 ORDER BY created_on DESC OFFSET $2 LIMIT 5',
+				[req.params['id'], req.query.offset || 0]
 			);
 
-			if (req.is('image/*')) {
-				fs.writeFileSync(`img/${content}`, req.body);
-			}
-
-			return res.status(200).send(post);
-		} catch (error) {
-			console.log(error);
-			return res.sendStatus(getCodeFromError(error));
+			return res.status(200).send(data);
+		} catch (e) {
+			console.log(e);
+			return res.sendStatus(getCodeFromError(e));
 		}
 	}
 );
+
+/*
+type='post' AND  */
 module.exports = router;

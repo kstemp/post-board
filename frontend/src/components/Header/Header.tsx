@@ -91,10 +91,8 @@ class Header extends React.Component<StateProps, State> {
 	}
 }
 
-const mapStateToProps = (state: ReducerStateType) => {
-	return {
-		isLoggedIn: isLoggedIn(state)
-	};
-};
+const mapStateToProps = (state: ReducerStateType) => ({
+	isLoggedIn: isLoggedIn(state)
+});
 
 export default connect(mapStateToProps)(Header);

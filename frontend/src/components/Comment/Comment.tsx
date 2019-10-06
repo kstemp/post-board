@@ -8,13 +8,17 @@ import { displayErrorNotification } from '../../util/notification';
 import { connect } from 'react-redux';
 import { ReducerStateType } from '../../entities/reducer';
 import { isLoggedIn } from '../../entities/selectors';
-import { createReactionForEntityID } from '../../entities/reactions';
+import {
+	createReactionForEntityID,
+	deleteReactionForEntityID
+} from '../../entities/reactions';
 import { TEntity } from '../../entities/types';
 import {
 	fetchEntitiesByParentID,
 	createCommentForParentID
 } from '../../entities/fetchers';
 import Input from '../../controls/Input/Input';
+import { getClassNames } from '../../util/class-names';
 
 const baseClassName = 'comment';
 
@@ -72,13 +76,13 @@ class Comment extends React.Component<Props, State> {
 	};
 
 	toggleLiked = async () => {
-		/*	try {
-			(await this.props.comment.reacted)
+		try {
+			await (this.props.comment.reacted
 				? deleteReactionForEntityID(this.props.comment.entity_id)
-				: createReactionForEntityID(this.props.comment.entity_id);
+				: createReactionForEntityID(this.props.comment.entity_id));
 		} catch (error) {
 			displayErrorNotification('Failed to react', error);
-		}*/
+		}
 	};
 
 	closeChildComments = () => this.setState({ displayChildComments: false });

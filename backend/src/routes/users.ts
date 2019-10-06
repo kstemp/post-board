@@ -2,12 +2,11 @@ import express from 'express';
 import bcrypt from 'bcryptjs';
 import { SECRET } from '../modules/secret';
 import { check, query } from 'express-validator';
-import db, { PSQLERR } from '../modules/db';
+import db, { PSQLERR, getCodeFromError } from '../modules/db';
 import { checkLoginExists, checkValidation } from '../modules/validator';
 import jwt from 'jsonwebtoken';
 import md5 from 'md5';
-import { queryResult, errors } from 'pg-promise';
-import { resolveSoa } from 'dns';
+import { errors } from 'pg-promise';
 import verifyToken from '../modules/verify-token';
 
 const router = express.Router();
@@ -47,6 +46,7 @@ router.post(
 	],
 	checkValidation,
 	async (req: express.Request, res: express.Response) => {
+		console.log(req.body);
 		try {
 			const hashedPassword = await bcrypt.hash(
 				req.body.password,
@@ -65,7 +65,7 @@ router.post(
 			return res.sendStatus(200);
 		} catch (e) {
 			console.log(e);
-			return res.sendStatus(500);
+			return res.sendStatus(getCodeFromError(e));
 		}
 	}
 );
@@ -97,16 +97,8 @@ router.get(
 
 			return res.redirect('http://localhost:3000/login');
 		} catch (e) {
-			if (e.code === errors.queryResultErrorCode.noData) {
-				return res.sendStatus(400);
-			}
-
-			if (e.code === PSQLERR.UNIQUE_VIOLATION) {
-				return res.sendStatus(400);
-			}
-
 			console.log(e);
-			return res.sendStatus(500);
+			return res.sendStatus(getCodeFromError(e));
 		}
 	}
 );
@@ -143,7 +135,7 @@ router.post('/login', async (req: express.Request, res: express.Response) => {
 		});
 	} catch (e) {
 		console.log(e);
-		return res.sendStatus(500);
+		return res.sendStatus(getCodeFromError(e));
 	}
 });
 
@@ -155,11 +147,8 @@ router.get('/:userID/', async (req, res) => {
 
 		return res.status(200).send(data);
 	} catch (e) {
-		if (e.code === errors.queryResultErrorCode.noData) {
-			return res.sendStatus(400);
-		}
 		console.log(e);
-		return res.sendStatus(500);
+		return res.sendStatus(getCodeFromError(e));
 	}
 });
 
@@ -173,11 +162,8 @@ router.get('/:userID/profile', verifyToken(true), async (req, res) => {
 
 		return res.status(200).send(data);
 	} catch (e) {
-		if (e.code === errors.queryResultErrorCode.noData) {
-			return res.sendStatus(404); // TODO consistency of error codes
-		}
 		console.log(e);
-		return res.sendStatus(500);
+		return res.sendStatus(getCodeFromError(e));
 	}
 });
 
@@ -198,7 +184,7 @@ router.post('/:userID/profile/bio', verifyToken(true), async (req, res) => {
 		return res.sendStatus(200);
 	} catch (e) {
 		console.log(e);
-		return res.sendStatus(500);
+		return res.sendStatus(getCodeFromError(e));
 	}
 });
 

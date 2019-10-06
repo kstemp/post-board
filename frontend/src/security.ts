@@ -12,7 +12,8 @@ export const register = (name: string, email: string, password: string) =>
 			email: email,
 			password: password
 		}),
-		{ 'content-type': 'application/json' }
+		{ 'content-type': 'application/json' },
+		false
 	);
 
 export const securityLogin = (email: string, password: string) =>

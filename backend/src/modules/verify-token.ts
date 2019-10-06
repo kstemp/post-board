@@ -10,8 +10,7 @@ import { SECRET } from './secret';
 
 const verifyToken = (mustBeLoggedIn: boolean) => {
 	return (req: Request, res: Response, next: NextFunction) => {
-		//	console.log(req.headers);
-
+		//console.log(req.headers);
 		if (!req.headers.token) {
 			if (mustBeLoggedIn) {
 				return res.sendStatus(403);
