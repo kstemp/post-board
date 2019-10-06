@@ -35,7 +35,7 @@ router.get(
 	async (req: Request, res: Response) => {
 		try {
 			const entities = await db.manyOrNone(
-				'SELECT * FROM get_entities_by_parent_id($1)',
+				'SELECT * FROM entities, did_user_react_to_entity_id(entities.entity_id, $2) AS reacted WHERE parent_entity_id = $1',
 				[req.params['id'], (req as any).userID]
 			);
 			res.status(200).send(entities);

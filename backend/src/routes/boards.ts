@@ -77,8 +77,12 @@ router.get(
 	async (req: Request, res: Response) => {
 		try {
 			const data = await db.manyOrNone(
-				'SELECT * FROM entities WHERE parent_board_id = $1 ORDER BY created_on DESC OFFSET $2 LIMIT 5',
-				[req.params['id'], req.query.offset || 0]
+				'SELECT * FROM entities, did_user_react_to_entity_id(entities.entity_id, $3) AS reacted WHERE parent_board_id = $1 ORDER BY created_on DESC OFFSET $2 LIMIT 5',
+				[
+					req.params['id'],
+					req.query.offset || 0,
+					(req as any)['userID']
+				]
 			);
 
 			return res.status(200).send(data);

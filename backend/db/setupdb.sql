@@ -92,43 +92,21 @@ CREATE TABLE reactions (
 
 );
 
-CREATE OR REPLACE FUNCTION get_entity_by_id(_entity_id INTEGER) RETURNS SETOF entities AS 
+/*
+CREATE OR REPLACE FUNCTION get_entities_by_parent_id(_parent_entity_id INTEGER, _user_id INTEGER DEFAULT NULL) RETURNS SETOF entities AS 
 $$
 BEGIN
-	RETURN QUERY (SELECT * FROM entities WHERE entity_id = _entity_id);
+	RETURN QUERY (SELECT * FROM entities, did_user_react_to_entity_id(entities.entity_id, _user_id) AS reacted WHERE parent_entity_id = _parent_entity_id);
 END
 $$
 LANGUAGE plpgsql;
-
-CREATE OR REPLACE FUNCTION get_entities_by_parent_id(_parent_entity_id INTEGER) RETURNS SETOF entities AS 
-$$
-BEGIN
-	RETURN QUERY (SELECT * FROM entities WHERE parent_entity_id = _parent_entity_id);
-END
-$$
-LANGUAGE plpgsql;
-
-CREATE OR REPLACE FUNCTION create_post(_parent_board_id VARCHAR, _content_type VARCHAR, _content VARCHAR, _user_id INTEGER DEFAULT NULL) RETURNS VOID AS 
-$$
-BEGIN
-	/*INSERT INTO entities (entity_id) VALUES (DEFAULT) RETURNING entity_id INTO new_entity_id;*/
-	INSERT INTO entities (type, parent_board_id, content_type, content, user_id) VALUES ('post', _parent_board_id, _content_type, _content, _user_id);
-END
-$$
-LANGUAGE plpgsql;
+*/
 
 /*
-CREATE OR REPLACE FUNCTION create_comment(_parent_entity_id INTEGER, _text VARCHAR, _user_id INTEGER DEFAULT NULL) RETURNS entities AS 
-$$
-DECLARE
-	new_comment entities%ROWTYPE;
-BEGIN
-	INSERT INTO entities (type, parent_entity_id, text, user_id) VALUES ('comment', _parent_entity_id, _text, _user_id) RETURNING * INTO new_comment;
-	RETURN new_comment;
-END
-$$
-LANGUAGE plpgsql;*/
 
+	selector for reactions
+
+*/
 
 CREATE OR REPLACE FUNCTION did_user_react_to_entity_id(_entity_id INTEGER, _user_id INTEGER DEFAULT NULL) RETURNS boolean AS 
 $$ 
@@ -144,37 +122,19 @@ END
 $$
 LANGUAGE plpgsql;
 
+/*
 
-CREATE OR REPLACE FUNCTION update_comment_count() RETURNS TRIGGER AS 
-$$ 
-BEGIN
+	reaction counter trigger
 
-	IF TG_OP = 'INSERT' THEN
-	
-		UPDATE entities SET comment_count = comment_count + 1 WHERE entities.entity_id = NEW.parent_entity_id;
-
-	ELSIF TG_OP = 'DELETE' THEN
-
-    	UPDATE entities SET comment_count = comment_count - 1 WHERE entities.entity_id = OLD.parent_entity_id;
-
-	END IF;
-
-	RETURN NEW;
-END;
-$$ 
-LANGUAGE plpgsql;
+*/
 
 CREATE OR REPLACE FUNCTION update_reaction_count() RETURNS TRIGGER AS 
 $$ 
 BEGIN
 	IF TG_OP = 'INSERT' THEN
-	
 		UPDATE entities SET reaction_count = reaction_count + 1 WHERE entities.entity_id = NEW.parent_entity_id;
-
 	ELSIF TG_OP = 'DELETE' THEN
-
     	UPDATE entities SET reaction_count = reaction_count - 1 WHERE entities.entity_id = OLD.parent_entity_id;
-
 	END IF;
 
 	RETURN NEW;
@@ -182,6 +142,31 @@ END;
 $$ 
 LANGUAGE plpgsql;
 
-CREATE TRIGGER update_comment_count AFTER INSERT OR DELETE ON entities FOR EACH ROW EXECUTE PROCEDURE update_comment_count();
-
 CREATE TRIGGER update_reaction_count AFTER INSERT OR DELETE ON reactions FOR EACH ROW EXECUTE PROCEDURE update_reaction_count();
+
+/*
+
+	child counter trigger
+
+*/
+
+CREATE OR REPLACE FUNCTION update_child_count() RETURNS TRIGGER AS 
+$$ 
+BEGIN
+
+	IF NEW.parent_entity_id IS NULL THEN 
+		RETURN NEW;
+	END IF;
+
+	IF TG_OP = 'INSERT' THEN
+		UPDATE entities SET child_count = child_count + 1 WHERE entities.entity_id = NEW.parent_entity_id;
+	ELSIF TG_OP = 'DELETE' THEN
+    	UPDATE entities SET child_count = child_count - 1 WHERE entities.entity_id = OLD.parent_entity_id;
+	END IF;
+
+	RETURN NEW;
+END;
+$$ 
+LANGUAGE plpgsql;
+
+CREATE TRIGGER update_child_count AFTER INSERT OR DELETE ON entities FOR EACH ROW EXECUTE PROCEDURE update_child_count();

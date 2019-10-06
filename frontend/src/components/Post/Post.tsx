@@ -76,6 +76,7 @@ class Post extends React.Component<Props, State> {
 			showComments: !this.state.showComments
 		});
 
+	// TODO merge method with post and comment
 	toggleLiked = async () => {
 		if (this.state.post) {
 			try {
@@ -163,7 +164,7 @@ class Post extends React.Component<Props, State> {
 						<Button
 							size={'nice-rectangle'}
 							icon={'chat_bubble_outline'}
-							//label={this.state.post.child_count.toString()}
+							label={this.state.post.child_count.toString()}
 							toolTipEnabled={'Comment'}
 							onClick={this.toggleShowComments}
 						/>

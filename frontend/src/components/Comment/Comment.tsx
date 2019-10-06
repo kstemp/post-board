@@ -33,6 +33,7 @@ interface StateProps {
 type Props = OwnProps & StateProps;
 
 interface State {
+	comment: TEntity;
 	comments?: TEntity[];
 	displayChildComments: boolean;
 }
@@ -42,6 +43,7 @@ class Comment extends React.Component<Props, State> {
 		super(props);
 
 		this.state = {
+			comment: this.props.comment,
 			displayChildComments: false
 		};
 	}
@@ -49,7 +51,7 @@ class Comment extends React.Component<Props, State> {
 	createComment = async (text: string) => {
 		try {
 			const comment = await createCommentForParentID(
-				this.props.comment.entity_id,
+				this.state.comment.entity_id,
 				text
 			);
 			this.setState({
@@ -67,7 +69,7 @@ class Comment extends React.Component<Props, State> {
 
 		try {
 			const comments = await fetchEntitiesByParentID(
-				this.props.comment.entity_id
+				this.state.comment.entity_id
 			);
 			this.setState({ comments: comments });
 		} catch (error) {
@@ -76,12 +78,36 @@ class Comment extends React.Component<Props, State> {
 	};
 
 	toggleLiked = async () => {
-		try {
-			await (this.props.comment.reacted
-				? deleteReactionForEntityID(this.props.comment.entity_id)
-				: createReactionForEntityID(this.props.comment.entity_id));
-		} catch (error) {
-			displayErrorNotification('Failed to react', error);
+		if (this.state.comment) {
+			try {
+				if (this.state.comment.reacted) {
+					await deleteReactionForEntityID(
+						this.state.comment.entity_id
+					);
+					this.setState({
+						comment: {
+							...this.state.comment,
+							reaction_count:
+								this.state.comment.reaction_count - 1,
+							reacted: false
+						}
+					});
+				} else {
+					await createReactionForEntityID(
+						this.state.comment.entity_id
+					);
+					this.setState({
+						comment: {
+							...this.state.comment,
+							reaction_count:
+								this.state.comment.reaction_count + 1,
+							reacted: true
+						}
+					});
+				}
+			} catch (error) {
+				displayErrorNotification('Failed to react', error);
+			}
 		}
 	};
 
@@ -92,11 +118,11 @@ class Comment extends React.Component<Props, State> {
 			<div className={baseClassName}>
 				<div className={`${baseClassName}__header`}>
 					<span className={`${baseClassName}__header-login`}>
-						{this.props.comment.user_id || 'Anonymous'}
+						{this.state.comment.user_id || 'Anonymous'}
 					</span>
 					<span className={`${baseClassName}__header-created-on`}>
 						{prettyPrintDateDifference(
-							new Date(this.props.comment.created_on),
+							new Date(this.state.comment.created_on),
 							new Date()
 						)}
 					</span>
@@ -107,15 +133,15 @@ class Comment extends React.Component<Props, State> {
 					title={'Collapse thread to parent comment'}
 				/>
 				<span className={`${baseClassName}__content`}>
-					{this.props.comment.content}
+					{this.state.comment.content}
 				</span>
 				<div className={`${baseClassName}__buttons`}>
 					<Button
 						label={(
-							this.props.comment.reaction_count || 0
+							this.state.comment.reaction_count || 0
 						).toString()}
 						icon={`favorite${
-							this.props.comment.reacted ? '' : '_border'
+							this.state.comment.reacted ? '' : '_border'
 						}`}
 						onClick={this.toggleLiked}
 						disabled={!this.props.isLoggedIn}
@@ -126,9 +152,7 @@ class Comment extends React.Component<Props, State> {
 					/>
 					<Button
 						icon={'chat_bubble_outline'}
-						//label={(
-						//	this.props.comment.comment_count || 0
-						///	).toString()}
+						label={this.state.comment.child_count.toString()}
 						onClick={this.openInputFieldAndLoadComments}
 					/>
 					<Button icon={'report'} label={'Report'} />
