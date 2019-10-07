@@ -1,5 +1,71 @@
 @import '../../style/variables.scss';
 
+.post {
+	width: 100%;
+	border: $border;
+
+	background-color: white;
+
+	margin-bottom: 2px;
+	padding: $padding;
+
+	box-sizing: border-box;
+
+	&__header {
+		&-user {
+			font-weight: bold;
+			margin-right: 5px;
+		}
+		&-time {
+			float: right;
+			color: $color-disabled-text;
+		}
+
+		&-id {
+			color: $color-disabled-text;
+		}
+	}
+
+	&__body {
+		min-height: 50px;
+
+		max-height: 100%;
+		max-width: 100%;
+
+		overflow: auto;
+		overflow-wrap: break-word;
+
+		white-space: pre-wrap;
+
+		text-align: justify;
+
+		padding-bottom: 5px;
+	}
+
+	&__buttons {
+		border-top: $border;
+
+		padding-top: 5px;
+
+		display: flex;
+		//justify-content: space-between;
+	}
+
+	&__input-wrapper {
+		margin-top: 5px;
+		margin-bottom: 5px;
+
+		display: flex;
+		flex-direction: column;
+
+		box-sizing: border-box;
+
+		> input {
+			width: 100%;
+		}
+	}
+}
+
 $margin-left: 5 * $standard-spacing;
 
 .comment {
@@ -18,7 +84,7 @@ $margin-left: 5 * $standard-spacing;
 		display: flex;
 		font-size: $smaller-font-size;
 
-		&-login {
+		&-user {
 			font-weight: bold;
 		}
 		&-created-on {

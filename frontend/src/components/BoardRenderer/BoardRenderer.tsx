@@ -13,6 +13,7 @@ import Button from '../../controls/Button/Button';
 import PostCreator from '../PostCreator/PostCreator';
 import { FetchError } from '../../entities/entity';
 import BoardSidebar from '../BoardSidebar/BoardSidebar';
+import EntityRenderer from '../EntityRenderer/EntityRenderer';
 
 const baseClassName = 'community-renderer';
 
@@ -114,10 +115,11 @@ class BoardRenderer extends React.Component<OwnProps, State> {
 								<PostCreator boardID={this.props.boardID} />
 								{this.state.posts.length
 									? this.state.posts.map(post => (
-											<Post
+											<EntityRenderer
+												baseClassName={'post'}
 												key={post.entity_id}
 												//entity_id={postID}
-												post={post}
+												entity={post}
 											/>
 									  ))
 									: 'No posts here.'}
