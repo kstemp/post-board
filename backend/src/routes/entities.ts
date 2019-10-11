@@ -1,17 +1,16 @@
 import express, { Request, Response } from 'express';
 import db, { PSQLERR, getCodeFromError } from '../modules/db';
 import { check, sanitize, query, oneOf, header } from 'express-validator';
-import verifyToken from '../modules/verify-token';
 import { checkValidation } from '../modules/validator';
 import uuidv4 from 'uuid/v4';
 import fs from 'fs';
+import { verifyLoggedIn } from '../modules/verify-token';
 const router = express.Router();
 
 router.get(
 	'/:id/',
 	[check('id').isInt()],
 	checkValidation,
-	verifyToken(false),
 	async (req: Request, res: Response) => {
 		try {
 			const data = await db.one(
@@ -31,7 +30,6 @@ router.get(
 	'/:id/children',
 	[check('id').isInt()],
 	checkValidation,
-	verifyToken(false),
 	async (req: Request, res: Response) => {
 		try {
 			const entities = await db.manyOrNone(
@@ -61,7 +59,6 @@ router.post(
 		query('parent_entity_id').isInt({ min: 1 })
 	]),
 	checkValidation,
-	verifyToken(false),
 
 	async (req: Request, res: Response) => {
 		try {
@@ -91,6 +88,29 @@ router.post(
 			}
 
 			return res.status(200).send(entity);
+		} catch (error) {
+			console.log(error);
+			return res.sendStatus(getCodeFromError(error));
+		}
+	}
+);
+
+router.delete(
+	'/:id/',
+	[check('id').isInt()],
+	checkValidation,
+	verifyLoggedIn,
+	async (req: Request, res: Response) => {
+		try {
+			const result = await db.one(
+				'SELECT delete_entity($1, $2) AS count',
+				[req.params['id'], (req as any)['userID']]
+			);
+
+			console.log(result);
+			return result['count'] === 0
+				? res.sendStatus(403)
+				: res.sendStatus(204);
 		} catch (error) {
 			console.log(error);
 			return res.sendStatus(getCodeFromError(error));

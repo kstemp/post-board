@@ -1,6 +1,5 @@
 import express from 'express';
 import { query } from 'express-validator';
-import verifyToken from '../modules/verify-token';
 import { checkValidation } from '../modules/validator';
 import db, { getCodeFromError } from '../modules/db';
 

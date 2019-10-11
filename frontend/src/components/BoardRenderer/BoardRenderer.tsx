@@ -8,7 +8,6 @@ import {
 	fetchPostsForBoardID
 } from '../../entities/fetchers';
 import { displayErrorNotification } from '../../util/notification';
-import Post from '../Post/Post';
 import Button from '../../controls/Button/Button';
 import PostCreator from '../PostCreator/PostCreator';
 import { FetchError } from '../../entities/entity';

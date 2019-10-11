@@ -13,12 +13,17 @@ import {
 import { TEntity } from '../../entities/types';
 import {
 	fetchEntitiesByParentID,
-	createCommentForParentID
+	createCommentForParentID,
+	deleteEntityByID
 } from '../../entities/fetchers';
 import Input from '../../controls/Input/Input';
 import { BACKEND_URL } from '../../Config';
 
 import './EntityRenderer.scss';
+import Dropdown from '../../controls/Dropdown/Dropdown';
+import { isCompletionStatement } from '@babel/types';
+import { getClassNames } from '../../util/class-names';
+import { NavLink } from 'react-router-dom';
 
 interface OwnProps {
 	baseClassName: string;
@@ -112,6 +117,14 @@ class EntityRenderer extends React.Component<Props, State> {
 			displayChildEntities: !this.state.displayChildEntities
 		});
 
+	deleteEntity = async () => {
+		try {
+			await deleteEntityByID(this.state.entity.entity_id);
+		} catch (e) {
+			return displayErrorNotification('Failed to delete entity', e);
+		}
+	};
+
 	render() {
 		return (
 			<div className={this.props.baseClassName}>
@@ -119,7 +132,13 @@ class EntityRenderer extends React.Component<Props, State> {
 					<span
 						className={`${this.props.baseClassName}__header-user`}
 					>
-						{this.state.entity.user_id || 'Anonymous'}
+						{this.state.entity.user_id ? (
+							<NavLink to={`/user/${this.state.entity.user_id}`}>
+								{this.state.entity.user_id}
+							</NavLink>
+						) : (
+							'Anonymous'
+						)}
 					</span>
 					<span
 						className={`${this.props.baseClassName}__header-created-on`}
@@ -171,7 +190,23 @@ class EntityRenderer extends React.Component<Props, State> {
 						label={this.state.entity.child_count.toString()}
 						onClick={this.openInputFieldAndLoadChildEntities}
 					/>
-					<Button icon={'report'} label={'Report'} />
+					<Dropdown
+						notifyOptionChanged={() => {}}
+						defaultOption={0}
+						type={'just-click'}
+						options={[
+							{
+								label: 'Delete',
+								icon: 'delete',
+								onClick: () => this.deleteEntity()
+							},
+							{
+								label: 'Report',
+								icon: 'report',
+								onClick: () => {}
+							}
+						]}
+					/>
 				</div>
 				{this.state.displayChildEntities && (
 					<div
@@ -187,13 +222,16 @@ class EntityRenderer extends React.Component<Props, State> {
 					</div>
 				)}
 				{this.state.displayChildEntities &&
-					this.state.childEntities &&
-					this.state.childEntities.map(entity => (
-						<EntityRenderer
-							baseClassName={'comment'}
-							isLoggedIn={this.props.isLoggedIn}
-							entity={entity}
-						/> // TODO figure out a better workaround around Redux not liking recursive components
+					(this.state.childEntities ? (
+						this.state.childEntities.map(entity => (
+							<EntityRenderer
+								baseClassName={'comment'}
+								isLoggedIn={this.props.isLoggedIn}
+								entity={entity}
+							/> // TODO figure out a better workaround around Redux not liking recursive components
+						))
+					) : (
+						<span>No replies yet.</span>
 					))}
 			</div>
 		);

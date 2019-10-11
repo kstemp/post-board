@@ -7,7 +7,7 @@ import { checkLoginExists, checkValidation } from '../modules/validator';
 import jwt from 'jsonwebtoken';
 import md5 from 'md5';
 import { errors } from 'pg-promise';
-import verifyToken from '../modules/verify-token';
+import { verifyLoggedIn } from '../modules/verify-token';
 
 const router = express.Router();
 
@@ -153,7 +153,7 @@ router.get('/:userID/', async (req, res) => {
 });
 
 // TODO input validation
-router.get('/:userID/profile', verifyToken(true), async (req, res) => {
+router.get('/:userID/profile', verifyLoggedIn, async (req, res) => {
 	try {
 		const data = await db.one(
 			'SELECT * FROM user_data WHERE user_id = $1',
@@ -168,9 +168,9 @@ router.get('/:userID/profile', verifyToken(true), async (req, res) => {
 });
 
 // TODO input validation
-// params in body: bio as strin
+// params in body: bio as string
 // TODO table column as parameter
-router.post('/:userID/profile/bio', verifyToken(true), async (req, res) => {
+router.post('/:userID/profile/bio', verifyLoggedIn, async (req, res) => {
 	try {
 		if (parseInt(req.params['userID']) !== (req as any).userID) {
 			return res.sendStatus(403);

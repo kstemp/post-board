@@ -47,7 +47,7 @@ class RichTextEditor extends React.Component {
 						overflow: 'auto'
 					}}
 				>
-					<div contentEditable={true} ref={this.refContent} />
+					<div contentEditable ref={this.refContent} />
 				</div>
 			</div>
 		);

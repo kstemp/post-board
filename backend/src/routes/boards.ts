@@ -2,8 +2,7 @@ import express, { Request, Response } from 'express';
 import db, { PSQLERR, getCodeFromError } from '../modules/db';
 import { check, query, sanitize, oneOf, header, body } from 'express-validator';
 import { checkValidation } from '../modules/validator';
-import verifyToken from '../modules/verify-token';
-import { errors } from 'pg-promise';
+import { verifyLoggedIn } from '../modules/verify-token';
 const router = express.Router();
 
 // TODO use func for function execution
@@ -18,13 +17,8 @@ router.get('/:id', async (req, res) => {
 		]);
 		return res.status(200).send(data);
 	} catch (e) {
-		if (e.code === errors.queryResultErrorCode.noData) {
-			return res.sendStatus(404);
-		}
-
 		console.log(e);
-
-		return res.sendStatus(500);
+		return res.sendStatus(getCodeFromError(e));
 	}
 });
 
@@ -35,7 +29,7 @@ router.post(
 		check('title').isLength({ min: 2, max: 100 })
 	],
 	checkValidation,
-	verifyToken(true),
+	verifyLoggedIn,
 	async (req: Request, res: Response) => {
 		try {
 			await db.none('INSERT INTO boards (id, title) VALUES ($1, $2)', [
@@ -71,27 +65,19 @@ router.get(
 
 /* did_user_react_to_entity_id($1, $2) AS reacted */
 // TODO validation
-router.get(
-	'/:id/new',
-	verifyToken(false),
-	async (req: Request, res: Response) => {
-		try {
-			const data = await db.manyOrNone(
-				'SELECT * FROM entities, did_user_react_to_entity_id(entities.entity_id, $3) AS reacted WHERE parent_board_id = $1 ORDER BY created_on DESC OFFSET $2 LIMIT 5',
-				[
-					req.params['id'],
-					req.query.offset || 0,
-					(req as any)['userID']
-				]
-			);
+router.get('/:id/new', async (req: Request, res: Response) => {
+	try {
+		const data = await db.manyOrNone(
+			'SELECT * FROM entities, did_user_react_to_entity_id(entities.entity_id, $3) AS reacted WHERE parent_board_id = $1 ORDER BY created_on DESC OFFSET $2 LIMIT 5',
+			[req.params['id'], req.query.offset || 0, (req as any)['userID']]
+		);
 
-			return res.status(200).send(data);
-		} catch (e) {
-			console.log(e);
-			return res.sendStatus(getCodeFromError(e));
-		}
+		return res.status(200).send(data);
+	} catch (e) {
+		console.log(e);
+		return res.sendStatus(getCodeFromError(e));
 	}
-);
+});
 
 /*
 type='post' AND  */

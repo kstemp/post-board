@@ -2,22 +2,11 @@ import { fetchEntity } from './entity';
 import {
 	IDType,
 	TEntity,
-	IEntityIDs,
 	TContentSorting,
 	IUser,
 	TUserProfile,
 	IBoard
 } from './types';
-
-/*
-export const fetchPostIDsForBoardID = (
-	boardID: string,
-	offset: number,
-	contentSorting: TContentSorting
-) =>
-	fetchEntity<IEntityIDs>(
-		`/boards/${boardID}/${contentSorting}?offset=${offset}`
-	);*/
 
 export const fetchPostsForBoardID = (
 	boardID: string,
@@ -30,6 +19,9 @@ export const fetchPostsForBoardID = (
 
 export const fetchEntityByID = (id: IDType) =>
 	fetchEntity<TEntity>(`/entities/${id}`);
+
+export const deleteEntityByID = (id: IDType) =>
+	fetchEntity(`/entities/${id}`, 'DELETE', {}, {}, false);
 
 export const fetchEntitiesByParentID = (id: IDType) =>
 	fetchEntity<TEntity[]>(`/entities/${id}/children`);
@@ -52,10 +44,6 @@ export const createCommentForParentID = (parentID: IDType, text: string) =>
 		text,
 		{ 'content-type': 'text/html' }
 	);
-/*
-export const fetchMetadataForPostID = (postID: IDType) =>
-	fetchEntity<IEntityMetadata>(`/post/${postID}?metadata_only=true`);
-*/
 
 export const fetchUser = (userID: IDType) =>
 	fetchEntity<IUser>(`/users/${userID}`);
@@ -69,16 +57,3 @@ export const createBoard = (id: string, title: string) =>
 
 export const fetchBoardMetadata = (id: string) =>
 	fetchEntity<IBoard>(`/boards/${id}`);
-
-/*
-export const createCommentForPostIDAndParentCommentID = (
-	postID: IDType,
-	parent_comment_id: IDType,
-	commentText: string
-) =>
-	createEntity<TEntity>(
-		`/post/${postID}/comments?parent_comment_id=${parent_comment_id}`,
-		JSON.stringify({ text: commentText }),
-		true
-	);
-*/

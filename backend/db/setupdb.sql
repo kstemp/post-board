@@ -66,8 +66,8 @@ CREATE TABLE entities (
 
 	type VARCHAR, /* TODO make an enum*/
 
-	parent_board_id VARCHAR REFERENCES boards (id), 
-	parent_entity_id INTEGER REFERENCES entities (entity_id),
+	parent_board_id VARCHAR REFERENCES boards (id) ON DELETE CASCADE, 
+	parent_entity_id INTEGER REFERENCES entities (entity_id) ON DELETE CASCADE,
 
 	user_id INTEGER REFERENCES users (user_id),
 
@@ -170,3 +170,38 @@ $$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER update_child_count AFTER INSERT OR DELETE ON entities FOR EACH ROW EXECUTE PROCEDURE update_child_count();
+
+/* 
+
+	credential management
+
+*/
+CREATE OR REPLACE FUNCTION can_user_delete_entity(_entity_id INTEGER, _user_id INTEGER) RETURNS BOOLEAN AS
+$$ 
+DECLARE 
+	entity_user_id INTEGER;
+BEGIN
+	SELECT user_id FROM entities WHERE entity_id = _entity_id INTO entity_user_id;
+
+	IF entity_user_id IS NULL THEN
+		RETURN FALSE; 
+	END IF;
+
+	RETURN entity_user_id = _user_id;
+END;
+$$
+LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION delete_entity(_entity_id INTEGER, _user_id INTEGER) RETURNS INTEGER AS 
+$$
+DECLARE
+	count_deleted INTEGER DEFAULT 0;
+BEGIN
+	WITH deleted AS (
+		DELETE FROM entities WHERE entity_id = _entity_id AND can_user_delete_entity(_entity_id, _user_id) IS TRUE RETURNING *
+	) SELECT COUNT(*) FROM deleted INTO count_deleted;
+
+	RETURN count_deleted;
+END;
+$$
+LANGUAGE plpgsql;
