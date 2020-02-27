@@ -38,12 +38,9 @@ export const createPost = (data: string | File, board_id: string) => {
 };
 
 export const createCommentForParentID = (parentID: IDType, text: string) =>
-	fetchEntity<TEntity>(
-		`/entities?parent_entity_id=${parentID}`,
-		'POST',
-		text,
-		{ 'content-type': 'text/html' }
-	);
+	fetchEntity<TEntity>(`/entities?parent_entity_id=${parentID}`, 'POST', text, {
+		'content-type': 'text/html'
+	});
 
 export const fetchUser = (userID: IDType) =>
 	fetchEntity<IUser>(`/users/${userID}`);
@@ -53,7 +50,9 @@ export const fetchUserProfile = (userID: IDType) =>
 
 /* board-related */
 export const createBoard = (id: string, title: string) =>
-	fetchEntity(`/boards`, 'POST', JSON.stringify({ id: id, title: title }), { 'content-type': 'application/json' });
+	fetchEntity(`/boards`, 'POST', JSON.stringify({ id: id, title: title }), {
+		'content-type': 'application/json'
+	});
 
 export const fetchBoardMetadata = (id: string) =>
 	fetchEntity<IBoard>(`/boards/${id}`);

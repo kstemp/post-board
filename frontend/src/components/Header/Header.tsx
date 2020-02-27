@@ -32,12 +32,9 @@ class Header extends React.Component<StateProps, State> {
 
 	createBoard = async () => {
 		const boardID =
-			prompt("Enter the ID for the new board (e.g. 'sampleboard1')") ||
-			'';
+			prompt("Enter the ID for the new board (e.g. 'sampleboard1')") || '';
 		const boardTitle =
-			prompt(
-				"Enter the title of the new board (e.g. 'Sample Board 1')"
-			) || '';
+			prompt("Enter the title of the new board (e.g. 'Sample Board 1')") || '';
 		try {
 			await createBoard(boardID, boardTitle);
 		} catch (e) {
@@ -61,27 +58,18 @@ class Header extends React.Component<StateProps, State> {
 								onClick={this.createBoard}
 								label={'New Board'}
 							/>
-							<Button
-								icon={'people_alt'}
-								toolTipEnabled={'My friends'}
-							/>
+							<Button icon={'people_alt'} toolTipEnabled={'My friends'} />
 							<Button icon={'person'} />
 						</React.Fragment>
 					)}
 					{this.props.isLoggedIn ? (
-						<Button
-							fill
-							label={'Logout'}
-							onClick={securityLogout}
-						/>
+						<Button fill label={'Logout'} onClick={securityLogout} />
 					) : (
 						<NavLink to={'/login'}>
 							<Button
 								fill
 								label={'Login'}
-								onClick={() =>
-									this.setState({ openLoginFields: true })
-								}
+								onClick={() => this.setState({ openLoginFields: true })}
 							/>
 						</NavLink>
 					)}

@@ -57,9 +57,9 @@ class EntityRenderer extends React.Component<Props, State> {
 				text
 			);
 			this.setState({
-				// this || [] is to make TypeScript happy, since this.state.coomments can be undefined... 
+				// this || [] is to make TypeScript happy, since this.state.coomments can be undefined...
 				// TODO workaround?
-				childEntities: [...(this.state.childEntities || []), entity] 
+				childEntities: [...(this.state.childEntities || []), entity]
 			});
 		} catch (error) {
 			displayErrorNotification('Failed to create comment', error);
@@ -82,26 +82,20 @@ class EntityRenderer extends React.Component<Props, State> {
 		if (this.state.entity) {
 			try {
 				if (this.state.entity.reacted) {
-					await deleteReactionForEntityID(
-						this.state.entity.entity_id
-					);
+					await deleteReactionForEntityID(this.state.entity.entity_id);
 					this.setState({
 						entity: {
 							...this.state.entity,
-							reaction_count:
-								this.state.entity.reaction_count - 1,
+							reaction_count: this.state.entity.reaction_count - 1,
 							reacted: false
 						}
 					});
 				} else {
-					await createReactionForEntityID(
-						this.state.entity.entity_id
-					);
+					await createReactionForEntityID(this.state.entity.entity_id);
 					this.setState({
 						entity: {
 							...this.state.entity,
-							reaction_count:
-								this.state.entity.reaction_count + 1,
+							reaction_count: this.state.entity.reaction_count + 1,
 							reacted: true
 						}
 					});
@@ -129,9 +123,7 @@ class EntityRenderer extends React.Component<Props, State> {
 		return (
 			<div className={this.props.baseClassName}>
 				<div className={`${this.props.baseClassName}__header`}>
-					<span
-						className={`${this.props.baseClassName}__header-user`}
-					>
+					<span className={`${this.props.baseClassName}__header-user`}>
 						{this.state.entity.user_id ? (
 							<NavLink to={`/user/${this.state.entity.user_id}`}>
 								{this.state.entity.user_id}
@@ -140,9 +132,7 @@ class EntityRenderer extends React.Component<Props, State> {
 							'Anonymous'
 						)}
 					</span>
-					<span
-						className={`${this.props.baseClassName}__header-created-on`}
-					>
+					<span className={`${this.props.baseClassName}__header-created-on`}>
 						{prettyPrintDateDifference(
 							new Date(this.state.entity.created_on),
 							new Date()
@@ -172,18 +162,12 @@ class EntityRenderer extends React.Component<Props, State> {
 				)}
 				<div className={`${this.props.baseClassName}__buttons`}>
 					<Button
-						label={(
-							this.state.entity.reaction_count || 0
-						).toString()}
-						icon={`favorite${
-							this.state.entity.reacted ? '' : '_border'
-						}`}
+						label={(this.state.entity.reaction_count || 0).toString()}
+						icon={`favorite${this.state.entity.reacted ? '' : '_border'}`}
 						onClick={this.toggleLiked}
 						disabled={!this.props.isLoggedIn}
 						toolTipEnabled={'Like'}
-						toolTipDisabled={
-							'You must be logged in to react to comments'
-						}
+						toolTipDisabled={'You must be logged in to react to comments'}
 					/>
 					<Button
 						icon={'chat_bubble_outline'}
@@ -209,9 +193,7 @@ class EntityRenderer extends React.Component<Props, State> {
 					/>
 				</div>
 				{this.state.displayChildEntities && (
-					<div
-						className={`${this.props.baseClassName}__input-wrapper`}
-					>
+					<div className={`${this.props.baseClassName}__input-wrapper`}>
 						<Input
 							autoFocus
 							className={'pb-input'}
