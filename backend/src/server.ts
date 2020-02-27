@@ -21,7 +21,7 @@ app.use('/img', express.static('img'));
 
 app.get('/', (req, res) => res.sendStatus(200));
 
-app.listen(8000, () => console.log(`\nbackend is running\n`));
+app.listen(8000, () => console.log(`\nbackend is running on 8000\n`));
 
 // for testing
 module.exports = app;

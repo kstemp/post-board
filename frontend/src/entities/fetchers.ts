@@ -53,7 +53,7 @@ export const fetchUserProfile = (userID: IDType) =>
 
 /* board-related */
 export const createBoard = (id: string, title: string) =>
-	fetchEntity(`/boards`, 'POST', JSON.stringify({ id: id, title: title }));
+	fetchEntity(`/boards`, 'POST', JSON.stringify({ id: id, title: title }), { 'content-type': 'application/json' });
 
 export const fetchBoardMetadata = (id: string) =>
 	fetchEntity<IBoard>(`/boards/${id}`);

@@ -1,6 +1,5 @@
 import React from 'react';
-import { IDType, TContentSorting, IBoard, TEntity } from '../../entities/types';
-import BoardBar from '../BoardBar/BoardBar';
+import { TContentSorting, IBoard, TEntity } from '../../entities/types';
 
 import './BoardRenderer.scss';
 import {
@@ -11,10 +10,10 @@ import { displayErrorNotification } from '../../util/notification';
 import Button from '../../controls/Button/Button';
 import PostCreator from '../PostCreator/PostCreator';
 import { FetchError } from '../../entities/entity';
-import BoardSidebar from '../BoardSidebar/BoardSidebar';
 import EntityRenderer from '../EntityRenderer/EntityRenderer';
 
 const baseClassName = 'community-renderer';
+const POST_INCREMENT = 5;
 
 interface OwnProps {
 	boardID: string;
@@ -77,7 +76,7 @@ class BoardRenderer extends React.Component<OwnProps, State> {
 			.then(posts =>
 				this.setState(state => ({
 					posts: [...state.posts, ...posts],
-					currentOffset: this.state.currentOffset + 5
+					currentOffset: this.state.currentOffset + POST_INCREMENT
 				}))
 			)
 			.catch((error: FetchError) =>
@@ -100,15 +99,6 @@ class BoardRenderer extends React.Component<OwnProps, State> {
 									this.state.metadata.name}
 							</span>
 						</div>
-						<BoardBar
-							communityID={1}
-							notifyContentSortingChanged={contentSorting =>
-								this.setState({
-									contentSorting: contentSorting
-								})
-							}
-						/>
-
 						<div className={'page-content'}>
 							<div className={`${baseClassName}__posts`}>
 								<PostCreator boardID={this.props.boardID} />
@@ -129,9 +119,6 @@ class BoardRenderer extends React.Component<OwnProps, State> {
 									onClick={this.loadMorePosts}
 								/>
 							</div>
-							{this.state.metadata && (
-								<BoardSidebar metadata={this.state.metadata} />
-							)}
 						</div>
 					</>
 				)}

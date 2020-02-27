@@ -1,6 +1,5 @@
 import React from 'react';
 import Button from '../Button/Button';
-import ColorPicker from '../ColorPicker/ColorPicker';
 
 import './RichTextEditor.scss';
 
@@ -37,7 +36,6 @@ class RichTextEditor extends React.Component {
 					{buttons.map(button => (
 						<Button icon={button.icon} />
 					))}
-					<ColorPicker />
 				</div>
 
 				<div

@@ -21,8 +21,6 @@ import { BACKEND_URL } from '../../Config';
 
 import './EntityRenderer.scss';
 import Dropdown from '../../controls/Dropdown/Dropdown';
-import { isCompletionStatement } from '@babel/types';
-import { getClassNames } from '../../util/class-names';
 import { NavLink } from 'react-router-dom';
 
 interface OwnProps {
@@ -59,7 +57,9 @@ class EntityRenderer extends React.Component<Props, State> {
 				text
 			);
 			this.setState({
-				childEntities: [...(this.state.childEntities || []), entity] // this || [] is to make TypeScript happy, since this.state.coomments can be undefined... TODO fix
+				// this || [] is to make TypeScript happy, since this.state.coomments can be undefined... 
+				// TODO workaround?
+				childEntities: [...(this.state.childEntities || []), entity] 
 			});
 		} catch (error) {
 			displayErrorNotification('Failed to create comment', error);
