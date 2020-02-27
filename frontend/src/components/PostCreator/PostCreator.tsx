@@ -9,7 +9,6 @@ import { displayErrorNotification } from '../../util/notification';
 import './PostCreator.scss';
 import RichTextEditor from '../../controls/RichTextEditor/RichTextEditor';
 import ImageUploader from '../../controls/ImageUploader/ImageUploader';
-import { BACKEND_URL } from '../../Config';
 
 const baseClassName = 'post-creator';
 
